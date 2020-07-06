@@ -1,23 +1,33 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="App">
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <router-view></router-view>
+
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    // HelloWorld
+  },
+  props: {
+    source: String
+  },
+  data() {
+    return {
+      drawer: true
+    };
   }
-}
+};
 </script>
 
 <style>
-#app {
+#App {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,3 +36,5 @@ export default {
   margin-top: 60px;
 }
 </style>
+
+
