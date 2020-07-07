@@ -1,30 +1,29 @@
 <template>
-  <div id="DashBoard">
+  <div id="T1B2">
     <div id="Top10">sasasasasasasasasasa</div>
     <div id="Buttom10">
-      <!-- sasasasasasasasasasa -->
       <div id="Buttom5R">
-        asd
-        <h4>DASHBOARD</h4>
+        asdsasasasasasasasasasa
+        <h4>T1B2</h4>
       </div>
       <div id="Buttom5L">
-        asd
-        <h4>DASHBOARD</h4>
+        asdsasasasasasasasasasa
+        <h4>T1B2</h4>
       </div>
-      <!-- <div style="flex-grow:2">item 3</div> -->
     </div>
   </div>
+        <!-- <div style="flex-grow:2">item 3</div> -->
 </template>
 
 <script>
 export default {
-  name: "DashBoard",
+  name: "T1B2",
   components: {}
 };
 </script>
 
 <style>
-#DashBoard {
+#T1B2 {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,7 +31,7 @@ export default {
   color: #2c3e50;
   display: flex;
   flex: 1;
-
+  overflow: scroll;
   flex-direction: column;
   overflow: scroll;
   /* background: #ff2345; */
@@ -76,11 +75,11 @@ export default {
   margin: 10px 20px 50px 20px;
   display: flex;
   flex: 1;
-  /* flex-direction: row;
+  flex-direction: row;
   -webkit-align-items: center;
   -webkit-justify-content: center;
   align-items: center;
-  justify-content: center; */
+  justify-content: center;
   flex-wrap: wrap;
 }
 </style>

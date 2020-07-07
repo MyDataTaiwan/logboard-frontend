@@ -1,11 +1,11 @@
 <template>
-  <div id="ResearchBoard">
+  <div id="R2L1">
     <div id="R10">
-      <div id="R5T">
+      <div id="R5Top">
         asd R
         <h4>DASHBOARD</h4>
       </div>
-      <div id="R5B">
+      <div id="R5Botton">
         asd R
         <h4>DASHBOARD</h4>
       </div>
@@ -16,13 +16,13 @@
 
 <script>
 export default {
-  name: "ResearchBoard",
+  name: "R2L1",
   components: {}
 };
 </script>
 
 <style>
-#ResearchBoard {
+#R2L1 {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,7 +34,7 @@ export default {
   overflow: scroll;
   /* height:100%; */
 }
-#R5B {
+#R5Botton {
   width: 100%;
   margin-top:  10px;
   background: #fff;
@@ -46,7 +46,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
-#R5T {
+#R5Top {
   width: 100%;
   margin-bottom: 10px;
   background: #fff;
@@ -60,7 +60,7 @@ export default {
 }
 #L10 {
   height: 95vh;
-  margin: 20px 20px 20px 10px;
+  margin: 0px 20px 20px 10px;
 
   background: #fff;
   /* margin: 10px 30px 10px 30px; */
@@ -76,9 +76,7 @@ export default {
 #R10 {
   /* background: #fff; */
   height: 95vh;
-   margin: 20px;
-
-  margin: 20px 10px 20px 20px;
+  margin: 0px 10px 20px 20px;
   display: flex;
   flex: 1;
   flex-direction: column;
