@@ -59,7 +59,7 @@ export default {
   justify-content: center;
 }
 #L10 {
-  height: 95vh;
+  /* height: 80vh; */
   margin: 0px 20px 20px 10px;
 
   background: #fff;
@@ -75,7 +75,7 @@ export default {
 }
 #R10 {
   /* background: #fff; */
-  height: 95vh;
+  /* height: 80vh; */
   margin: 0px 10px 20px 20px;
   display: flex;
   flex: 1;

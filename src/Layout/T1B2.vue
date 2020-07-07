@@ -72,7 +72,7 @@ export default {
 }
 #Buttom10 {
   /* background: #fff; */
-  margin: 10px 20px 50px 20px;
+  margin: 10px 20px 10px 20px;
   display: flex;
   flex: 1;
   flex-direction: row;
