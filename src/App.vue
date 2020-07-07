@@ -26,20 +26,29 @@
       <!-- <img :src="image" /> -->
     </div>
     <div id="Content">
+      <!-- <div id="DateSelectBar" class="SelectBar">
+        <img alt="bar" src="./assets/bar.png" width="100%" />
+      </div>-->
+      <DateSelectBar />
       <router-view></router-view>
+      <div id="Footer">
+        <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="10px" />
+        © 2020 copyright. all rights reserved
+      </div>
     </div>
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import 'reset-css';
+import DateSelectBar from "./components/DateSelectBar.vue";
+import "reset-css";
 
 export default {
   name: "App",
   components: {
     // HelloWorld
+    DateSelectBar
   },
   props: {
     source: String
@@ -91,6 +100,14 @@ export default {
   justify-content: center;
   /* height: 100vh; */
 }
+/* #DateSelectBar {
+  margin: 20px;
+} */
+#Footer {
+  width: "100%";
+  height: "20x";
+  background: #738489;
+}
 #Logo {
   background: #738489;
   display: flex;
@@ -130,6 +147,7 @@ export default {
 #Content {
   flex: 7;
   display: flex;
+  flex-direction: column;
 
   /* height: 100vh; */
 }

@@ -1,6 +1,10 @@
 <template>
   <div id="T1B2">
-    <div id="Top10">sasasasasasasasasasa</div>
+    <div id="Top10">
+      <!-- sasasasasasasasasasa -->
+      <LogChart msg="LogChart Plugins"/>
+      <!-- <img alt="LogBoard logo" src="../assets/Log.png" width="100%" style="  padding-right: 10%;" /> -->
+    </div>
     <div id="Buttom10">
       <div id="Buttom5R">
         asdsasasasasasasasasasa
@@ -12,13 +16,17 @@
       </div>
     </div>
   </div>
-        <!-- <div style="flex-grow:2">item 3</div> -->
+  <!-- <div style="flex-grow:2">item 3</div> -->
 </template>
 
 <script>
+import LogChart from '../components/LogChart.vue'
+
 export default {
   name: "T1B2",
-  components: {}
+  components: {
+    LogChart
+  }
 };
 </script>
 
