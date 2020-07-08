@@ -1,42 +1,75 @@
 <template>
-  <div id="App">
-    <div id="NavBar">
-      <div id="Logo">
-        <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
-      </div>
-      <div id="NavItems">
-        <!-- <div id="Item">
+  <div id="main">
+    <div id="App">
+      <div v-if="true" id="NavBar">
+        <div id="Logo">
+          <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
+        </div>
+        <div id="NavItems">
+          <!-- <div id="Item">
           <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
           <h4>DASHBOARD</h4>
         </div>
         <div id="Item">
           <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
           <h4>PHOTODIARY</h4>
-        </div>-->
-        <router-link :to="{ name: 'dashboard' }" class="Nav">
-          <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
-          <h4>DASHBOARD</h4>
-        </router-link>
-        <router-link :to="{ name: 'photodiary' }" class="Nav">
-          <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
-          <h4>PHOTODIARY</h4>
-        </router-link>
+          </div>-->
+          <router-link :to="{ name: 'camps' }" class="Nav">
+            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
+            <h4>實習營健康表</h4>
+          </router-link>
+          <router-link :to="{ name: 'dashboard' }" class="Nav">
+            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
+            <h4>DASHBOARD</h4>
+          </router-link>
+          <router-link :to="{ name: 'photodiary' }" class="Nav">
+            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
+            <h4>PHOTODIARY</h4>
+          </router-link>
+        </div>
+        <!-- <img alt="Vue logo" src="./assets/LogBoardLOGO.svg" /> -->
+        <!-- <img :src="image" /> -->
       </div>
-      <!-- <img alt="Vue logo" src="./assets/LogBoardLOGO.svg" /> -->
-      <!-- <img :src="image" /> -->
-    </div>
-    <div id="Content">
-      <!-- <div id="DateSelectBar" class="SelectBar">
+      <div id="Content">
+        <!-- <div id="DateSelectBar" class="SelectBar">
         <img alt="bar" src="./assets/bar.png" width="100%" />
-      </div>-->
-      <DateSelectBar />
-      <router-view></router-view>
-      <div id="Footer">
+        </div>-->
+        <DateSelectBar id="DateSelectBar" v-if="true" />
+        <div id="NavBarMobile">
+          <div id="LogoMobile">
+            <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="30" class="menu"  />
+            <button @click="toggle" class="menu">
+              <img alt="menu logo" src="./assets/icon/menu.svg" height="25" class="menu" />
+            </button>
+          </div>
+          <div id="NavItems" v-if="isShow">
+            <router-link :to="{ name: 'camps' }" class="Nav">
+              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
+              <h4>實習營健康表</h4>
+            </router-link>
+            <router-link :to="{ name: 'dashboard' }" class="Nav">
+              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
+              <h4>DASHBOARD</h4>
+            </router-link>
+            <router-link :to="{ name: 'photodiary' }" class="Nav">
+              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
+              <h4>PHOTODIARY</h4>
+            </router-link>
+          </div>
+          <!-- <img alt="Vue logo" src="./assets/LogBoardLOGO.svg" /> -->
+          <!-- <img :src="image" /> -->
+        </div>
+        <router-view></router-view>
+        <!-- <div id="Footer">
         <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="10px" />
         © 2020 copyright. all rights reserved
+        </div>-->
       </div>
     </div>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <div id="Footer">
+      <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="10px" />
+      © 2020 copyright. all rights reserved
+    </div>
   </div>
 </template>
 
@@ -47,7 +80,6 @@ import "reset-css";
 export default {
   name: "App",
   components: {
-    // HelloWorld
     DateSelectBar
   },
   props: {
@@ -55,14 +87,30 @@ export default {
   },
   data() {
     return {
+      isShow: false,
       drawer: true,
       image: require("./assets/LogBoardLOGO.svg")
     };
+  },
+  methods: {
+    toggle: function() {
+      this.isShow = !this.isShow;
+    }
   }
 };
 </script>
 
 <style>
+/* h1 {
+  font-size: 30px;
+}
+@media screen and (min-width: 200px) and (max-width: 300px) {
+  h1 {
+    font-size: 50px;
+    color: red;
+  }
+}*/
+
 .Nav {
   height: 50px;
   width: 100%;
@@ -76,9 +124,13 @@ export default {
   text-align: center;
   color: #fff;
 }
+#main {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 #App {
   overflow: hidden;
-
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -89,24 +141,50 @@ export default {
   display: flex;
   flex: 1;
   width: 100vw;
-  height: 100vh;
+  height: 99vh;
 }
-#NavBar {
-  /* background: #f0afff; */
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  -webkit-justify-content: center;
-  justify-content: center;
-  /* height: 100vh; */
+
+@media screen and (min-width: 567px) {
+  #NavBar {
+    /* background: #f0afff; */
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    -webkit-justify-content: center;
+    justify-content: center;
+    /* height: 100vh; */
+  }
+  #NavBarMobile {
+    display: none;
+  }
 }
+@media screen and (max-width: 567px) {
+  #NavBar {
+    display: none;
+  }
+  #DateSelectBar {
+    display: none;
+  }
+}
+
 /* #DateSelectBar {
   margin: 20px;
 } */
 #Footer {
   width: "100%";
-  height: "20x";
+  /* height: "20x"; */
+  height: "1vh";
   background: #738489;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#LogoMobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5px 0px 5px 0px;
+  background: #697b80;
 }
 #Logo {
   background: #738489;
@@ -119,6 +197,9 @@ export default {
   /* height: 100vh; */
 }
 #Icon {
+  padding: 5px;
+}
+.menu {
   padding: 5px;
 }
 #NavItems {
