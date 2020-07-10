@@ -11,7 +11,8 @@ import CAMP from '../pages/CAMP.vue';
 Vue.use(VueRouter);
 
 export default new VueRouter({
-	mode: "history",//路由模式
+	// mode: "history",//路由模式
+	mode: "hash",//路由模式
 	base: "/dashboard/",//部署的子路径
 	routes: [
 		// { path: "/", component: DASHBOARD},
