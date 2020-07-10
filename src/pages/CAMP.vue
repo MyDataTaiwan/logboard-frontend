@@ -2,6 +2,7 @@
   <div id="CAMP">
     <h1>實習營健康表</h1>
     {{uuid}}
+    <!-- <el-switch v-model="value" active-color="#13ce66" inactive-color="#ff4949"></el-switch> -->
     <div id="CAMPList">
       <!-- <HealthForm v-for="item in card" :key="item.date" v-bind:data="item" /> -->
       <HealthForm v-for="item in cardInfo" :key="item.date" v-bind:data="item" />
@@ -9,9 +10,9 @@
       <!-- <HealthForm data=card[0] /> -->
       <!-- <li v-for="item in items" :key="item.message">index: ${ index }, name: ${ item.name }</li> -->
       <!-- <HealthForm date="2020/06/27" bt="36" msg="6Welcome to Your Vue.js Home" /> -->
-      id
+      <!-- id
       {{uuid}}
-      id
+      id-->
       <!-- <HealthForm
           v-for="item in items"
           :key="item.message"
@@ -20,12 +21,12 @@
           msg="items"
       />-->
 
-      <ul id="example-3">
+      <!-- <ul id="example-3">
         <li v-for="item in card" :key="item.date">{{ item.date }}</li>
       </ul>
       <ul id="example-1">
         <li v-for="item in items" :key="item.message">{{ item.message }}</li>
-      </ul>
+      </ul> -->
     </div>
   </div>
 </template>
@@ -74,6 +75,7 @@ export default {
   },
   data() {
     return {
+      value: true,
       uuid: this.$route.params.id,
       isShow: false,
       items: [{ message: "Foo" }, { message: "Bar" }],
