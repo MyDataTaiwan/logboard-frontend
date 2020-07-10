@@ -1,5 +1,5 @@
 <template>
-  <div id="ChartView">
+  <div id="ChartView" style="width: 100%;">
     <h3>{{ msg }}</h3>
     <div id="ChartSelectBar" class="SelectBar">
       <img class="SelectBarTitle" alt="bar" src="../assets/icon/Log.svg" width="5%" />

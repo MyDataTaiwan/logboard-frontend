@@ -1,11 +1,11 @@
 <template>
-  <div id="DateSelectBar" class="SelectBar">
+  <div id="DateSelectBar">
     <!-- <img alt="bar" src="../assets/bar.png" width="100%" /> -->
     <!-- <h1>{{ msg }}</h1> -->
     <div class="SelectBarStar">
       <img class="SelectBarTitle" alt="bar" src="../assets/icon/Date.svg" width="8%" />
       <div class="DateSelectItmes">2020/05/09 ~ 2020/05/13</div>
-			<!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
+      <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <button class="DateSelectItmes">This Month</button>
       <button class="DateSelectItmes">Two Weeks</button>
       <button class="DateSelectItmes">This Week</button>
@@ -26,14 +26,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+
+.button {
+  overflow-wrap: break-word;
+}
 .SelectBarTitle {
   margin: 0px 10px 0px 30px;
 }
 .SelectBarStar {
+  overflow: hidden;
+  flex-direction: row;
+  flex-wrap: wrap;
   background: #fff;
   display: flex;
   /* flex: 1; */
-  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
 }
@@ -78,13 +84,13 @@ a {
   color: #42b983;
 }
 #DateSelectBar {
-	background: #fff;
+  background: #fff;
   margin: 20px;
   height: 8%;
   display: flex;
   /* flex: 1; */
   flex-direction: row;
   align-items: center;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 </style>

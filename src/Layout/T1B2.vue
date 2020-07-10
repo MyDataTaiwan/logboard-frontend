@@ -1,5 +1,5 @@
 <template>
-  <div id="T1B2">
+  <div id="T1B2" style="width: 100%;">
     <div id="Top10">
       <!-- sasasasasasasasasasa -->
       <LogChart msg="LogChart Plugins"/>
@@ -41,7 +41,6 @@ export default {
   flex: 1;
   overflow: scroll;
   flex-direction: column;
-  overflow: scroll;
   /* background: #ff2345; */
 }
 #Buttom5L {
