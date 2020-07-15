@@ -7,12 +7,31 @@
     </div>
     <div id="Buttom10">
       <div id="Buttom5R">
-        asdsasasasasasasasasasa
-        <h4>T1B2</h4>
+        <!-- asdsasasasasasasasasasa
+        <h4>T1B2</h4> -->
+        <!-- <Calendar msg="Calendar"/> -->
+                <CalendarSweet style="    width: 100% !important;" />
+
       </div>
       <div id="Buttom5L">
-        asdsasasasasasasasasasa
-        <h4>T1B2</h4>
+        <!-- asdsasasasasasasasasasa
+        <h4>T1B2</h4> -->
+         <template>
+    <el-table
+      :data="tableData"
+      style="width: 100%">
+
+      <el-table-column
+        prop="name"
+        label="症狀"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="時間">
+      </el-table-column>
+    </el-table>
+  </template>
       </div>
     </div>
   </div>
@@ -22,11 +41,37 @@
 <script>
 import LogChart from '../components/LogChart.vue'
 
+// import Calendar from '../components/Calendar.vue'
+import CalendarSweet from '../components/CalendarSweet.vue'
+
+
+
+
 export default {
   name: "T1B2",
   components: {
-    LogChart
-  }
+    LogChart,
+    // Calendar,
+    CalendarSweet
+  },
+  data() {
+    return {
+        tableData: [{
+            date: '2016-05-02',
+            name: '鼻塞',
+            
+          }, {
+            date: '2016-05-04',
+            name: '鼻塞',
+          }, {
+            date: '2016-05-01',
+            name: '發燒',
+          }, {
+            date: '2016-05-03',
+            name: '發燒',
+          }]
+    }
+    }
 };
 </script>
 
