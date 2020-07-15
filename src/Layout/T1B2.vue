@@ -2,36 +2,20 @@
   <div id="T1B2" style="width: 100%;">
     <div id="Top10">
       <!-- sasasasasasasasasasa -->
-      <LogChart msg="LogChart Plugins"/>
+      <LogChart msg="LogChart Plugins" />
       <!-- <img alt="LogBoard logo" src="../assets/Log.png" width="100%" style="  padding-right: 10%;" /> -->
     </div>
     <div id="Buttom10">
       <div id="Buttom5R">
         <!-- asdsasasasasasasasasasa
-        <h4>T1B2</h4> -->
+        <h4>T1B2</h4>-->
         <!-- <Calendar msg="Calendar"/> -->
-                <CalendarSweet style="    width: 100% !important;" />
-
+        <CalendarSweet style="    width: 100% !important;" />
       </div>
       <div id="Buttom5L">
         <!-- asdsasasasasasasasasasa
-        <h4>T1B2</h4> -->
-         <template>
-    <el-table
-      :data="tableData"
-      style="width: 100%">
-
-      <el-table-column
-        prop="name"
-        label="症狀"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="date"
-        label="時間">
-      </el-table-column>
-    </el-table>
-  </template>
+        <h4>T1B2</h4>-->
+        <SymptomTable  msg="SymptomTable"/>
       </div>
     </div>
   </div>
@@ -39,39 +23,23 @@
 </template>
 
 <script>
-import LogChart from '../components/LogChart.vue'
+import LogChart from "../components/LogChart.vue";
+import SymptomTable from "../components/SymptomTable.vue";
 
 // import Calendar from '../components/Calendar.vue'
-import CalendarSweet from '../components/CalendarSweet.vue'
-
-
-
+import CalendarSweet from "../components/CalendarSweet.vue";
 
 export default {
   name: "T1B2",
   components: {
     LogChart,
-    // Calendar,
+    SymptomTable,
     CalendarSweet
   },
   data() {
     return {
-        tableData: [{
-            date: '2016-05-02',
-            name: '鼻塞',
-            
-          }, {
-            date: '2016-05-04',
-            name: '鼻塞',
-          }, {
-            date: '2016-05-01',
-            name: '發燒',
-          }, {
-            date: '2016-05-03',
-            name: '發燒',
-          }]
-    }
-    }
+    };
+  }
 };
 </script>
 
