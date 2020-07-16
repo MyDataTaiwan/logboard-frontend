@@ -143,11 +143,12 @@ export default {
     display: none;
   }
   #DateSelectBar {
-    display: none;
+    /* display: none; */
   }
 }
 @media screen and (max-width: 800px) {
   #DateSelectBar {
+        display: none;
   }
 }
 #Footer {
