@@ -16,12 +16,13 @@
           clearable="true"
           @change="handleChange"
           :default-time="['12:00:00']"
+          format="yyyy 年 MM 月 dd 日"
           value-format="timestamp"
         ></el-date-picker>
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnList">
-        <button @click="updateMessage" class="SelectItmes">This Month</button>
+        <button @click="toggle" class="SelectItmes">This Month</button>
         <button @click="toggle" class="SelectItmes">Two Weeks</button>
         <button @click="toggle" class="SelectItmes">This Week</button>
         <button @click="toggle" class="SelectItmes">Today</button>
@@ -66,20 +67,16 @@ export default {
     };
   },
   methods: {
-    updateMessage() {
-      this.$store.commit("updateMessage", {
-        message: "99999999"
-      });
-    },
+    // updateMessage() {
+    //   this.$store.commit("updateMessage", {
+    //     message: "99999999"
+    //   });
+    // },
     toggle() {
       alert("alert");
       this.$store.commit("increment");
       console.log(this.$store.state.count); // -> 1
       var elmnt = document.getElementById("EndItmes");
-      // var txt = "Border top width: " + elmnt.clientTop + "px<br>";
-      // txt += "Border left width: " + elmnt.clientLeft + "px";
-      // document.getElementById("EndItmes").innerHTML = txt;
-      // document.getElementById("p2").style.color = "blue";
       document.getElementById("Select").style.top =
         elmnt.clientTop + elmnt.height;
       document.getElementById("Select").style.Left = elmnt.clientLeft;
@@ -87,22 +84,25 @@ export default {
     handleChange() {
       console.log(this.dateValue); // -> 1
       this.$store.commit("setSelectDate", this.dateValue);
-      let start =
-        new Date(this.dateValue[0]).getFullYear() +
-        "-" +
-        new Date(this.dateValue[0]).getMonth() +
-        "-" +
-        new Date(this.dateValue[0]).getDate();
-      let end =
-        new Date(this.dateValue[1]).getFullYear() +
-        "-" +
-        new Date(this.dateValue[1]).getMonth() +
-        "-" +
-        new Date(this.dateValue[1]).getDate();
-      this.$store.commit("updateDateformat", [start,end]);
-      console.log("$store", this.$store.state.selectDate); // -> 1
-      console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
-      console.log("$end", new Date(this.$store.state.selectDateformat[1])); // -> 1
+      let start = this.dateValue[0];
+      // new Date(this.dateValue[0]).getFullYear() +
+      // "-" +
+      // new Date(this.dateValue[0]).getMonth() +
+      // "-" +
+      // new Date(this.dateValue[0]).getDate();
+      let end = this.dateValue[1];
+      // new Date(this.dateValue[1]).getFullYear() +
+      // "-" +
+      // new Date(this.dateValue[1]).getMonth() +
+      // "-" +
+      // new Date(this.dateValue[1]).getDate();
+      this.$store.commit("updateDateformat", [start, end]);
+      // console.log("$store", this.$store.state.selectDate); // -> 1
+      // console.log("$store", this.$store.state.selectDate); // -> 1
+      console.log("$store", this.$store.state.selectDateformat[0]); // -> 1
+      console.log("$store", this.$store.state.selectDateformat[1]); // -> 1
+      // console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
+      // console.log("$end", new Date(this.$store.state.selectDateformat[1])); // -> 1
     }
   }
 };
