@@ -172,14 +172,14 @@ a {
   justify-content: center;
   text-align: center;
   height: 32px;
-
+  width: 10vw !important;
   /* width: 10%; */
   border: 3px solid #5c6f75;
   box-sizing: border-box;
   border-radius: 20px;
   font: 1em sans-serif;
-  padding: 10px 15px 10px 25px;
-  margin: 0px 5px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
 }
 #DateSelectBar {
   background: #fff;
@@ -193,7 +193,8 @@ a {
   justify-content: space-between;
 }
 
-@media screen and (max-width: 567px) {
+/* @media screen and (max-width: 567px) { */
+@media screen and (max-width: 707px) {
   #DateSelectBar {
     /* display: none; */
     background: #fff;
@@ -234,6 +235,7 @@ a {
   }
   #EndItmes {
     /* display: none; */
+
   }
   .DateSelectItmes {
     background: #fff;
