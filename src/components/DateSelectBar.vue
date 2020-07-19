@@ -26,11 +26,12 @@
         <button @click="toggle" class="SelectItmes">Two Weeks</button>
         <button @click="toggle" class="SelectItmes">This Week</button>
         <button @click="toggle" class="SelectItmes">Today</button>
+        <div style="flex: 1;"/>
+        <el-select id="EndItmes" v-model="value" placeholder="其他">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        </el-select>
       </div>
     </div>
-    <el-select id="EndItmes" v-model="value" placeholder="其他症狀包選擇">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-    </el-select>
   </div>
 </template>
 
@@ -110,6 +111,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+  #btnList {
+    display: flex;
+    flex: 1;
+  }
 .button {
   overflow-wrap: break-word;
 }
@@ -127,6 +132,7 @@ export default {
   justify-content: flex-start;
 }
 .SelectItmes {
+  white-space: nowrap;
   background: #fff;
   align-items: center;
   justify-content: center;
@@ -172,7 +178,7 @@ a {
   justify-content: center;
   text-align: center;
   height: 32px;
-  width: 10vw !important;
+  /* width: 10vw !important; */
   /* width: 10%; */
   border: 3px solid #5c6f75;
   box-sizing: border-box;
@@ -184,7 +190,7 @@ a {
 #DateSelectBar {
   background: #fff;
   margin: 20px;
-  padding-right: 15px;
+  padding: 0 15px;
   height: 8%;
   display: flex;
   /* flex: 1; */
@@ -235,14 +241,13 @@ a {
   }
   #EndItmes {
     /* display: none; */
-
   }
   .DateSelectItmes {
     background: #fff;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100% !important;
+    /* width: 100% !important; */
     border: 3px solid #5c6f75;
     box-sizing: border-box;
     border-radius: 20px;
