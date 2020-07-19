@@ -1,0 +1,88 @@
+{
+        "count": 1,
+        "next": null,
+        "previous": null,
+        "results": [
+            {
+                "id": 2,
+                "template_name": "commonCold",
+                "timestamp": "2018-04-22T06:52:20Z",
+                "proof": {
+                    "location": {
+                        "latitude": 23.5125,
+                        "longitude": 123.3115
+                    },
+                    "timestamp": 1524379940321
+                },
+                "fields": [
+                    {
+                        "icon": "thermometer-outline",
+                        "name": "bodyTemperature",
+                        "type": "number",
+                        "value": "37",
+                        "dataClass": "highest",
+                        "dataGroup": "vitalSigns",
+                        "valueUnit": "°C",
+                        "isKeyField": true,
+                        "valueRange": {
+                            "max": 41,
+                            "min": 34
+                        },
+                        "defaultValue": null
+                    },
+                    {
+                        "icon": "medkit-outline",
+                        "name": "coughing",
+                        "type": "boolean",
+                        "value": true,
+                        "dataClass": "booleanPreview",
+                        "dataGroup": "symptoms",
+                        "isKeyField": false,
+                        "defaultValue": false
+                    },
+                    {
+                        "icon": "medkit-outline",
+                        "name": "runnyNose",
+                        "type": "boolean",
+                        "value": false,
+                        "dataClass": "booleanPreview",
+                        "dataGroup": "symptoms",
+                        "isKeyField": false,
+                        "defaultValue": false
+                    },
+                    {
+                        "icon": "medkit-outline",
+                        "name": "nasalCongestion",
+                        "type": "boolean",
+                        "value": true,
+                        "dataClass": "booleanPreview",
+                        "dataGroup": "symptoms",
+                        "isKeyField": false,
+                        "defaultValue": false
+                    },
+                    {
+                        "icon": "medkit-outline",
+                        "name": "sneezing",
+                        "type": "boolean",
+                        "value": false,
+                        "dataClass": "booleanPreview",
+                        "dataGroup": "symptoms",
+                        "isKeyField": false,
+                        "defaultValue": false
+                    },
+                    {
+                        "icon": "pencil-outline",
+                        "name": "note",
+                        "type": "string",
+                        "value": "This is a note",
+                        "dataClass": "note",
+                        "dataGroup": "note",
+                        "isKeyField": false,
+                        "defaultValue": null
+                    }
+                ],
+                "photo": "https://logboard-dev.s3.amazonaws.com/photo.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=%2FpMn9crrGdssEQLoJOl1dtOuJ58%3D&Expires=1594892313",
+                "owner": "4e6dd27a-aed3-408a-9648-527716c5e492"
+            }
+        ]
+    }
