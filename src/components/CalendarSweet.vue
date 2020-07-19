@@ -84,15 +84,6 @@ export default {
           backgroundColor: "#FC9500"
         }
       ],
-      // events_BK: [
-      //   {
-      //     title: "Event Symptoms",
-      //     start: "2020-7-19",
-      //     end: "2020-7-24",
-      //     repeat: "never",
-      //     categoryId: 3
-      //   },
-      // ]
     };
   },
   methods: {
