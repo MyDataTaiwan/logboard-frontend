@@ -6,7 +6,10 @@ name: buildAndDeploy
 # events but only for the master branch
 on:
   push:
-    branches: [ develop ]
+    branches: 
+      # Push events on  branch
+      - master
+      - develop
   pull_request:
     branches: [ develop ]
 
