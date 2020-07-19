@@ -129,6 +129,7 @@ export default {
     /* background: #f0afff; */
     display: flex;
     flex: 1;
+    width: 15%;
     flex-direction: column;
     -webkit-justify-content: center;
     justify-content: center;
@@ -138,7 +139,9 @@ export default {
     display: none;
   }
 }
-@media screen and (max-width: 567px) {
+/* @media screen and (max-width: 567px) { */
+@media screen and (max-width: 707px) {
+
   #NavBar {
     display: none;
   }

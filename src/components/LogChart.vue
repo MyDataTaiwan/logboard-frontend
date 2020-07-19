@@ -1,16 +1,16 @@
 <template>
   <div id="ChartView" style="width: 100%;">
-    <h3>{{ msg }}</h3>
+    <!-- <h3>{{ msg }}</h3> -->
     <div id="ChartSelectBar" class="SelectBar">
       <img class="SelectBarTitle" alt="bar" src="../assets/icon/Log.svg" width="5%" />
       <div class="SelectItmes">
-        <h3>口體溫</h3>
+        口體溫
       </div>
       <div class="SelectItmes">
-        <h3>口體溫</h3>
+        口體溫
       </div>
       <div class="SelectItmes">
-        <h3>口體溫</h3>
+        口體溫
       </div>
     </div>
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
