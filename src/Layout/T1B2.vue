@@ -1,31 +1,33 @@
 <template>
   <div id="T1B2" style="width: 100%;">
     <div id="Top10">
-      <!-- sasasasasasasasasasa -->
-      <LogChart msg="LogChart Plugins"/>
-      <!-- <img alt="LogBoard logo" src="../assets/Log.png" width="100%" style="  padding-right: 10%;" /> -->
+      <LogChart msg="LogChart Plugins" />
     </div>
     <div id="Buttom10">
       <div id="Buttom5R">
-        asdsasasasasasasasasasa
-        <h4>T1B2</h4>
+        <CalendarSweet style="    width: 100% !important;" />
       </div>
       <div id="Buttom5L">
-        asdsasasasasasasasasasa
-        <h4>T1B2</h4>
+        <SymptomTable msg="SymptomTable" />
       </div>
     </div>
   </div>
-  <!-- <div style="flex-grow:2">item 3</div> -->
 </template>
 
 <script>
-import LogChart from '../components/LogChart.vue'
+import LogChart from "../components/LogChart.vue";
+import SymptomTable from "../components/SymptomTable.vue";
+import CalendarSweet from "../components/CalendarSweet.vue";
 
 export default {
   name: "T1B2",
   components: {
-    LogChart
+    LogChart,
+    SymptomTable,
+    CalendarSweet
+  },
+  data() {
+    return {};
   }
 };
 </script>

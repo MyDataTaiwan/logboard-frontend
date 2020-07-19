@@ -11,10 +11,12 @@ import CAMP from '../pages/CAMP.vue';
 Vue.use(VueRouter);
 
 export default new VueRouter({
-	mode: 'history',
+	// mode: "history",//路由模式
+	mode: "hash",//路由模式
+	base: "/dashboard/",//部署的子路径
 	routes: [
 		// { path: "/", component: DASHBOARD},
-		{ path: "/dashboard", name: 'dashboard', component: T1B2 },
+		{ path: "/logboard", name: 'dashboard', component: T1B2 },
 		{ path: "/photodiary", name: 'photodiary', component: R2L1 },
 		{ path: "/a", component: PHOTODIARY },
 		{
