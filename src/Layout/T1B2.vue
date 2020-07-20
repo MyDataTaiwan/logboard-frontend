@@ -41,6 +41,7 @@ export default {
   }
   #Buttom5R {
     height: 350px;
+    max-width: 500px;
     margin-right: 0px !important;
     margin-top: 10px;
 
@@ -69,6 +70,13 @@ export default {
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 800px) {
+ 
+#Buttom5L {
+   min-width: 80vw!important;
+}
+
+}
 #Buttom5R {
   height: 350px;
   background: #fff;
@@ -79,8 +87,10 @@ export default {
   -webkit-align-items: center;
   -webkit-justify-content: center;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
+  
 }
+
 #Top10 {
   background: #fff;
   margin: 0px 20px 10px 20px;
