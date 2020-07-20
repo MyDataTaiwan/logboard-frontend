@@ -42,6 +42,7 @@
               <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
               <h4>PHOTODIARY</h4>
             </router-link>
+            <DateSelectBar id="DateSelectBarMobile" v-if="true" />
           </div>
         </div>
         <router-view></router-view>
@@ -69,7 +70,7 @@ export default {
   data() {
     return {
       isShow: false,
-      drawer: true,
+      drawer: true
     };
   },
   methods: {
@@ -90,7 +91,10 @@ export default {
     color: red;
   }
 }*/
-
+#main .el-date-editor--daterange.el-input__inner {
+  width: 100%;
+}
+/* temp Style */
 .Nav {
   height: 50px;
   width: 100%;
@@ -124,6 +128,21 @@ export default {
   height: 97vh;
 }
 
+@media screen and (max-width: 800px) {
+  #DateSelectBar {
+    display: none;
+  }
+}
+
+/* @media screen and (max-width: 567px) { */
+@media screen and (max-width: 707px) {
+  #NavBar {
+    display: none;
+  }
+  #DateSelectBar {
+    /* display: none; */
+  }
+}
 @media screen and (min-width: 567px) {
   #NavBar {
     /* background: #f0afff; */
@@ -137,21 +156,6 @@ export default {
   }
   #NavBarMobile {
     display: none;
-  }
-}
-/* @media screen and (max-width: 567px) { */
-@media screen and (max-width: 707px) {
-
-  #NavBar {
-    display: none;
-  }
-  #DateSelectBar {
-    /* display: none; */
-  }
-}
-@media screen and (max-width: 800px) {
-  #DateSelectBar {
-        display: none;
   }
 }
 #Footer {

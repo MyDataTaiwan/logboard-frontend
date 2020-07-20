@@ -33,6 +33,19 @@ export default {
 </script>
 
 <style>
+@media screen and (max-width: 567px) {
+  #Buttom5L {
+    height: 350px;
+    margin-left: 0px !important;
+    margin-top: 10px;
+  }
+  #Buttom5R {
+    height: 350px;
+    margin-right: 0px !important;
+    margin-top: 10px;
+
+  }
+}
 #T1B2 {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
