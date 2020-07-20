@@ -91,6 +91,7 @@ export default {
     color: red;
   }
 }*/
+
 #main .el-date-editor--daterange.el-input__inner {
   width: 100%;
 }
@@ -114,6 +115,8 @@ export default {
   overflow: hidden;
 }
 #App {
+  font-family: "Montserrat", sans-serif;
+
   overflow: hidden;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -239,6 +242,46 @@ html,
 body {
   margin: 0;
   padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  /* Extra large */
+}
+h2 {
+  font-size: 18px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  /* large */
+}
+h3 {
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  /* font-weight: 900; */
+  font-weight: bold;
+   word-wrap:break-word;
+   white-space:nowrap;
+   
+  flex-wrap: nowrap !important;
+  /* Medium */
+}
+h4 {
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  /* Base */
+}
+h5 {
+  font-size: 13px;
+  font-family: "Montserrat", sans-serif;
+  /* Small */
+}
+h6 {
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+  /* Extra Small */
 }
 </style>
 

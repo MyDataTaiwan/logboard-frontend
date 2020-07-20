@@ -21,7 +21,6 @@
         <div slot="reference">
           <h6>{{ scope.row.name }}</h6>
           <h3>{{ scope.row.name }}</h3>
-          <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
       </template>
     </el-table-column>
@@ -35,11 +34,7 @@
           </div>
         </el-popover>
       </template>
-    </el-table-column>-->
-    <!-- <li >
-      index: ${ index }, name: ${ item.name }
-    </li>-->
-
+    </el-table-column> -->
     <el-table-column prop="value0" label="2016-05-01">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
@@ -52,10 +47,6 @@
         </el-popover>
       </template>
     </el-table-column>
-    <!-- <el-table-column v-for="( prop, label) in list" :key="prop" :prop="prop" :label="label"></el-table-column> -->
-
-    <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>
-
     <el-table-column prop="value1" label="2016-05-01"></el-table-column>
     <el-table-column prop="value2" label="2016-05-01"></el-table-column>
     <el-table-column prop="value3" label="2016-05-01"></el-table-column>
@@ -79,86 +70,8 @@ export default {
   props: {
     msg: String
   },
-  watch: {
-    storageDataCache: function() {
-      console.log("storageDataCache change");
-    }
-  },
-  computed: {
-    ...mapState(["loading", "DB", "message"]),
-    formTitle() {
-      return this.editedIndex === -1 ? "新增訊息" : "編輯訊息";
-    },
-    storageDataCache() {
-      // console.log(this.storageDataCache()[0].content_parsed);
-      // return this.$store.state.storageData;
-      let fromVuexData = this.$store.state.storageData;
-      let processingData = [];
-      let bodyTemperatureArray = [];
-      let dateArray = [];
-      // let weekSymptoms=[];
-      fromVuexData.map(index => {
-				dateArray.push(index.timestamp);
-				let weekSymptoms=[];
-				let processingFields=index.fields
-				console.log("fields"+processingFields.length)
-        processingFields.map(symptoms => {
-          // let oneDaySymptoms = [];
-          if (symptoms.name == "bodyTemperature") {
-						console.log("bodyTemperature")
-            bodyTemperatureArray.push(symptoms);
-					}
-					//  else {
-          //   oneDaySymptoms.push(symptoms);
-					// }
-					// weekSymptoms.push(oneDaySymptoms);
-          // return oneDaySymptoms;
-        });
-        processingData.push(weekSymptoms);
-      });
-
-      console.log(dateArray);
-      console.log(dateArray.length + "天");
-      console.log(bodyTemperatureArray);
-      console.log(bodyTemperatureArray.length + "筆體溫");
-      console.log(processingData);
-      return processingData;
-    }
-  },
-  created() {
-    this.$store.dispatch("fetchApi", {
-      name: "records/?uid=",
-      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
-    });
-  },
-  methods: {
-    //     increment() {
-    //       this.$store.dispatch("incrementAsync");
-    //     },
-    //     decrement() {
-    //       this.$store.commit("decrement");
-    //     },
-    //     testAction() {
-    //       this.$store.dispatch("actionA").then(() => {});
-    //     },
-    ...mapActions(["fetchApi"], {
-      name: "records/?uid=",
-      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
-    })
-    //     showMessage() {
-    //       this.alertMessage = true;z
-    //       setTimeout(() => {
-    //         this.alertMessage = false;
-    //       }, 3000);
-    //     }
-  },
   data() {
     return {
-      colConfigs: [
-        { prop: "value", label: "2022-05-01" },
-        { prop: "value0", label: "2022-05-02" },
-        { prop: "value1", label: "2022-05-03" }
-      ],
       tableData: [
         {
           id: 0,
@@ -313,6 +226,39 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapState(["loading", "DB", "message"]),
+    formTitle() {
+      return this.editedIndex === -1 ? "新增訊息" : "編輯訊息";
+    }
+  },
+  created() {
+    this.$store.dispatch("fetchApi", {
+      name: "records/?uid=",
+      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
+    });
+  },
+  methods: {
+    //     increment() {
+    //       this.$store.dispatch("incrementAsync");
+    //     },
+    //     decrement() {
+    //       this.$store.commit("decrement");
+    //     },
+    //     testAction() {
+    //       this.$store.dispatch("actionA").then(() => {});
+    //     },
+    ...mapActions(["fetchApi"], {
+      name: "records/?uid=",
+      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
+    })
+    //     showMessage() {
+    //       this.alertMessage = true;z
+    //       setTimeout(() => {
+    //         this.alertMessage = false;
+    //       }, 3000);
+    //     }
   }
 };
 </script>

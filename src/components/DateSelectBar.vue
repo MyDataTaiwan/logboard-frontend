@@ -26,9 +26,14 @@
         <button @click="toggle" class="SelectItmes">Two Weeks</button>
         <button @click="toggle" class="SelectItmes">This Week</button>
         <button @click="toggle" class="SelectItmes">Today</button>
-        <div style="flex: 1;"/>
+        <div style="flex: 1;" />
         <el-select id="EndItmes" v-model="value" placeholder="其他">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
         </el-select>
       </div>
     </div>
@@ -41,29 +46,69 @@ export default {
   props: {
     msg: String
   },
+  watch: {
+    selectTemplateList: function() {
+      console.log("selectTemplateList change");
+    }
+  },
+  computed: {
+    selectTemplateList() {
+      return this.$store.state.templateList;
+    },
+    options() {
+      let optionsList = [];
+      this.selectTemplateList.map(index => {
+        if (index == "烤鴨") {
+          optionsList.push({
+            value: "烤鴨",
+            label: "烤鴨三吃"
+          });
+        } else if (index == "commonCold") {
+          optionsList.push({
+            value: "commonCold",
+            label: "COVID-19"
+          });
+        } else if (index == "heartFailure") {
+          optionsList.push({
+            value: "heartFailure",
+            label: "心衰竭"
+          });
+        }
+        else {
+           optionsList.push({
+            value: index,
+            label: index
+          });
+        }
+        //烤鴨,commonCold,heartFailure
+      });
+      return optionsList;
+    }
+  },
+
   data() {
     return {
       // value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       dateValue: [],
       value2: "",
-      options: [
-        {
-          value: "選項1",
-          label: "COVID-19"
-        },
-        {
-          value: "選項2",
-          label: "心衰竭"
-        },
-        {
-          value: "選項3",
-          label: "糖尿病"
-        },
-        {
-          value: "選項4",
-          label: "烤鸭"
-        }
-      ],
+      // options: [
+      //   {
+      //     value: "選項1",
+      //     label: "COVID-19"
+      //   },
+      //   {
+      //     value: "選項2",
+      //     label: "心衰竭"
+      //   },
+      //   {
+      //     value: "選項3",
+      //     label: "糖尿病"
+      //   },
+      //   {
+      //     value: "選項4",
+      //     label: "烤鸭"
+      //   }
+      // ],
       value: ""
     };
   },
@@ -111,10 +156,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-  #btnList {
-    display: flex;
-    flex: 1;
-  }
+#btnList {
+  display: flex;
+  flex: 1;
+}
 .button {
   overflow-wrap: break-word;
 }
