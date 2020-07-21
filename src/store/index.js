@@ -12,6 +12,7 @@ const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 export default new Vuex.Store({
 	state: {
 		// 初始化狀態
+		uid:"4b539876-d395-4e01-b987-8ae8ea754b0e",
 		message: "",
 		DB: {},
 		userList: [],
@@ -38,6 +39,9 @@ export default new Vuex.Store({
 	mutations: {
 		increment(state) {
 			state.count++
+		},
+		updateUserId(state, payload) {
+			state.uid = payload;
 		},
 		updateSelectTemplate(state, payload) {
 			state.selectTemplate = payload;
@@ -195,7 +199,7 @@ export default new Vuex.Store({
 		}, payload) {
 			console.log("fetchApi_start")
 			// commit('setLoading', true);
-			return axios.get(`${$http}${payload.name}${payload.uid}`).then(response => {
+			return axios.get(`${$http}${payload.name}${this.state.uid}`).then(response => {
 				console.log("fetchApi_get")
 				console.log(response)
 				console.log(response.data.length)

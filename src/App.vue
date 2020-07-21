@@ -51,6 +51,7 @@
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
       © 2020 copyright. all rights reserved
+      {{storageUserId}}
     </div>
   </div>
 </template>
@@ -67,8 +68,20 @@ export default {
   props: {
     source: String
   },
+  watch: {
+    storageUserId: function() {
+      console.log("storageUserId change",this.storageUserId);
+    }
+  },
+  computed: {
+    storageUserId() {
+        this.$store.commit("updateUserId",this.$route.params.id)
+      return this.$route.params.id;
+    }
+  },
   data() {
     return {
+      uid: this.computed,
       isShow: false,
       drawer: true
     };

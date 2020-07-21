@@ -108,7 +108,7 @@ export default {
     selectTemplate() {
       this.$store.dispatch("fetchApi", {
         name: "records/?uid=",
-        uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
+        // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       });
       return this.$store.state.selectTemplate;
     },
@@ -232,7 +232,8 @@ export default {
   created() {
     this.$store.dispatch("fetchApi", {
       name: "records/?uid=",
-      uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
+      // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
+      // uid: this.uid
     });
   },
   methods: {
@@ -262,7 +263,8 @@ export default {
     //     },
     ...mapActions(["fetchApi"], {
       name: "records/?uid=",
-      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
+      // uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
+      // uid: this.uid
     })
     //     showMessage() {
     //       this.alertMessage = true;z
@@ -273,6 +275,7 @@ export default {
   },
   data() {
     return {
+      // uid: this.$route.params.id,
       // times: [
       //   { "2020-07-16T19:02:36Z": "truetrue" },
       //   { "2020-07-19T19:02:36Z": "truetrue" }
