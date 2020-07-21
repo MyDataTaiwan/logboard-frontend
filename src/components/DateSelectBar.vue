@@ -27,7 +27,7 @@
         <button @click="toggle" class="SelectItmes">This Week</button>
         <button @click="toggle" class="SelectItmes">Today</button>
         <div style="flex: 1;" />
-        <el-select id="EndItmes" v-model="value" placeholder="其他">
+        <el-select id="EndItmes" v-model="selectValue" :placeholder="options[0].label">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -49,7 +49,14 @@ export default {
   watch: {
     selectTemplateList: function() {
       console.log("selectTemplateList change");
-    }
+    },
+    selectValue: function() {
+      this.$store.commit("updateSelectTemplate",this.selectValue)
+      console.log("selectValue change"+this.selectValue);
+    },
+     options: function() {
+      console.log("options change");
+    },
   },
   computed: {
     selectTemplateList() {
@@ -58,20 +65,21 @@ export default {
     options() {
       let optionsList = [];
       this.selectTemplateList.map(index => {
-        if (index == "烤鴨") {
-          optionsList.push({
-            value: "烤鴨",
-            label: "烤鴨三吃"
+        if (index == "heartFailure") {
+            optionsList.push({
+            value: "heartFailure",
+            label: "心衰竭"
           });
         } else if (index == "commonCold") {
           optionsList.push({
             value: "commonCold",
             label: "COVID-19"
           });
-        } else if (index == "heartFailure") {
-          optionsList.push({
-            value: "heartFailure",
-            label: "心衰竭"
+        } 
+        else if (index == "烤鴨") {
+           optionsList.push({
+            value: "烤鴨",
+            label: "烤鴨三吃"
           });
         }
         else {
@@ -109,7 +117,7 @@ export default {
       //     label: "烤鸭"
       //   }
       // ],
-      value: ""
+      selectValue: ""
     };
   },
   methods: {

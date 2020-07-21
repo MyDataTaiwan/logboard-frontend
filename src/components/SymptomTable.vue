@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" border height="100%" style="width: 50vw">
+  <el-table :data="TargetTableSet" border height="100%" style="width: 50vw">
     <!-- <el-table-column fixed="true" prop="name" width="40" label="症狀"></el-table-column> -->
     <!-- <el-table-column fixed label="姓名" >
         <template slot-scope="scope">
@@ -25,22 +25,26 @@
         </div>
       </template>
     </el-table-column>
-    <!-- <el-table-column label="症狀">
+    <!-- <el-table-column prop="value0" label="2016-05-01">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <p>症狀: {{ scope.row.name }}</p>
           <p>時間: {{ scope.row.timestamp }}</p>
           <div slot="reference" class="name-wrapper">
-            <el-tag size="mini">{{ scope.row.name }}</el-tag>
+            <el-tag size="mini">{{1}}</el-tag>
+            <el-tag size="mini">{{2}}</el-tag>
           </div>
         </el-popover>
       </template>
     </el-table-column>-->
-    <!-- <li >
-      index: ${ index }, name: ${ item.name }
-    </li>-->
+    <!-- <el-table-column v-for="( prop, label) in list" :key="prop" :prop="prop" :label="label"></el-table-column> -->
 
-    <el-table-column prop="value0" label="2016-05-01">
+    <el-table-column
+      v-for="{ prop, label } in TargetDateToTableTitle"
+      :key="prop"
+      :prop="prop"
+      :label="label"
+    >
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <p>症狀: {{ scope.row.name }}</p>
@@ -52,11 +56,11 @@
         </el-popover>
       </template>
     </el-table-column>
-    <!-- <el-table-column v-for="( prop, label) in list" :key="prop" :prop="prop" :label="label"></el-table-column> -->
+    <!-- <el-table-column prop="times[0].2020-07-16T19:02:36Z" label="A2020-07-16T19:02:36Z"></el-table-column>
+    <el-table-column prop="times[1].2020-07-19T19:02:36Z" label="A2020-07-19T19:02:36Z"></el-table-column>
+    <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>-->
 
-    <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>
-
-    <el-table-column prop="value1" label="2016-05-01"></el-table-column>
+    <!-- <el-table-column prop="value1" label="2016-05-01"></el-table-column>
     <el-table-column prop="value2" label="2016-05-01"></el-table-column>
     <el-table-column prop="value3" label="2016-05-01"></el-table-column>
     <el-table-column prop="value4" label="2016-05-01"></el-table-column>
@@ -67,7 +71,7 @@
     <el-table-column prop="value3" label="2016-05-01"></el-table-column>
     <el-table-column prop="value4" label="2016-05-01"></el-table-column>
     <el-table-column prop="value5" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value6" label="2016-05-01"></el-table-column>
+    <el-table-column prop="value6" label="2016-05-01"></el-table-column>-->
   </el-table>
 </template>
 
@@ -82,6 +86,18 @@ export default {
   watch: {
     storageDataCache: function() {
       console.log("storageDataCache change");
+    },
+    selectTemplate: function() {
+      console.log("selectTemplate change");
+    },
+    storageTargetDate: function() {
+      console.log("storageTargetDate change");
+    },
+    TargetDateToTableTitle: function() {
+      console.log("TargetDateToTableTitle change");
+    },
+    TargetTableSet: function() {
+      console.log("TargetTableSet change");
     }
   },
   computed: {
@@ -89,49 +105,152 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "新增訊息" : "編輯訊息";
     },
-    storageDataCache() {
-      // console.log(this.storageDataCache()[0].content_parsed);
-      // return this.$store.state.storageData;
-      let fromVuexData = this.$store.state.storageData;
-      let processingData = [];
-      let bodyTemperatureArray = [];
-      let dateArray = [];
-      // let weekSymptoms=[];
-      fromVuexData.map(index => {
-				dateArray.push(index.timestamp);
-				let weekSymptoms=[];
-				let processingFields=index.fields
-				console.log("fields"+processingFields.length)
-        processingFields.map(symptoms => {
-          // let oneDaySymptoms = [];
-          if (symptoms.name == "bodyTemperature") {
-						console.log("bodyTemperature")
-            bodyTemperatureArray.push(symptoms);
-					}
-					//  else {
-          //   oneDaySymptoms.push(symptoms);
-					// }
-					// weekSymptoms.push(oneDaySymptoms);
-          // return oneDaySymptoms;
-        });
-        processingData.push(weekSymptoms);
+    selectTemplate() {
+      this.$store.dispatch("fetchApi", {
+        name: "records/?uid=",
+        uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       });
+      return this.$store.state.selectTemplate;
+    },
+    storageTargetDate() {
+      return this.$store.state.storageTargetDate;
+    },
+    TargetDateToTableTitle() {
+      return this.$store.state.TableTitle;
+    },
+    TargetTableSet() {
+      return this.$store.state.selectTemplateTargetSet;
+    },
+    storageDataCache() {
+      let processingData = [];
 
-      console.log(dateArray);
-      console.log(dateArray.length + "天");
-      console.log(bodyTemperatureArray);
-      console.log(bodyTemperatureArray.length + "筆體溫");
-      console.log(processingData);
+      /* console.log(this.storageDataCache()[0].content_parsed);
+      // return this.$store.state.storageData;
+      // let fromVuexData = this.$store.state.storageData;
+      // let bodyTemperatureArray = [];
+      // let dateArray = [];
+      // let timesObject = {
+      //   times: [
+      //     ///is exmp
+      //     // { "2020-07-16T19:02:36Z": "truetrue" },
+      //     // { "2020-07-19T19:02:36Z": "truetrue" }
+      //   ]
+      // };
+      // let tempDataRef = [];
+      // let tempDataArry = [];
+      // let reBuildDataArry = [];
+      // let weekSymptoms=[];
+      // fromVuexData.map(index => {
+      //   dateArray.push(index.timestamp);
+      //   let weekSymptoms = [];
+      //   // let tempDataRef = [];
+      //   // let tempDataArry = [];
+      //   let processingFields = index.fields;
+      //   console.log("fields" + processingFields);
+      //   processingFields.map(symptoms => {
+      //     // let oneDaySymptoms = [];
+      //     if (symptoms.name == "bodyTemperature") {
+      //       console.log("bodyTemperature");
+      //       bodyTemperatureArray.push(symptoms);
+      //     }
+      //   });
+      //   //選擇症狀包，取得資料
+      //   if (index.template_name == this.selectTemplate) {
+      //     weekSymptoms.push(processingFields);
+      //     let tempObj = {
+      //       [index.timestamp]: "true"
+      //     };
+      //     timesObject.times.push(tempObj);
+
+      //     //ＴＯＤＯ 測試用必須刪除				//ＴＯＤＯ 測試用必須刪除
+      //     weekSymptoms.push(processingFields);
+      //     //ＴＯＤＯ 測試用必須刪除				//ＴＯＤＯ 測試用必須刪除
+      //     console.log("以收集" + this.selectTemplate + "症狀資料");
+      //     console.log("timesObject");
+      //     console.log(timesObject);
+      //   }
+      //   console.log(this.selectTemplate + "症狀資料" + weekSymptoms);
+      //   console.log(weekSymptoms);
+      //   // /////ＤＯＴＯ 重組資料以符合table格式
+      //   // //以ㄧ組資料為主重建，剩下的重置為{"時間戳記":T/F}
+      //   // tempDataRef = weekSymptoms[0];
+      //   // console.log("tempDataRef" + tempDataRef.length);
+      //   // console.log(tempDataRef);
+      //   // if (tempDataRef != []) {
+      //   //   // let timesObject = {
+      //   //   //   ///is fake
+      //   //   //   times: [
+      //   //   //     { "2020-07-16T19:02:36Z": "truetrue" },
+      //   //   //     { "2020-07-19T19:02:36Z": "truetrue" }
+      //   //   //   ]
+      //   //   // };
+      //   //   tempDataArry = tempDataRef.map(index => {
+      //   //     let copy = Object.assign(index, timesObject);
+      //   //     console.log(copy); // { a: 1 }
+      //   //   });
+      //   //   console.log(tempDataArry);
+      //   //   console.log("tempDataArry" + tempDataArry.length);
+      //   // }
+      //   processingData.push(weekSymptoms);
+      // 	/////ＤＯＴＯ 重組資料以符合table格式
+      // 	console.log("ＤＯＴＯ 重組資料以符合table格式A");
+
+      // });
+      // console.log("ＤＯＴＯ 重組資料以符合table格式B");
+      // if (processingData[0] != null) {
+      //   /////ＤＯＴＯ 重組資料以符合table格式
+      //   //以ㄧ組資料為主重建，剩下的重置為 timesObject[{"時間戳記":T/F}]
+      //   tempDataRef = processingData[0];
+      //   console.log("tempDataRef" + tempDataRef.length);
+      //   console.log(tempDataRef);
+      //   if (tempDataRef != []) {
+      //     // let timesObject = {
+      //     //   ///is fake
+      //     //   times: [
+      //     //     { "2020-07-16T19:02:36Z": "truetrue" },
+      //     //     { "2020-07-19T19:02:36Z": "truetrue" }
+      //     //   ]
+      //     // };
+      //     tempDataArry = tempDataRef.map(index => {
+      //       let copy = Object.assign(index, timesObject);
+      //       console.log(copy); // { a: 1 }
+      //     });
+      //     console.log(tempDataArry);
+      //     console.log("tempDataArry" + tempDataArry.length);
+      //   }
+      // }
+
+      // console.log(dateArray);
+      // console.log(dateArray.length + "天");
+      // console.log(bodyTemperatureArray);
+      // console.log(bodyTemperatureArray.length + "筆體溫");
+			// console.log(processingData);
+			*/
       return processingData;
     }
   },
   created() {
     this.$store.dispatch("fetchApi", {
       name: "records/?uid=",
-      uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
+      uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
     });
   },
   methods: {
+    DateToTableTitle(date) {
+      let TableTitle = [];
+      console.log("TableTitleA", date);
+      if (date != null) {
+        date.map(index => {
+          // console.log(Object.keys(index));
+          TableTitle.push({
+            prop: Object.keys(index),
+            label: Object.keys(index)
+          });
+        });
+      }
+      console.log("TableTitle", Object.keys(TableTitle));
+      return TableTitle;
+    },
     //     increment() {
     //       this.$store.dispatch("incrementAsync");
     //     },
@@ -154,10 +273,113 @@ export default {
   },
   data() {
     return {
+      // times: [
+      //   { "2020-07-16T19:02:36Z": "truetrue" },
+      //   { "2020-07-19T19:02:36Z": "truetrue" }
+      // ]
+      colTitleConfigs: this.TargetDateToTableTitle,
+
       colConfigs: [
-        { prop: "value", label: "2022-05-01" },
-        { prop: "value0", label: "2022-05-02" },
-        { prop: "value1", label: "2022-05-03" }
+        { prop: "value", label: "B2022-05-01" },
+        { prop: "value0", label: "B2022-05-02" },
+        { prop: "value1", label: "B2022-05-03" }
+      ],
+      SymptomTableData: [
+        {
+          icon: "pulse-outline",
+          name: "SBP",
+          type: "number",
+          value: 200,
+          dataClass: "",
+          dataGroup: "vitalSigns",
+          valueUnit: "mmHg",
+          isKeyField: false,
+          valueRange: {
+            max: 200,
+            min: 60
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        },
+        {
+          icon: "pulse-outline",
+          name: "DBP",
+          type: "number",
+          value: 110,
+          dataClass: "",
+          dataGroup: "vitalSigns",
+          valueUnit: "mmHg",
+          isKeyField: false,
+          valueRange: {
+            max: 110,
+            min: 10
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        },
+        {
+          icon: "heart-outline",
+          name: "heartbeat",
+          type: "number",
+          value: 152,
+          dataClass: "",
+          dataGroup: "vitalSigns",
+          valueUnit: "bpm",
+          isKeyField: false,
+          valueRange: {
+            max: 300,
+            min: 30
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        },
+        {
+          icon: "medkit-outline",
+          name: "bloodSugar",
+          type: "number",
+          value: null,
+          dataClass: "",
+          dataGroup: "vitalSigns",
+          valueUnit: "mg/dL",
+          isKeyField: false,
+          valueRange: {
+            max: 1000,
+            min: 0
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        },
+        {
+          icon: "body-outline",
+          name: "weight",
+          type: "number",
+          value: 37,
+          dataClass: "",
+          dataGroup: "vitalSigns",
+          valueUnit: "kg",
+          isKeyField: false,
+          valueRange: {
+            max: 300,
+            min: 1
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        }
       ],
       tableData: [
         {
@@ -172,7 +394,11 @@ export default {
           value3: "true",
           value4: "true",
           value5: "true",
-          value6: "true"
+          value6: "true",
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
         },
         {
           id: 1,
@@ -186,7 +412,11 @@ export default {
           value3: "true",
           value4: "true",
           value5: "true",
-          value6: "true"
+          value6: "true",
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
         },
         {
           id: 0,
@@ -200,7 +430,11 @@ export default {
           value3: "true",
           value4: "true",
           value5: "true",
-          value6: "true"
+          value6: "true",
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
         },
         {
           id: 2,
@@ -336,3 +570,88 @@ export default {
     "Lucida Sans", Arial, sans-serif;
 }
 </style>
+0: {…}
+1: {…}
+2: {…}
+3: {…}
+4: {…}
+5: {…}
+6: {…}
+
+0: {times:[timestamp_0: "2020-07-16T19:02:36Z",timestamp_1: "2020-07-16T19:02:36Z",],…}
+1: {times:[],…}
+2: {times:[],…}
+3: {times:[],…}
+4: {times:[],…}
+5: {times:[],…}
+6: {times:[],…}
+
+
+{
+	id: 0,
+	timestamp: "2020-07-16T19:02:36Z",
+	fields: this.fields,
+	name: "sneezing",
+	value: "true",
+	value0: "true",
+	value1: "true",
+	value2: "true",
+	value3: "true",
+	value4: "true",
+	value5: "true",
+	value6: "true",
+times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+
+},
+
+
+{
+	id: 0,
+	timestamp: "2020-07-16T19:02:36Z",
+	fields: this.fields,
+	name: "sneezing",
+	value: "true",
+	value0: "true",
+	value1: "true",
+	value2: "true",
+	value3: "true",
+	value4: "true",
+	value5: "true",
+	value6: "true"
+},
+  let aa = {
+          icon: "thermometer-outline",
+          name: "bodyTemperature",
+          type: "number",
+          value: 37.5,
+          dataClass: "highest",
+          dataGroup: "vitalSigns",
+          valueUnit: "°C",
+          isKeyField: true,
+          valueRange: {
+            max: 41,
+            min: 34
+          },
+          defaultValue: null,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        };
+        let bb = {
+          icon: "medkit-outline",
+          name: "coughing",
+          type: "boolean",
+          value: true,
+          dataClass: "booleanPreview",
+          dataGroup: "symptoms",
+          isKeyField: false,
+          defaultValue: false,
+          times: [
+            { "2020-07-16T19:02:36Z": "truetrue" },
+            { "2020-07-19T19:02:36Z": "truetrue" }
+          ]
+        };
