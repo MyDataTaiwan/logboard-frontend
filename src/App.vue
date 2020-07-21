@@ -6,10 +6,6 @@
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
         <div id="NavItems">
-          <router-link :to="{ name: 'camps' }" class="Nav">
-            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-            <h4>實習營健康表</h4>
-          </router-link>
           <router-link :to="{ name: 'dashboard' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
             <h4>DASHBOARD</h4>
@@ -17,6 +13,10 @@
           <router-link :to="{ name: 'photodiary' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
             <h4>PHOTODIARY</h4>
+          </router-link>
+          <router-link :to="{ name: 'camps' }" class="Nav">
+            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
+            <h4>實習營健康表</h4>
           </router-link>
         </div>
       </div>
@@ -262,9 +262,9 @@ h3 {
   font-family: "Montserrat", sans-serif;
   /* font-weight: 900; */
   font-weight: bold;
-   word-wrap:break-word;
-   white-space:nowrap;
-   
+  word-wrap: break-word;
+  white-space: nowrap;
+
   flex-wrap: nowrap !important;
   /* Medium */
 }

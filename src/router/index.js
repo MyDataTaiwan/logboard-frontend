@@ -11,23 +11,22 @@ Vue.use(VueRouter);
 export default new VueRouter({
 	mode: "history",//路由模式
 	// mode: "hash",//路由模式
-	base: "/dashboard/",//部署的子路径
+	// base: "/dashboard/",//部署的子路径
+	base: "/logboard-frontend/",//部署的子路径
 	routes: [
 		// { path: "/", component: DASHBOARD},
-		{ path: "/camps/:id/", name: 'camps', component: CAMP },
 		// { path: "/logboard", name: 'dashboard', component: T1B2 },
-		{ path: "/photodiary/:id/", name: 'photodiary', component: R2L1 },
 		{
-			// path: "/",
 			path: "/:id/",
 			name: 'dashboard',
 			component: T1B2,
 			meta: {
 				title: 'MYdata-LogBoard',
 				allowAnonymous: true
-
 			}
 		},
+		{ path: "/photodiary/:id/", name: 'photodiary', component: R2L1 },
+		{ path: "/camps/:id/", name: 'camps', component: CAMP },
 	]
 });
 
