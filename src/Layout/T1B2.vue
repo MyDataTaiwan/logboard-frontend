@@ -5,9 +5,15 @@
     </div>
     <div id="Buttom10">
       <div id="Buttom5R">
+        <div class="LogBar">
+          <img class="Logo" alt="bar" src="../assets/icon/Calendar.svg" />
+        </div>
         <CalendarSweet style="    width: 100% !important;" />
       </div>
       <div id="Buttom5L">
+        <div class="LogBar">
+          <img class="Logo" alt="bar" src="../assets/icon/Symptom.svg" />
+        </div>
         <SymptomTable msg="SymptomTable" />
       </div>
     </div>
@@ -44,7 +50,6 @@ export default {
     max-width: 500px;
     margin-right: 0px !important;
     margin-top: 10px;
-
   }
 }
 #T1B2 {
@@ -65,32 +70,42 @@ export default {
   margin-left: 10px;
   display: flex;
   flex: 1;
+  flex-direction: column;
   -webkit-align-items: center;
   -webkit-justify-content: center;
   align-items: center;
   justify-content: center;
 }
 @media screen and (max-width: 800px) {
- 
-#Buttom5L {
-   min-width: 80vw!important;
-}
-
+  #Buttom5L {
+    min-width: 80vw !important;
+  }
 }
 #Buttom5R {
   height: 350px;
   background: #fff;
   margin-right: 10px;
+  flex-direction: column;
 
   display: flex;
   flex: 1;
   -webkit-align-items: center;
-  -webkit-justify-content: center;
+  /* -webkit-justify-content: center; */
   align-items: center;
-  justify-content: center; 
-  
+  /* justify-content: center; */
 }
-
+.LogBar {
+  /* height: 30px; */
+  padding: 15px  0px  10px 15px;
+  display: flex;
+  flex-direction: row;
+  /* align-items: center;
+  justify-content: start; */
+  width: 100%;
+}
+.Logo {
+  height: "30px";
+}
 #Top10 {
   background: #fff;
   margin: 0px 20px 10px 20px;
