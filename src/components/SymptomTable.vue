@@ -46,12 +46,24 @@
       :label="label"
     >
       <template slot-scope="scope">
+        <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
+        <!-- <h6>{{ scope.column }}</h6>
+        <h6>{{ scope.row }}</h6>-->
+        <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>症狀: {{ scope.row.name }}</p>
-          <p>時間: {{ scope.row.timestamp }}</p>
+          <p>時間: {{scope.column.property}}</p>
           <div slot="reference" class="name-wrapper">
-            <el-tag size="mini">{{1}}</el-tag>
-            <el-tag size="mini">{{2}}</el-tag>
+            <!-- <el-tag size="mini">{{1}}</el-tag>
+            <el-tag size="mini">{{2}}</el-tag>-->
+
+            <template v-if="scope.row[scope.column.property]!=null">
+              <el-tag  effect="dark"  size="mini"><h3>{{ scope.row[scope.column.property] }}</h3></el-tag>
+            </template>
+            <template v-if="scope.row[scope.column.property]==null">
+              <!-- <el-tag size="mini">吳振狀</el-tag> -->
+						<el-tag size="mini">NAN</el-tag>
+            </template>
           </div>
         </el-popover>
       </template>
@@ -97,7 +109,7 @@ export default {
       console.log("TargetDateToTableTitle change");
     },
     TargetTableSet: function() {
-      console.log("TargetTableSet change");
+      console.log("TargetTableSet change", this.TargetTableSet[0]);
     }
   },
   computed: {
@@ -107,7 +119,7 @@ export default {
     },
     selectTemplate() {
       this.$store.dispatch("fetchApi", {
-        name: "records/?uid=",
+        name: "records/?uid="
         // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       });
       return this.$store.state.selectTemplate;
@@ -119,7 +131,7 @@ export default {
       return this.$store.state.TableTitle;
     },
     TargetTableSet() {
-      return this.$store.state.selectTemplateTargetSet;
+      return this.$store.state.zipSymptoms;
     },
     storageDataCache() {
       let processingData = [];
@@ -231,7 +243,7 @@ export default {
   },
   created() {
     this.$store.dispatch("fetchApi", {
-      name: "records/?uid=",
+      name: "records/?uid="
       // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       // uid: this.uid
     });
@@ -262,7 +274,7 @@ export default {
     //       this.$store.dispatch("actionA").then(() => {});
     //     },
     ...mapActions(["fetchApi"], {
-      name: "records/?uid=",
+      name: "records/?uid="
       // uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
       // uid: this.uid
     })

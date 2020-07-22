@@ -12,7 +12,7 @@ const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 export default new Vuex.Store({
 	state: {
 		// 初始化狀態
-		uid:"4b539876-d395-4e01-b987-8ae8ea754b0e",
+		uid: "4b539876-d395-4e01-b987-8ae8ea754b0e",
 		message: "",
 		DB: {},
 		userList: [],
@@ -28,7 +28,72 @@ export default new Vuex.Store({
 		storageTargetData: null,
 		storageTargetDate: null,
 		selectTemplateTargetSet: null,
-		TableTitle:[],
+		zipSymptoms: null,
+		TableTitle: [],
+		// TableTitle: [{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"}],
+		// TableTitle: [{label:'2020-07-89T08:42:09Z',prop:"2020-07-89T08:42:09Z"},{label:'2020-07-19T08:42:09Z',prop:"1"},{label:'2020-07-20T08:42:09Z',prop:"2"},{label:'2020-07-21T08:42:09Z',prop:"3"}],
+		// selectTemplateTargetSet: [
+		// 	{
+		// 		"icon": "medkit-outline",
+		// 		name: "coughing",
+		// 		"type": "boolean",
+		// 		"value": true,
+		// 		"dataClass": "booleanPreview",
+		// 		"dataGroup": "symptoms",
+		// 		"isKeyField": false,
+		// 		"defaultValue": false,
+		// 		'2020-07-89T08:42:09Z':"日期誒",
+		// 		0:"哈哈",
+		// 		1:"KK",
+		// 		2:"BB",
+		// 		3:"CC"
+		// },
+		// {
+		// 		"icon": "medkit-outline",
+		// 		name: "runnyNose",
+		// 		"type": "boolean",
+		// 		"value": true,
+		// 		"dataClass": "booleanPreview",
+		// 		"dataGroup": "symptoms",
+		// 		"isKeyField": false,
+		// 		"defaultValue": false,
+		// 		'2020-07-89T08:42:09Z':"日期誒",
+		// 		0:"哈哈",
+		// 		1:"KK",
+		// 		2:"BB",
+		// 		3:"CC"
+		// },
+		// {
+		// 		"icon": "medkit-outline",
+		// 		name: "nasalCongestion",
+		// 		"type": "boolean",
+		// 		"value": false,
+		// 		"dataClass": "booleanPreview",
+		// 		"dataGroup": "symptoms",
+		// 		"isKeyField": false,
+		// 		"defaultValue": false,
+		// 		'2020-07-89T08:42:09Z':"日期誒",
+		// 		0:"哈哈",
+		// 		1:"KK",
+		// 		2:"BB",
+		// 		3:"CC"
+		// },
+		// {
+		// 		"icon": "medkit-outline",
+		// 		name: "sneezing",
+		// 		"type": "boolean",
+		// 		"value": false,
+		// 		"dataClass": "booleanPreview",
+		// 		"dataGroup": "symptoms",
+		// 		"isKeyField": false,
+		// 		"defaultValue": false,
+		// 		'2020-07-89T08:42:09Z':"日期誒",
+		// 		0:"哈哈",
+		// 		1:"KK",
+		// 		2:"BB",
+		// 		3:"CC"
+		// },
+		// ],
 		// templateList: ["烤鴨"],
 		templateList: ["heartFailure"],
 		selectTemplate: 'heartFailure'
@@ -39,6 +104,11 @@ export default new Vuex.Store({
 	mutations: {
 		increment(state) {
 			state.count++
+		},
+		saveZipSymptoms(state, payload) {
+			state.zipSymptoms = payload;
+			console.log("saveZipSymptoms ", state.zipSymptoms);
+
 		},
 		updateUserId(state, payload) {
 			state.uid = payload;
@@ -79,9 +149,28 @@ export default new Vuex.Store({
 			console.log(state.storageTargetData);
 
 		},
-		//暫存MyLog API資料 處理後的日期列表
+		//暫存MyLog API資料 處理後的日期列表 TODO
 		saveSelectTemplateDate(state, payload) {
-			state.storageTargetDate = payload;
+			console.log("處理前", payload);
+			let TableTitle = [];
+			if (payload.times != null) {
+				payload.times.map(index => {
+					console.log("TableTitle payload", Object.keys(index));
+					let str = Object.keys(index);
+					console.log("處理中", str);
+					// console.log(Object.keys(index));
+					//ＴＯＤＯ  壓縮資料為日期，有無//
+					TableTitle.push({
+						[str[0]]: "我在這ㄦ",
+					});
+				});
+			}
+			// let timesObject = []
+
+			console.log("處理後", TableTitle);
+			state.storageTargetDate = TableTitle;
+
+			// state.storageTargetDate = payload;
 			console.log(state.storageTargetDate);
 			console.log("開始處理資料 saveSelectTemplateDate");
 		},
@@ -89,21 +178,43 @@ export default new Vuex.Store({
 		TargetDateToTableTitle(state, payload) {
 			console.log("開始處理資料 TargetDateToTableTitle");
 			let TableTitle = [];
-      console.log("TableTitleA",this.storageTargetDate );
-      if (payload.times != null) {
-        payload.times.map(index => {
-					console.log("TableTitle payload",Object.keys(index) );
-					let str =  Object.keys(index);
-          // console.log(Object.keys(index));
-          TableTitle.push({
-            prop: str[0],
-            label:str[0],
-          });
-        });
-      }
-      // console.log("TableTitle", Object.keys(TableTitle));
-			state.TableTitle = TableTitle;
-			console.log("TableTitle Store",state.TableTitle);
+			if (payload.times != null) {
+				payload.times.map(index => {
+					console.log("TableTitle payload", Object.keys(index));
+					let str = Object.keys(index);
+					// console.log(Object.keys(index));
+					TableTitle.push({
+						prop: str[0],
+						label: str[0],
+					});
+				});
+			}
+			// let  SWPTableTitle=[]
+			// // console.log("TableTitle", Object.keys(TableTitle));
+			// TableTitle.map(index=>{
+
+			// 	SWPTableTitle.push({
+			// 		// prop:	"scope.row.times["+index.id+"]"+index.prop,
+			// 		prop:	"icon",
+			// 		label: index.label
+			// 	});
+			// });
+			// state.TableTitle = SWPTableTitle
+
+			state.TableTitle = TableTitle
+
+			console.log("TableTitle Store", state.TableTitle);
+		},
+		//暫存MyLog API資料 以症狀索引加入處理後的日期列表為新的2d陣列
+		saveSelectData(state, payload) {
+			console.log("開始處理資料 saveSelectTemplateDataProcessing");
+			console.log("處理新的2d陣列satrt");
+			console.log(payload);
+			if (payload != null) {
+				// console.log("處理新的2d陣列satrt 1", state.storageTargetDate);
+				console.log("處理新的2d陣列satrt 1 zipSymptoms", state.zipSymptoms);
+				console.log("處理新的2d陣列satrt 1 payload", payload);
+			}
 		},
 		//暫存MyLog API資料 以症狀索引加入處理後的日期列表為新的2d陣列
 		saveSelectTemplateDataProcessing(state, payload) {
@@ -111,15 +222,16 @@ export default new Vuex.Store({
 			console.log("處理新的2d陣列satrt");
 			console.log(payload);
 			if (payload != null) {
-				console.log("處理新的2d陣列satrt 1", state.storageTargetDate);
+				// console.log("處理新的2d陣列satrt 1", state.storageTargetDate);
+				// console.log("處理新的2d陣列satrt 1 zipSymptoms", state.zipSymptoms);
+				console.log("處理新的2d陣列satrt 1 payload", payload);
 
 				if (state.storageTargetDate != null) {
-					console.log("處理新的2d陣列satrt 2", payload[0]);
 					/////ＤＯＴＯ 重組資料以符合table格式
 					//以ㄧ組資料為主重建，剩下的重置為 timesObject[{"時間戳記":T/F}]
 					let getOneDay = payload[0];
 					let tempDataRef = getOneDay[0];
-					console.log("處理新的2d陣列satrt 2-1", tempDataRef);
+					// let timesObject = state.storageTargetDate
 					let timesObject = state.storageTargetDate
 					let tempDataArry = [];
 					// let timesObject = {
@@ -130,19 +242,25 @@ export default new Vuex.Store({
 					//   ]
 					// };
 					console.log("tempDataRef" + tempDataRef.length);
-					console.log(tempDataRef);
+					console.log("單日資料", tempDataRef);
 					if (tempDataRef != []) {
 						console.log("處理新的2d陣列satrt 3");
 						tempDataRef.map(index => {
 							console.log("處理新的2d陣列satrt 4");
-							let copy = Object.assign(index, timesObject);
-							console.log("copy", copy); // { a: 1 }
+							let copy = null;
+							timesObject.map(timesItem => {
+								copy = Object.assign(index, timesItem)
+							})
+							// let copy = Object.assign(index, timesObject);
+							// console.log("copy", copy, timesObject); // { a: 1 }
 							tempDataArry.push(copy);
 						});
-						console.log("tempDataArry", tempDataArry);
+						console.log("單日處理過加上日期資料", tempDataArry);
+						console.log("單日處理過加上日期資料Ａ", tempDataArry[0]['2020-07-19T08:42:09Z']);
+
 						console.log("tempDataArry" + tempDataArry.length);
 					}
-					console.log("處理資料end");
+					console.log("處理資料end tempDataArry", tempDataArry);
 					this.state.selectTemplateTargetSet = tempDataArry;
 
 				}
@@ -245,6 +363,61 @@ export default new Vuex.Store({
 					let weekSymptoms = [];
 
 					if (successDataArray[0] != null) {
+						//選擇症狀包，取得資料
+						let getDataSet = [];
+						successDataArray.map(index => {
+							console.log("fields" + index.fields[0].name);
+							//選擇症狀包，取得資料
+							if (index.template_name == this.state.selectTemplate) {
+								getDataSet.push(index)
+							} else {
+								console.log("我是" + index.template_name + "不是>" + this.state.selectTemplate);
+							}
+							console.log(this.state.selectTemplate + "症狀資料" + getDataSet);
+							console.log("getDataSet", getDataSet)
+						});
+						if (getDataSet[0] != null) {
+							/////壓縮日期至症狀////
+							let zipSymptoms = []
+							getDataSet.map(Symptoms => {
+								let time = Symptoms.timestamp;
+								let TandS = [];
+								Symptoms.fields.map(index => {
+									// TandS.push({[index.name]:"time"})
+									TandS.push({ [time]: index.value, name: index.name })
+								})
+								console.log("zipOneSymptoms" + TandS)
+								zipSymptoms.push(TandS)
+							})
+							console.log("zipSymptoms", zipSymptoms)
+							let SWPset = zipSymptoms[0]
+							console.log("input zipSymptoms", SWPset)
+							for (let row = 0; row < SWPset.length; row++) {
+								for (let column = 0; column < zipSymptoms.length; column++) {
+									let NEXTitme = zipSymptoms[column][row]
+									SWPset[row] = Object.assign(SWPset[row], NEXTitme)
+									console.log(SWPset[row])
+								}
+							}
+							console.log("output zipSymptoms ", SWPset)
+							commit('saveZipSymptoms', SWPset);
+						}
+						// [[ {"2020-07-19T08:42:09Z": 200, name: "SBP"},
+						// {"2020-07-19T08:42:09Z": 110, name: "DBP"},
+						// {"2020-07-19T08:42:09Z": 152, name: "heartbeat"},
+						// {"2020-07-19T08:42:09Z": null, name: "bloodSugar"},
+						// {"2020-07-19T08:42:09Z": 37, name: "weight"},
+						// {"2020-07-19T08:42:09Z": 610, name: "urineVolume"},
+						// {"2020-07-19T08:42:09Z": null, name: "note"},
+						// {"2020-07-19T08:42:09Z": null, name: "photo"}],[ {"2020-07-19T08:42:09Z": 200, name: "SBP"},
+						// {"2020-07-19T08:42:09Z": 110, name: "DBP"},
+						// {"2020-07-19T08:42:09Z": 152, name: "heartbeat"},
+						// {"2020-07-19T08:42:09Z": null, name: "bloodSugar"},
+						// {"2020-07-19T08:42:09Z": 37, name: "weight"},
+						// {"2020-07-19T08:42:09Z": 610, name: "urineVolume"},
+						// {"2020-07-19T08:42:09Z": null, name: "note"},
+						// {"2020-07-19T08:42:09Z": null, name: "photo"}]]
+
 						successDataArray.map(index => {
 							console.log("fields" + index.fields[0].name);
 							// processingFields.map(symptoms => {
@@ -270,8 +443,8 @@ export default new Vuex.Store({
 								console.log("以收集" + this.state.selectTemplate + "症狀資料");
 								console.log("timesObject");
 								console.log(timesObject);
-							}else{
-								console.log("我是"+index.template_name+"不是>"+this.state.selectTemplate);
+							} else {
+								console.log("我是" + index.template_name + "不是>" + this.state.selectTemplate);
 							}
 							console.log(this.state.selectTemplate + "症狀資料" + weekSymptoms);
 							console.log(weekSymptoms);
@@ -285,13 +458,12 @@ export default new Vuex.Store({
 					}
 
 					console.log("processingData", processingData);
+					console.log("successDataArray", successDataArray);
 
 					console.log(processingData);
 					commit('saveSelectTemplateDate', timesObject);
 					commit('TargetDateToTableTitle', timesObject);
-
 					commit('saveDB', successDataArray);
-
 					commit('saveSelectTemplateData', processingData);
 					commit('saveSelectTemplateDataProcessing', processingData);
 					// return NewDataArray
