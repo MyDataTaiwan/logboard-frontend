@@ -58,11 +58,19 @@
             <el-tag size="mini">{{2}}</el-tag>-->
 
             <template v-if="scope.row[scope.column.property]!=null">
-              <el-tag  effect="dark"  size="mini"><h3>{{ scope.row[scope.column.property] }}</h3></el-tag>
+              <template v-if="scope.row[scope.column.property]!=false">
+                <el-tag effect="dark" size="mini">
+                  <h3>{{ scope.row[scope.column.property] }}</h3>
+                </el-tag>
+              </template>
+              <template v-if="scope.row[scope.column.property]==false">
+                <el-tag size="mini">吳振狀</el-tag>
+                <!-- <el-tag size="mini">NAN</el-tag> -->
+              </template>
             </template>
             <template v-if="scope.row[scope.column.property]==null">
-              <!-- <el-tag size="mini">吳振狀</el-tag> -->
-						<el-tag size="mini">NAN</el-tag>
+              <el-tag size="mini">吳振狀</el-tag>
+              <!-- <el-tag size="mini">NAN</el-tag> -->
             </template>
           </div>
         </el-popover>
