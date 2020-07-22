@@ -14,7 +14,7 @@
         <div class="LogBar">
           <img class="Logo" alt="bar" src="../assets/icon/Symptom.svg" />
         </div>
-        <SymptomTable msg="SymptomTable" />
+        <SymptomTable style="width: 100%;" msg="SymptomTable" />
       </div>
     </div>
   </div>
