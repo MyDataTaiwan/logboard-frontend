@@ -16,7 +16,6 @@ export default new Vuex.Store({
 
 		// uid: "8d83c9c8-72c6-43b7-8476-6b189a4e786f",
 		uid: null,
-		SummaryData: null,
 		storeData: null,
 		message: "",
 		DB: {},
@@ -166,7 +165,7 @@ export default new Vuex.Store({
 			commit,
 		}, payload) {
 			console.log("fetchDaysApi_start")
-					//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
 			return axios.get(`${$http}records/past-days/?uid=${this.state.uid}&template=${this.state.selectTemplate}&range=${payload.range}`).then(response => {
 				console.log("fetchDaysApi_get")
 				console.log(response)
@@ -193,6 +192,41 @@ export default new Vuex.Store({
 					}
 				}
 				console.log("fetchDaysApi_end")
+			})
+		},
+		fetchToDaysApi({
+			commit,
+		}) {
+			console.log("fetchTODaysApi_start")
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
+			return axios.get(`${$http}records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
+				console.log("fetchTODaysApi_get")
+				console.log(response)
+				console.log(response.data.timestamp)
+				if (response.status === 200) {
+					console.log("fetchTODaysApi_200")
+					console.log("success ", response.data.id_list)
+					// let FormatTableTitle = [];
+					// let FormatTableData = null;
+					let FormatChartLabels = null;
+					let FormatChartDatasets = null;
+					// for (let id = 0; id < response.data.timestamp.length; id++) {
+					// 	FormatTableTitle.push({ prop: id, label: response.data.timestamp[id] })
+					// }
+
+					// FormatTableData = response.data.symptoms;
+					FormatChartLabels = response.data.timestamp;
+					FormatChartDatasets = response.data.vital_signs;
+					console.log("fetch TODaysApi_Labels", FormatChartLabels)
+
+					// commit('saveFormatTableTitle', FormatTableTitle);
+					// commit('saveFormatTableData', FormatTableData);
+					commit('saveFormatChartLabels', FormatChartLabels);
+					commit('saveFormatChartDatasets', FormatChartDatasets);
+					return commit('saveDB', response.data);
+
+				}
+				console.log("fetchTODaysApi_end")
 			})
 		},
 		//新增 api

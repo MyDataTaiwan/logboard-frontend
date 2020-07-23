@@ -22,10 +22,12 @@
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnList">
-        <button @click="GetAPI('this-month')" class="SelectItmes">This Month</button>
-        <button @click="GetAPI('two-weeks')" class="SelectItmes">Two Weeks</button>
-        <button @click="GetAPI('this-week')" class="SelectItmes">This Week</button>
-        <button @click="toggle" class="SelectItmes">Today</button>
+        <div id="btnSubList">
+          <button @click="GetAPI('this-month')" class="SelectItmes">This Month</button>
+          <button @click="GetAPI('two-weeks')" class="SelectItmes">Two Weeks</button>
+          <button @click="GetAPI('this-week')" class="SelectItmes">This Week</button>
+          <button @click="GetAPI('today')" class="SelectItmes">Today</button>
+        </div>
         <div style="flex: 1;" />
         <el-select id="EndItmes" v-model="selectValue" :placeholder="options[0].label">
           <el-option
@@ -52,7 +54,7 @@ export default {
     // },
     selectValue: function() {
       this.$store.commit("updateSelectTemplate", this.selectValue);
-    this.GetAPI('this-week');
+      this.GetAPI("this-week");
       console.log("selectValue change" + this.selectValue);
     },
     options: function() {
@@ -60,7 +62,7 @@ export default {
     }
   },
   created() {
-    this.GetAPI('this-week');
+    this.GetAPI("this-week");
   },
   computed: {
     // selectTemplateList() {
@@ -136,15 +138,18 @@ export default {
     };
   },
   methods: {
-    GetAPI(mode,start_date,end_date) {
+    GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
       if (mode == "Summary") {
         this.$store.dispatch("fetchSummaryApi", {
           // start_date: "2020-07-15",
           // end_date: "2020-07-24"
-            start_date: start_date,
+          start_date: start_date,
           end_date: end_date
         });
+      } else if (mode == "today") {
+        // this.toggle() 
+        this.$store.dispatch("fetchToDaysApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
           // range: "this-week"
@@ -158,7 +163,7 @@ export default {
     //   });
     // },
     toggle() {
-      alert("alert");
+      alert("警告，前有BUG");
       this.$store.commit("increment");
       console.log(this.$store.state.count); // -> 1
       var elmnt = document.getElementById("EndItmes");
@@ -189,7 +194,11 @@ export default {
       //   start_date: new Date(start).toISOString().substring(0, 10),
       //   end_date: new Date(end).toISOString().substring(0, 10)
       // });
-      this.GetAPI("Summary",new Date(start).toISOString().substring(0, 10),new Date(end).toISOString().substring(0, 10)) 
+      this.GetAPI(
+        "Summary",
+        new Date(start).toISOString().substring(0, 10),
+        new Date(end).toISOString().substring(0, 10)
+      );
       console.log(
         "dateselectDateformat",
         new Date(start).toISOString().substring(0, 10),
@@ -209,6 +218,16 @@ export default {
 <style >
 #btnList {
   display: flex;
+  /* align-items: center;
+  justify-content: flex-start; */
+
+  flex: 1;
+}
+#btnSubList {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
   flex: 1;
 }
 .button {
@@ -252,6 +271,10 @@ export default {
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 0px 15px 0px 15px;
+  /*FIXME */
+  margin: 0px 5px 16px 5px;  /*FIXME */
+  /*FIXME */
+
   /* margin: 0px 5px 0px 5px; */
 }
 h3 {
