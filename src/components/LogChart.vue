@@ -10,11 +10,21 @@
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
     :height="200"style="  padding-right: 10%;" />-->
     <div id="Chart">
-      <line-chart
+      <el-popover placement="top" width="400" trigger="click">
+        <el-table>
+          <el-table-column width="150" label="日期"></el-table-column>
+          <el-table-column width="100" label="姓名"></el-table-column>
+          <el-table-column width="300" label="地址"></el-table-column>
+        </el-table>
+        <!-- <el-button>click 激活</el-button> -->
+
+        <!-- <line-chart
         :chart-data="datacollection"
         :options="{responsive: true, maintainAspectRatio: false}"
-      ></line-chart>
-      <button @click="fillData()">Randomize</button>
+        ></line-chart>-->
+        <line-chart slot="reference" :chart-data="datacollection" :options="options"></line-chart>
+      </el-popover>
+      <!-- <button @click="fillData()">Randomize</button> -->
     </div>
   </div>
 </template>
@@ -52,21 +62,161 @@ export default {
   },
   data() {
     return {
-      colors:["#FF0000","#FFBA07","#FAFF12","#A4FB17","#177EF8","#1400FF","#CF15ED","#FF03B8","#f87979","#117979","#f1F979",],
+      labels: ["January", "February"],
+
+      colors: [
+        "#FF0000",
+        "#FFBA07",
+        "#FAFF12",
+        "#A4FB17",
+        "#177EF8",
+        "#1400FF",
+        "#CF15ED",
+        "#FF03B8",
+        "#f87979",
+        "#117979",
+        "#f1F979"
+      ],
+      message: "PhotoDiary",
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        // responsive: true,
+        // maintainAspectRatio: false,
+        // tooltips: {
+        //   callbacks: {
+        //     label: function(tooltipItem) {
+        //       return "$" + Number(tooltipItem.yLabel) + " and so worth it !";
+        //     }
+        //   }
+        // },
+
+        // tooltips: {
+        //   // キャンバスのツールチップを無効化します
+        //   enabled: true,
+        //   custom: function(tooltipModel) {
+        //     // ツールチップ要素
+        //     // var tooltipEl = document.getElementById("chartjs-tooltip");
+        //     var tooltipEl = document.getElementById("chartjs-tooltip");
+        //     // 最初の表示時に要素を生成。
+        //     if (!tooltipEl) {
+        //       tooltipEl = document.createElement("div");
+        //       tooltipEl.id = "chartjs-tooltip";
+        //       tooltipEl.innerHTML = "<table></table>";
+        //       this._chart.canvas.parentNode.appendChild(tooltipEl);
+        //     }
+        //     // ツールチップが無ければ非表示。
+        //     if (tooltipModel.opacity === 0) {
+        //       tooltipEl.style.opacity = 0;
+        //       return;
+        //     }
+        //     // キャレット位置をセット。
+        //     tooltipEl.classList.remove("above", "below", "no-transform");
+        //     if (tooltipModel.yAlign) {
+        //       tooltipEl.classList.add(tooltipModel.yAlign);
+        //     } else {
+        //       tooltipEl.classList.add("no-transform");
+        //     }
+        //     function getBody(bodyItem) {
+        //       return bodyItem.lines;
+        //     }
+        //     // テキストをセット。
+        //     if (tooltipModel.body) {
+        //       var titleLines = tooltipModel.title || [];
+        //       var bodyLines = tooltipModel.body.map(getBody);
+
+        //       var innerHtml = "<thead>";
+
+        //       titleLines.forEach(function(title) {
+        //         innerHtml +=
+        //           "<tr><th>" +
+        //           title +
+        //           `<img class="fit-picture"
+        //           src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+        //           alt="Grapefruit slice atop a pile of other slices">` +
+        //           "</th></tr>";
+        //       });
+        //       innerHtml += "</thead><tbody>";
+
+        //       bodyLines.forEach(function(body, i) {
+        //         var colors = tooltipModel.labelColors[i];
+        //         var style = "background:" + colors.backgroundColor;
+        //         style += "; border-color:" + colors.borderColor;
+        //         style += "; border-width: 2px";
+        //         var span =
+        //           '<span class="chartjs-tooltip-key" style="' +
+        //           style +
+        //           '"></span>';
+        //         innerHtml += "<tr><td>" + span + body + "</td></tr>";
+        //       });
+        //       innerHtml += "</tbody>";
+        //       var tableRoot = tooltipEl.querySelector("table");
+        //       tableRoot.innerHTML = innerHtml;
+        //     }
+        //     // `this`はツールチップ全体です。
+        //     var positionY = this._chart.canvas.offsetTop;
+        //     var positionX = this._chart.canvas.offsetLeft;
+
+        //     // 表示、位置、フォントスタイル指定します。
+        //     tooltipEl.style.opacity = 1;
+        //     tooltipEl.style.left = positionX + tooltipModel.caretX + "px";
+        //     tooltipEl.style.top = positionY + tooltipModel.caretY + "px";
+        //     tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+        //     tooltipEl.style.fontSize = tooltipModel.fontSize;
+        //     tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+        //     tooltipEl.style.padding =
+        //       tooltipModel.yPadding + "px " + tooltipModel.xPadding + "px";
+        //   }
+        // },
+
         tooltips: {
+          // enabled: true,
+          mode: "index",
+          position: "nearest",
+          //Set the name of the custom function here
+          //custom:
           callbacks: {
-            // label: function(tooltipItem, data) {
-            //     var label = data.datasets[tooltipItem.datasetIndex].label || '';
-            //     if (label) {
-            //         label += ': ';
-            //     }
-            //     label += Math.round(tooltipItem.yLabel * 100) / 100;
-            //     return label+"AHAHAHA";
-            // }
-          }
+            label: (tooltipItems, data) => {
+              console.log(this);
+              console.log(data);
+
+              // return this.getImg()
+
+              return tooltipItems.yLabel + "$" + this.message;
+            },
+            afterLabel: function(tooltipItem, data) {
+              var dataset = data["datasets"][0];
+              var percent = Math.round(100) + dataset;
+              return "(" + percent + "%)";
+            }
+            // custom:this.getImg()
+          },
+          // callbacks: {
+          //   label: function(tooltipItem, data) {
+          //     var value = data.datasets[0].data[tooltipItem.index];
+          //     console.log(value);
+          //   }
+          // },
+          backgroundColor: "#FFF",
+          titleFontSize: 16,
+          titleFontColor: "#0066ff",
+          bodyFontColor: "#000",
+          bodyFontSize: 14,
+          displayColors: false
+        },
+        title: {
+          display: true,
+          text: "Ice Cream Truck",
+          position: "bottom"
+        },
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true
+              }
+            }
+          ]
         }
       },
       datacollection: null,
@@ -101,7 +251,12 @@ export default {
     this.fillData();
   },
   methods: {
-    setting(color, data,name) {
+    getImg() {
+      return `<img class="fit-picture"
+     src="/media/examples/grapefruit-slice-332-332.jpg"
+     alt="Grapefruit slice atop a pile of other slices">`;
+    },
+    setting(color, data, name) {
       let temp = [];
       data.map(index => {
         if (index == null) {
@@ -134,10 +289,14 @@ export default {
       console.log("list", list, list[0]);
       for (let i = 0; i < list.length; i++) {
         outputSet.push(
-          this.setting(this.colors[i], this.storageChartDatasets[list[i]],list[i])
+          this.setting(
+            this.colors[i],
+            this.storageChartDatasets[list[i]],
+            list[i]
+          )
         );
       }
-      console.log("outputSet",outputSet)
+      console.log("outputSet", outputSet);
       return outputSet;
     },
     fillData() {
@@ -322,5 +481,26 @@ li {
 }
 a {
   color: #42b983;
+}
+#chartjs-tooltip {
+  opacity: 1;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 3px;
+  -webkit-transition: all 0.1s ease;
+  transition: all 0.1s ease;
+  pointer-events: none;
+  -webkit-transform: translate(-50%, 0);
+  transform: translate(-50%, 0);
+}
+
+.chartjs-tooltip-key {
+  display: inline-block;
+  position: absolute;
+
+  width: 10px;
+  height: 10px;
+  margin-right: 10px;
 }
 </style>
