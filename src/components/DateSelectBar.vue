@@ -22,9 +22,9 @@
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnList">
-        <button @click="toggle" class="SelectItmes">This Month</button>
-        <button @click="toggle" class="SelectItmes">Two Weeks</button>
-        <button @click="toggle" class="SelectItmes">This Week</button>
+        <button @click="GetAPI('this-month')" class="SelectItmes">This Month</button>
+        <button @click="GetAPI('two-weeks')" class="SelectItmes">Two Weeks</button>
+        <button @click="GetAPI('this-week')" class="SelectItmes">This Week</button>
         <button @click="toggle" class="SelectItmes">Today</button>
         <div style="flex: 1;" />
         <el-select id="EndItmes" v-model="selectValue" :placeholder="options[0].label">
@@ -47,49 +47,64 @@ export default {
     msg: String
   },
   watch: {
-    selectTemplateList: function() {
-      console.log("selectTemplateList change");
-    },
+    // selectTemplateList: function() {
+    //   console.log("selectTemplateList change");
+    // },
     selectValue: function() {
-      this.$store.commit("updateSelectTemplate",this.selectValue)
-      console.log("selectValue change"+this.selectValue);
+      this.$store.commit("updateSelectTemplate", this.selectValue);
+    this.GetAPI('this-week');
+      console.log("selectValue change" + this.selectValue);
     },
-     options: function() {
+    options: function() {
       console.log("options change");
-    },
+    }
+  },
+  created() {
+    this.GetAPI('this-week');
   },
   computed: {
-    selectTemplateList() {
-      return this.$store.state.templateList;
-    },
+    // selectTemplateList() {
+    //   return this.$store.state.templateList;
+    // },
     options() {
-      let optionsList = [];
-      this.selectTemplateList.map(index => {
-        if (index == "heartFailure") {
-            optionsList.push({
-            value: "heartFailure",
-            label: "心衰竭"
-          });
-        } else if (index == "commonCold") {
-          optionsList.push({
-            value: "commonCold",
-            label: "COVID-19"
-          });
-        } 
-        else if (index == "烤鴨") {
-           optionsList.push({
-            value: "烤鴨",
-            label: "烤鴨三吃"
-          });
+      // let optionsList = [];
+      let optionsList = [
+        {
+          value: "heartFailure",
+          label: "心衰竭"
+        },
+        {
+          value: "commonCold",
+          label: "COVID-19"
         }
-        else {
-           optionsList.push({
-            value: index,
-            label: index
-          });
-        }
-        //烤鴨,commonCold,heartFailure
-      });
+      ];
+
+      // this.selectTemplateList.map(index => {
+      //   if (index == "heartFailure") {
+      //       optionsList.push({
+      //       value: "heartFailure",
+      //       label: "心衰竭"
+      //     });
+      //   } else if (index == "commonCold") {
+      //     optionsList.push({
+      //       value: "commonCold",
+      //       label: "COVID-19"
+      //     });
+      //   }
+      //   // else if (index == "烤鴨") {
+      //   //    optionsList.push({
+      //   //     value: "烤鴨",
+      //   //     label: "烤鴨三吃"
+      //   //   });
+      //   // }
+      //   else {
+      //      optionsList.push({
+      //       value: index,
+      //       label: index
+      //     });
+      //   }
+      //   //烤鴨,commonCold,heartFailure
+      // });
       return optionsList;
     }
   },
@@ -121,6 +136,22 @@ export default {
     };
   },
   methods: {
+    GetAPI(mode,start_date,end_date) {
+      // eslint-disable-next-line no-constant-condition
+      if (mode == "Summary") {
+        this.$store.dispatch("fetchSummaryApi", {
+          // start_date: "2020-07-15",
+          // end_date: "2020-07-24"
+            start_date: start_date,
+          end_date: end_date
+        });
+      } else {
+        this.$store.dispatch("fetchDaysApi", {
+          // range: "this-week"
+          range: mode
+        });
+      }
+    },
     // updateMessage() {
     //   this.$store.commit("updateMessage", {
     //     message: "99999999"
@@ -153,6 +184,17 @@ export default {
       this.$store.commit("updateDateformat", [start, end]);
       // console.log("$store", this.$store.state.selectDate); // -> 1
       // console.log("$store", this.$store.state.selectDate); // -> 1
+
+      // this.$store.dispatch("fetchSummaryApi", {
+      //   start_date: new Date(start).toISOString().substring(0, 10),
+      //   end_date: new Date(end).toISOString().substring(0, 10)
+      // });
+      this.GetAPI("Summary",new Date(start).toISOString().substring(0, 10),new Date(end).toISOString().substring(0, 10)) 
+      console.log(
+        "dateselectDateformat",
+        new Date(start).toISOString().substring(0, 10),
+        new Date(end).toISOString().substring(0, 10)
+      );
       console.log("$store", this.$store.state.selectDateformat[0]); // -> 1
       console.log("$store", this.$store.state.selectDateformat[1]); // -> 1
       // console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
@@ -161,6 +203,7 @@ export default {
   }
 };
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >

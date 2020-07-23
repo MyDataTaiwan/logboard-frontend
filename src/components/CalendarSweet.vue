@@ -28,10 +28,10 @@ export default {
   },
   watch: {
     selectDateformatStart: function() {
-      console.log("selectDateformatStart change");
+      console.log("selectDateformatStart change",this.selectDateformatStart);
     },
     selectDateformatEnd: function() {
-      console.log("selectDateformatEnd change");
+      console.log("selectDateformatEnd change",this.selectDateformatEnd);
     }
   },
 

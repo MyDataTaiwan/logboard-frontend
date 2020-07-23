@@ -1,46 +1,30 @@
 <template>
-  <el-table :data="TargetTableSet" border height="100%" style="width: 50vw">
-    <!-- <el-table-column fixed="true" prop="name" width="40" label="症狀"></el-table-column> -->
-    <!-- <el-table-column fixed label="姓名" >
-        <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top">
-            <p>症狀: {{ scope.row.name }}</p>
-            <p>時間: {{ scope.row.timestamp }}</p>
-            <div slot="reference" class="name-wrapper">
-              <el-tag size="mini">{{ scope.row.name }}</el-tag>
-            </div>
-          </el-popover>
-        </template>
-    </el-table-column>-->
+  <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
+  <el-table
+    :span-method="arraySpanMethod"
+    :data="storageTableData"
+    height="100%"
+    style="width:50vw"
+  >
     <el-table-column fixed label="症狀" width="110">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
-          <p>症狀: {{ scope.row.name }}</p>
-          <p>時間: {{ scope.row.timestamp }}</p>
+          <!-- <p>症狀: {{ scope.row.name }}</p>
+          <p>時間: {{ scope.row.timestamp }}</p>-->
         </el-popover>
         <div slot="reference">
+          <!-- <h6>{{ scope.row }}</h6>
+          <h6>{{ scope.column }}</h6>-->
+
           <h6>{{ scope.row.name }}</h6>
           <h3>{{ scope.row.name }}</h3>
           <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
       </template>
     </el-table-column>
-    <!-- <el-table-column prop="value0" label="2016-05-01">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>症狀: {{ scope.row.name }}</p>
-          <p>時間: {{ scope.row.timestamp }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="mini">{{1}}</el-tag>
-            <el-tag size="mini">{{2}}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>-->
-    <!-- <el-table-column v-for="( prop, label) in list" :key="prop" :prop="prop" :label="label"></el-table-column> -->
 
     <el-table-column
-      v-for="{ prop, label } in TargetDateToTableTitle"
+      v-for="{ prop, label } in storageTableTitle"
       :key="prop"
       :prop="prop"
       :label="label"
@@ -53,24 +37,21 @@
         <el-popover trigger="hover" placement="top">
           <p>症狀: {{ scope.row.name }}</p>
           <p>時間: {{scope.column.property}}</p>
+          <h3>顯示今天的症狀</h3>
+          <h2>PhotoDiary</h2>
           <div slot="reference" class="name-wrapper">
             <!-- <el-tag size="mini">{{1}}</el-tag>
             <el-tag size="mini">{{2}}</el-tag>-->
+            <!-- <h3>{{scope.row.Symptoms }}</h3> -->
+            <!-- <h3>{{scope.row.Symptoms[scope.column.property] }}</h3>
+            <h3>{{scope.column.property }}</h3>-->
 
-            <template v-if="scope.row[scope.column.property]!=null">
-              <template v-if="scope.row[scope.column.property]!=false">
-                <el-tag effect="dark" size="mini">
-                  <h3>{{ scope.row[scope.column.property] }}</h3>
-                </el-tag>
-              </template>
-              <template v-if="scope.row[scope.column.property]==false">
-                <el-tag size="mini">吳振狀</el-tag>
-                <!-- <el-tag size="mini">NAN</el-tag> -->
-              </template>
-            </template>
-            <template v-if="scope.row[scope.column.property]==null">
-              <el-tag size="mini">吳振狀</el-tag>
-              <!-- <el-tag size="mini">NAN</el-tag> -->
+            <template v-if="scope.row.symptom[scope.column.property]==true">
+              <el-tag color="#5C6F75" effect="dark" size="medium">
+                <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
+                <h3></h3>
+                <!-- <h3>顯示今天的症狀</h3> -->
+              </el-tag>
             </template>
           </div>
         </el-popover>
@@ -79,182 +60,65 @@
     <!-- <el-table-column prop="times[0].2020-07-16T19:02:36Z" label="A2020-07-16T19:02:36Z"></el-table-column>
     <el-table-column prop="times[1].2020-07-19T19:02:36Z" label="A2020-07-19T19:02:36Z"></el-table-column>
     <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>-->
-
-    <!-- <el-table-column prop="value1" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value2" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value3" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value4" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value5" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value6" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value1" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value2" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value3" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value4" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value5" label="2016-05-01"></el-table-column>
-    <el-table-column prop="value6" label="2016-05-01"></el-table-column>-->
   </el-table>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex"; //註冊 action 和 state
-
 export default {
   name: "SymptomTable",
   props: {
     msg: String
   },
   watch: {
-    storageDataCache: function() {
-      console.log("storageDataCache change");
+    storageTableTitle: function() {
+      console.log("storageTableTitle change");
+    },
+    storageTableData: function() {
+      console.log("storageTableData change");
     },
     selectTemplate: function() {
       console.log("selectTemplate change");
     },
-    storageTargetDate: function() {
-      console.log("storageTargetDate change");
-    },
-    TargetDateToTableTitle: function() {
-      console.log("TargetDateToTableTitle change");
-    },
-    TargetTableSet: function() {
-      console.log("TargetTableSet change", this.TargetTableSet[0]);
+    storageData: function() {
+      console.log("storageData change");
     }
   },
   computed: {
-    ...mapState(["loading", "DB", "message"]),
-    formTitle() {
-      return this.editedIndex === -1 ? "新增訊息" : "編輯訊息";
+    storageTableTitle() {
+			if (this.storageData.symptoms[0]==null){
+				return   [
+        { prop: 0, label: "暫時" },
+        { prop: 1, label: "沒有" },
+        { prop: 2, label: "資料" }
+      ]
+			}
+      return this.$store.state.storeTableTitle;
     },
+    storageTableData() {
+      return this.$store.state.storeTableData;
+    },
+    storageData() {
+      return this.$store.state.storeData;
+    },
+
     selectTemplate() {
-      this.$store.dispatch("fetchApi", {
-        name: "records/?uid="
-        // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
-      });
-      return this.$store.state.selectTemplate;
-    },
-    storageTargetDate() {
-      return this.$store.state.storageTargetDate;
-    },
-    TargetDateToTableTitle() {
-      return this.$store.state.TableTitle;
-    },
-    TargetTableSet() {
-      return this.$store.state.zipSymptoms;
-    },
-    storageDataCache() {
-      let processingData = [];
-
-      /* console.log(this.storageDataCache()[0].content_parsed);
-      // return this.$store.state.storageData;
-      // let fromVuexData = this.$store.state.storageData;
-      // let bodyTemperatureArray = [];
-      // let dateArray = [];
-      // let timesObject = {
-      //   times: [
-      //     ///is exmp
-      //     // { "2020-07-16T19:02:36Z": "truetrue" },
-      //     // { "2020-07-19T19:02:36Z": "truetrue" }
-      //   ]
-      // };
-      // let tempDataRef = [];
-      // let tempDataArry = [];
-      // let reBuildDataArry = [];
-      // let weekSymptoms=[];
-      // fromVuexData.map(index => {
-      //   dateArray.push(index.timestamp);
-      //   let weekSymptoms = [];
-      //   // let tempDataRef = [];
-      //   // let tempDataArry = [];
-      //   let processingFields = index.fields;
-      //   console.log("fields" + processingFields);
-      //   processingFields.map(symptoms => {
-      //     // let oneDaySymptoms = [];
-      //     if (symptoms.name == "bodyTemperature") {
-      //       console.log("bodyTemperature");
-      //       bodyTemperatureArray.push(symptoms);
-      //     }
-      //   });
-      //   //選擇症狀包，取得資料
-      //   if (index.template_name == this.selectTemplate) {
-      //     weekSymptoms.push(processingFields);
-      //     let tempObj = {
-      //       [index.timestamp]: "true"
-      //     };
-      //     timesObject.times.push(tempObj);
-
-      //     //ＴＯＤＯ 測試用必須刪除				//ＴＯＤＯ 測試用必須刪除
-      //     weekSymptoms.push(processingFields);
-      //     //ＴＯＤＯ 測試用必須刪除				//ＴＯＤＯ 測試用必須刪除
-      //     console.log("以收集" + this.selectTemplate + "症狀資料");
-      //     console.log("timesObject");
-      //     console.log(timesObject);
-      //   }
-      //   console.log(this.selectTemplate + "症狀資料" + weekSymptoms);
-      //   console.log(weekSymptoms);
-      //   // /////ＤＯＴＯ 重組資料以符合table格式
-      //   // //以ㄧ組資料為主重建，剩下的重置為{"時間戳記":T/F}
-      //   // tempDataRef = weekSymptoms[0];
-      //   // console.log("tempDataRef" + tempDataRef.length);
-      //   // console.log(tempDataRef);
-      //   // if (tempDataRef != []) {
-      //   //   // let timesObject = {
-      //   //   //   ///is fake
-      //   //   //   times: [
-      //   //   //     { "2020-07-16T19:02:36Z": "truetrue" },
-      //   //   //     { "2020-07-19T19:02:36Z": "truetrue" }
-      //   //   //   ]
-      //   //   // };
-      //   //   tempDataArry = tempDataRef.map(index => {
-      //   //     let copy = Object.assign(index, timesObject);
-      //   //     console.log(copy); // { a: 1 }
-      //   //   });
-      //   //   console.log(tempDataArry);
-      //   //   console.log("tempDataArry" + tempDataArry.length);
-      //   // }
-      //   processingData.push(weekSymptoms);
-      // 	/////ＤＯＴＯ 重組資料以符合table格式
-      // 	console.log("ＤＯＴＯ 重組資料以符合table格式A");
-
+      // this.$store.dispatch("fetchApi", {
+      //   name: "records/?uid="
+      //   // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       // });
-      // console.log("ＤＯＴＯ 重組資料以符合table格式B");
-      // if (processingData[0] != null) {
-      //   /////ＤＯＴＯ 重組資料以符合table格式
-      //   //以ㄧ組資料為主重建，剩下的重置為 timesObject[{"時間戳記":T/F}]
-      //   tempDataRef = processingData[0];
-      //   console.log("tempDataRef" + tempDataRef.length);
-      //   console.log(tempDataRef);
-      //   if (tempDataRef != []) {
-      //     // let timesObject = {
-      //     //   ///is fake
-      //     //   times: [
-      //     //     { "2020-07-16T19:02:36Z": "truetrue" },
-      //     //     { "2020-07-19T19:02:36Z": "truetrue" }
-      //     //   ]
-      //     // };
-      //     tempDataArry = tempDataRef.map(index => {
-      //       let copy = Object.assign(index, timesObject);
-      //       console.log(copy); // { a: 1 }
-      //     });
-      //     console.log(tempDataArry);
-      //     console.log("tempDataArry" + tempDataArry.length);
-      //   }
-      // }
-
-      // console.log(dateArray);
-      // console.log(dateArray.length + "天");
-      // console.log(bodyTemperatureArray);
-      // console.log(bodyTemperatureArray.length + "筆體溫");
-			// console.log(processingData);
-			*/
-      return processingData;
+      return this.$store.state.selectTemplate;
     }
   },
   created() {
-    this.$store.dispatch("fetchApi", {
-      name: "records/?uid="
-      // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
-      // uid: this.uid
-    });
+    // this.$store.dispatch("fetchSummaryApi", {
+    //   template: "heartFailure",
+    //   start_date: "2020-07-15",
+    //   end_date: "2020-07-24"
+    // });
+    // this.$store.dispatch("fetchDaysApi", {
+    //   template: "heartFailure",
+    //   range: "this-week"
+    // });
   },
   methods: {
     DateToTableTitle(date) {
@@ -271,27 +135,7 @@ export default {
       }
       console.log("TableTitle", Object.keys(TableTitle));
       return TableTitle;
-    },
-    //     increment() {
-    //       this.$store.dispatch("incrementAsync");
-    //     },
-    //     decrement() {
-    //       this.$store.commit("decrement");
-    //     },
-    //     testAction() {
-    //       this.$store.dispatch("actionA").then(() => {});
-    //     },
-    ...mapActions(["fetchApi"], {
-      name: "records/?uid="
-      // uid: "947a40df-d548-4dba-bc12-c3b2b006d274"
-      // uid: this.uid
-    })
-    //     showMessage() {
-    //       this.alertMessage = true;z
-    //       setTimeout(() => {
-    //         this.alertMessage = false;
-    //       }, 3000);
-    //     }
+    }
   },
   data() {
     return {
@@ -301,12 +145,117 @@ export default {
       //   { "2020-07-19T19:02:36Z": "truetrue" }
       // ]
       colTitleConfigs: this.TargetDateToTableTitle,
-
+      // TableTitle: [
+      //   { prop: 0, label: "2020-07-23T01:41:40Z" },
+      //   { prop: 1, label: "2020-07-23T01:57:46Z" },
+      //   { prop: 2, label: "2020-07-23T02:16:24Z" }
+      // ],
       colConfigs: [
         { prop: "value", label: "B2022-05-01" },
         { prop: "value0", label: "B2022-05-02" },
         { prop: "value1", label: "B2022-05-03" }
       ],
+      // testcol: [
+      //   { prop: "2020-07-23T01:41:40Z", label: "2020-07-23T01:41:40Z" },
+      //   { prop: "2020-07-23T01:57:46Z", label: "2020-07-23T01:57:46Z" },
+      //   { prop: "2020-07-23T02:16:24Z", label: "2020-07-23T02:16:24Z" }
+      // ],
+      testSymptoms: {
+        coughing: [false, false, false],
+        runnyNose: [false, true, false],
+        nasalCongestion: [false, true, false],
+        sneezing: [false, false, false]
+      },
+
+      test: [
+        {
+          name: "coughing",
+          Symptoms: [false, true, false]
+        },
+        {
+          name: "runnyNose",
+          Symptoms: [false, true, false]
+        },
+        {
+          name: "nasalCongestion",
+          Symptoms: [false, true, false]
+        },
+        {
+          name: "sneezing",
+          Symptoms: [false, true, false]
+        }
+      ],
+      TableTitle: [
+        { prop: 0, label: "2020-07-23T01:41:40Z" },
+        { prop: 1, label: "2020-07-23T01:57:46Z" },
+        { prop: 2, label: "2020-07-23T02:16:24Z" }
+      ],
+      testDB2symptoms: [
+        {
+          name: "coughing",
+          symptom: [false, false, false]
+        },
+        {
+          name: "runnyNose",
+          symptom: [false, true, false]
+        },
+        {
+          name: "nasalCongestion",
+          symptom: [false, true, false]
+        },
+        {
+          name: "sneezing",
+          symptom: [false, false, false]
+        }
+      ],
+      testDB2: {
+        id: [5728, 5727, 5729],
+        timestamp: [
+          "2020-07-23T01:41:40Z",
+          "2020-07-23T01:57:46Z",
+          "2020-07-23T02:16:24Z"
+        ],
+        vital_signs: {
+          bodyTemperature: [38.26, 36.53, 34.43]
+        },
+        symptoms: [
+          {
+            name: "coughing",
+            symptom: [false, false, false]
+          },
+          {
+            name: "runnyNose",
+            symptom: [false, true, false]
+          },
+          {
+            name: "nasalCongestion",
+            symptom: [false, true, false]
+          },
+          {
+            name: "sneezing",
+            symptom: [false, false, false]
+          }
+        ]
+      },
+      testDB: {
+        id: [5726, 5725, 5730, 5731],
+        timestamp: [
+          "2020-07-23T00:46:01Z",
+          "2020-07-23T01:28:41Z",
+          "2020-07-23T02:33:02Z",
+          "2020-07-23T03:00:00Z"
+        ],
+        vital_signs: [
+          { SBP: [73.42, 197.19, 175.44, 89.01] },
+          { DBP: [95.44, 76.64, 29.55, 60.39] },
+          { heartbeat: [180.03, 72.71, 181.61, 74.78] },
+          { bloodSugar: [767.96, 276.46, 957.19, 434.79] },
+          { weight: [88.41, 20.49, 235.23, 111.76] },
+          { urineVolume: [1579.75, 1037.58, 646.84, 275.07] }
+        ],
+        symptoms: []
+      },
+
       SymptomTableData: [
         {
           icon: "pulse-outline",
