@@ -15,8 +15,7 @@
         <div slot="reference">
           <!-- <h6>{{ scope.row }}</h6>
           <h6>{{ scope.column }}</h6>-->
-
-          <h6>{{ scope.row.name }}</h6>
+          <h6>呼吸道症狀</h6>
           <h3>{{ scope.row.name }}</h3>
           <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
@@ -47,7 +46,7 @@
             <h3>{{scope.column.property }}</h3>-->
 
             <template v-if="scope.row.symptom[scope.column.property]==true">
-              <el-tag color="#5C6F75" effect="dark" size="medium">
+              <el-tag color="#5C6F75" effect="dark" size="small">
                 <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
                 <h3></h3>
                 <!-- <h3>顯示今天的症狀</h3> -->
