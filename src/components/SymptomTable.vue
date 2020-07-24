@@ -1,13 +1,13 @@
 <template>
   <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
-	empty-text="資料包中無此區資料"
+    empty-text="資料包中無此區資料"
     :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
     style="width:50vw"
   >
-    <el-table-column  fixed label="症狀" 	 width="110">
+    <el-table-column fixed label="症狀" width="110">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <!-- <p>症狀: {{ scope.row.name }}</p>
@@ -35,10 +35,17 @@
         <h6>{{ scope.row }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
+          <p>{{ scope.column.label }}</p>
+          <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
+          <h4>Symptom</h4>
+          <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <p>症狀: {{ scope.row.name }}</p>
           <p>時間: {{scope.column.property}}</p>
+          <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h3>顯示今天的症狀</h3>
+          <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h2>PhotoDiary</h2>
+          <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <div slot="reference" class="name-wrapper">
             <!-- <el-tag size="mini">{{1}}</el-tag>
             <el-tag size="mini">{{2}}</el-tag>-->
@@ -85,13 +92,13 @@ export default {
   },
   computed: {
     storageTableTitle() {
-			if (this.storageData.symptoms[0]==null){
-				return   [
-        { prop: 0, label: "暫時" },
-        { prop: 1, label: "沒有" },
-        { prop: 2, label: "資料" }
-      ]
-			}
+      if (this.storageData.symptoms[0] == null) {
+        return [
+          { prop: 0, label: "暫時" },
+          { prop: 1, label: "沒有" },
+          { prop: 2, label: "資料" }
+        ];
+      }
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
@@ -139,9 +146,7 @@ export default {
   },
   data() {
     return {
-   
-      colTitleConfigs: this.TargetDateToTableTitle,
-    
+      colTitleConfigs: this.TargetDateToTableTitle
     };
   }
 };
