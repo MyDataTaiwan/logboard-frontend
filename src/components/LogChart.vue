@@ -394,10 +394,15 @@ console.log("bodyLinesTitle",bodyLinesTitle)
       let style = "background:" + colors.backgroundColor;
       style += "; border-color:" + colors.borderColor;
       style += "; border-width: 2px";
+      let swp = body[0]
+            console.log("bodybodybodybody",body)
+
+      let temp =swp.split(":");
+      console.log("DADADADDA",temp)
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
       // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
-            innerHtml += "<tr><td style='text-align: left;' >" + span + testRawData[i] + "</td></tr>";
+            innerHtml += "<tr><td style='text-align: left;' >" + span +temp[0]+" : "+ testRawData[i] + "</td></tr>";
 // Hot Fixme
     });
     innerHtml += "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
