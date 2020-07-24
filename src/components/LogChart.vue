@@ -393,7 +393,7 @@ console.log("bodyLinesTitle",bodyLinesTitle)
 
     titleLines.forEach(function(title) {
       innerHtml +=
-        "<tr><th >" +
+        "<tr><th style='text-align: left; ' >" +
         // title +
         // `   <img class="fit-picture"
         //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
@@ -407,7 +407,7 @@ console.log("bodyLinesTitle",bodyLinesTitle)
       
         ;
     });
-    innerHtml += "</thead><tbody><tr><td style='border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; visibility: hidden;'>hhhh</td></tr>";
+    innerHtml += "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
@@ -415,9 +415,9 @@ console.log("bodyLinesTitle",bodyLinesTitle)
       style += "; border-width: 2px";
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-      innerHtml += "<tr><td>" + span + body + "</td></tr>";
+      innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
     });
-    innerHtml += "<tr><td style='border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
+    innerHtml += "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
