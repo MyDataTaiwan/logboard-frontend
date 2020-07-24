@@ -22,15 +22,23 @@
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnList">
-        <button @click="toggle" class="SelectItmes">This Month</button>
-        <button @click="toggle" class="SelectItmes">Two Weeks</button>
-        <button @click="toggle" class="SelectItmes">This Week</button>
-        <button @click="toggle" class="SelectItmes">Today</button>
+        <div id="btnSubList">
+          <button @click="GetAPI('this-month')" class="SelectItmes">This Month</button>
+          <button @click="GetAPI('two-weeks')" class="SelectItmes">Two Weeks</button>
+          <button @click="GetAPI('this-week')" class="SelectItmes">This Week</button>
+          <button @click="GetAPI('today')" class="SelectItmes">Today</button>
+        </div>
+        <div style="flex: 1;" />
+        <el-select id="EndItmes" v-model="selectValue" :placeholder="options[0].label">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
       </div>
     </div>
-    <el-select id="EndItmes" v-model="value" placeholder="其他症狀包選擇">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
-    </el-select>
   </div>
 </template>
 
@@ -40,40 +48,122 @@ export default {
   props: {
     msg: String
   },
+  watch: {
+    // selectTemplateList: function() {
+    //   console.log("selectTemplateList change");
+    // },
+    selectValue: function() {
+      this.$store.commit("updateSelectTemplate", this.selectValue);
+      this.GetAPI("this-week");
+      console.log("selectValue change" + this.selectValue);
+    },
+    options: function() {
+      console.log("options change");
+    }
+  },
+  created() {
+    this.GetAPI("this-week");
+  },
+  computed: {
+    // selectTemplateList() {
+    //   return this.$store.state.templateList;
+    // },
+    options() {
+      // let optionsList = [];
+      let optionsList = [
+        {
+          value: "heartFailure",
+          label: "心衰竭"
+        },
+        {
+          value: "commonCold",
+          label: "COVID-19"
+        }
+      ];
+
+      // this.selectTemplateList.map(index => {
+      //   if (index == "heartFailure") {
+      //       optionsList.push({
+      //       value: "heartFailure",
+      //       label: "心衰竭"
+      //     });
+      //   } else if (index == "commonCold") {
+      //     optionsList.push({
+      //       value: "commonCold",
+      //       label: "COVID-19"
+      //     });
+      //   }
+      //   // else if (index == "烤鴨") {
+      //   //    optionsList.push({
+      //   //     value: "烤鴨",
+      //   //     label: "烤鴨三吃"
+      //   //   });
+      //   // }
+      //   else {
+      //      optionsList.push({
+      //       value: index,
+      //       label: index
+      //     });
+      //   }
+      //   //烤鴨,commonCold,heartFailure
+      // });
+      return optionsList;
+    }
+  },
+
   data() {
     return {
       // value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       dateValue: [],
       value2: "",
-      options: [
-        {
-          value: "選項1",
-          label: "COVID-19"
-        },
-        {
-          value: "選項2",
-          label: "心衰竭"
-        },
-        {
-          value: "選項3",
-          label: "糖尿病"
-        },
-        {
-          value: "選項4",
-          label: "烤鸭"
-        }
-      ],
-      value: ""
+      // options: [
+      //   {
+      //     value: "選項1",
+      //     label: "COVID-19"
+      //   },
+      //   {
+      //     value: "選項2",
+      //     label: "心衰竭"
+      //   },
+      //   {
+      //     value: "選項3",
+      //     label: "糖尿病"
+      //   },
+      //   {
+      //     value: "選項4",
+      //     label: "烤鸭"
+      //   }
+      // ],
+      selectValue: ""
     };
   },
   methods: {
+    GetAPI(mode, start_date, end_date) {
+      // eslint-disable-next-line no-constant-condition
+      if (mode == "Summary") {
+        this.$store.dispatch("fetchSummaryApi", {
+          // start_date: "2020-07-15",
+          // end_date: "2020-07-24"
+          start_date: start_date,
+          end_date: end_date
+        });
+      } else if (mode == "today") {
+        // this.toggle() 
+        this.$store.dispatch("fetchToDaysApi");
+      } else {
+        this.$store.dispatch("fetchDaysApi", {
+          // range: "this-week"
+          range: mode
+        });
+      }
+    },
     // updateMessage() {
     //   this.$store.commit("updateMessage", {
     //     message: "99999999"
     //   });
     // },
     toggle() {
-      alert("alert");
+      alert("警告，前有BUG");
       this.$store.commit("increment");
       console.log(this.$store.state.count); // -> 1
       var elmnt = document.getElementById("EndItmes");
@@ -99,6 +189,21 @@ export default {
       this.$store.commit("updateDateformat", [start, end]);
       // console.log("$store", this.$store.state.selectDate); // -> 1
       // console.log("$store", this.$store.state.selectDate); // -> 1
+
+      // this.$store.dispatch("fetchSummaryApi", {
+      //   start_date: new Date(start).toISOString().substring(0, 10),
+      //   end_date: new Date(end).toISOString().substring(0, 10)
+      // });
+      this.GetAPI(
+        "Summary",
+        new Date(start).toISOString().substring(0, 10),
+        new Date(end).toISOString().substring(0, 10)
+      );
+      console.log(
+        "dateselectDateformat",
+        new Date(start).toISOString().substring(0, 10),
+        new Date(end).toISOString().substring(0, 10)
+      );
       console.log("$store", this.$store.state.selectDateformat[0]); // -> 1
       console.log("$store", this.$store.state.selectDateformat[1]); // -> 1
       // console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
@@ -108,8 +213,23 @@ export default {
 };
 </script>
 
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+#btnList {
+  display: flex;
+  /* align-items: center;
+  justify-content: flex-start; */
+
+  flex: 1;
+}
+#btnSubList {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  flex: 1;
+}
 .button {
   overflow-wrap: break-word;
 }
@@ -127,6 +247,7 @@ export default {
   justify-content: flex-start;
 }
 .SelectItmes {
+  white-space: nowrap;
   background: #fff;
   align-items: center;
   justify-content: center;
@@ -150,6 +271,10 @@ export default {
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 0px 15px 0px 15px;
+  /*FIXME */
+  margin: 0px 5px 16px 5px;  /*FIXME */
+  /*FIXME */
+
   /* margin: 0px 5px 0px 5px; */
 }
 h3 {
@@ -172,7 +297,7 @@ a {
   justify-content: center;
   text-align: center;
   height: 32px;
-  width: 10vw !important;
+  /* width: 10vw !important; */
   /* width: 10%; */
   border: 3px solid #5c6f75;
   box-sizing: border-box;
@@ -184,7 +309,7 @@ a {
 #DateSelectBar {
   background: #fff;
   margin: 20px;
-  padding-right: 15px;
+  padding: 0 15px;
   height: 8%;
   display: flex;
   /* flex: 1; */
@@ -235,14 +360,13 @@ a {
   }
   #EndItmes {
     /* display: none; */
-
   }
   .DateSelectItmes {
     background: #fff;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100% !important;
+    /* width: 100% !important; */
     border: 3px solid #5c6f75;
     box-sizing: border-box;
     border-radius: 20px;

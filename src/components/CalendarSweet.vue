@@ -28,10 +28,10 @@ export default {
   },
   watch: {
     selectDateformatStart: function() {
-      console.log("selectDateformatStart change");
+      console.log("selectDateformatStart change",this.selectDateformatStart);
     },
     selectDateformatEnd: function() {
-      console.log("selectDateformatEnd change");
+      console.log("selectDateformatEnd change",this.selectDateformatEnd);
     }
   },
 
@@ -84,26 +84,6 @@ export default {
           backgroundColor: "#FC9500"
         }
       ],
-      events_BK: [
-        // {
-        //   title: "Event Symptoms",
-        //   start: "2020-7-19",
-        //   end: "2020-7-24",
-        //   repeat: "never",
-        //   categoryId: 3
-        // },
-        {
-          title: "Event Symptoms",
-          // start: this.$store.state.selectDateformat[0],
-          // end: this.$store.state.selectDateformat[1],
-          // start: this.selectDateformatStart(),
-          // end: this.selectDateformatEnd(),
-          start: "2019-04-10",
-          end: "2019-04-11",
-          repeat: "never",
-          categoryId: 3
-        }
-      ]
     };
   },
   methods: {
@@ -137,4 +117,6 @@ a {
   flex: 1;
   /* height: 100% !important; */
 }
+
+
 </style>

@@ -8,8 +8,9 @@ on:
   push:
     branches: 
       # Push events on  branch
-#       - master
-      - develop
+      - develop #當開發分支推進的時候，我們部署到測試服務器
+      #- master ＃當master分支按下的時候，我們部署到生產服務器
+      #-test ＃當測試分支推進的時候，我們部署到測試服務器
   pull_request:
     branches: [ develop ]
 
@@ -28,6 +29,7 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@master 
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # 使用建立的secret
+        BASE_BRANCH	:  develop
         BRANCH: gh-pages # 存放git-page的分支名称
         FOLDER: dist # 存放build完的目录
         BUILD_SCRIPT: yarn  && yarn build # 執行的指令

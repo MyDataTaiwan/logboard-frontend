@@ -6,10 +6,6 @@
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
         <div id="NavItems">
-          <router-link :to="{ name: 'camps' }" class="Nav">
-            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-            <h4>實習營健康表</h4>
-          </router-link>
           <router-link :to="{ name: 'dashboard' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
             <h4>DASHBOARD</h4>
@@ -17,6 +13,10 @@
           <router-link :to="{ name: 'photodiary' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
             <h4>PHOTODIARY</h4>
+          </router-link>
+          <router-link :to="{ name: 'camps' }" class="Nav">
+            <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
+            <h4>實習營健康表</h4>
           </router-link>
         </div>
       </div>
@@ -42,6 +42,7 @@
               <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
               <h4>PHOTODIARY</h4>
             </router-link>
+            <DateSelectBar id="DateSelectBarMobile" v-if="true" />
           </div>
         </div>
         <router-view></router-view>
@@ -50,6 +51,7 @@
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
       © 2020 copyright. all rights reserved
+      {{storageUserId}}
     </div>
   </div>
 </template>
@@ -66,10 +68,22 @@ export default {
   props: {
     source: String
   },
+  watch: {
+    storageUserId: function() {
+      console.log("storageUserId change",this.storageUserId);
+    }
+  },
+  computed: {
+    storageUserId() {
+        this.$store.commit("updateUserId",this.$route.params.id)
+      return this.$route.params.id;
+    }
+  },
   data() {
     return {
+      uid: this.computed,
       isShow: false,
-      drawer: true,
+      drawer: true
     };
   },
   methods: {
@@ -91,6 +105,10 @@ export default {
   }
 }*/
 
+#main .el-date-editor--daterange.el-input__inner {
+  width: 100%;
+}
+/* temp Style */
 .Nav {
   height: 50px;
   width: 100%;
@@ -110,6 +128,8 @@ export default {
   overflow: hidden;
 }
 #App {
+  font-family: "Montserrat", sans-serif;
+
   overflow: hidden;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -124,6 +144,21 @@ export default {
   height: 97vh;
 }
 
+@media screen and (max-width: 800px) {
+  #DateSelectBar {
+    display: none;
+  }
+}
+
+/* @media screen and (max-width: 567px) { */
+@media screen and (max-width: 707px) {
+  #NavBar {
+    display: none;
+  }
+  #DateSelectBar {
+    /* display: none; */
+  }
+}
 @media screen and (min-width: 567px) {
   #NavBar {
     /* background: #f0afff; */
@@ -137,21 +172,6 @@ export default {
   }
   #NavBarMobile {
     display: none;
-  }
-}
-/* @media screen and (max-width: 567px) { */
-@media screen and (max-width: 707px) {
-
-  #NavBar {
-    display: none;
-  }
-  #DateSelectBar {
-    /* display: none; */
-  }
-}
-@media screen and (max-width: 800px) {
-  #DateSelectBar {
-        display: none;
   }
 }
 #Footer {
@@ -235,6 +255,46 @@ html,
 body {
   margin: 0;
   padding: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1 {
+  font-size: 20px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  /* Extra large */
+}
+h2 {
+  font-size: 18px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  /* large */
+}
+h3 {
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  /* font-weight: 900; */
+  font-weight: bold;
+  word-wrap: break-word;
+  white-space: nowrap;
+
+  flex-wrap: nowrap !important;
+  /* Medium */
+}
+h4 {
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  /* Base */
+}
+h5 {
+  font-size: 13px;
+  font-family: "Montserrat", sans-serif;
+  /* Small */
+}
+h6 {
+  font-size: 12px;
+  font-family: "Montserrat", sans-serif;
+  /* Extra Small */
 }
 </style>
 
