@@ -25,8 +25,12 @@
 </template>
 
 <script>
-import LineChart from "./LineChart.js";
 
+import LineChart from "./LineChart.js";
+// Hot Fixme
+
+
+var testRawData=[];
 export default {
   name: "LogChart",
   props: {
@@ -45,6 +49,9 @@ export default {
     storageChartDatasets: function() {
       this.fillData();
       console.log("storageChartDatasets change", this.storageChartDatasets);
+    },
+    raw_data: function() {
+      console.log("raw_data change", this.raw_data);
     }
   },
   computed: {
@@ -53,7 +60,10 @@ export default {
     },
     storageChartDatasets() {
       return this.$store.state.storeChartDatasets;
-    }
+    },
+    // raw_data() {
+    //   return this.raw_data;
+    // }
   },
   data() {
     return {
@@ -196,13 +206,14 @@ export default {
           urineVolume: [1579.75, 1037.58, 646.84, 275.07]
         },
         symptoms: []
-      }
+      },
 
       // myStyles: {
       //   height: "300px",
       //   width: "100%",
       //   position: "relative"
       // }
+    raw_data:[]
     };
   },
   mounted() {
@@ -224,6 +235,9 @@ export default {
         }
       });
       let db = this.normalLines(temp);
+      this.raw_data = temp;
+      testRawData= temp;
+      console.log("setting raw_data", this.raw_data);
 
       console.log("setting", db);
       return {
@@ -283,48 +297,6 @@ export default {
       (this.datacollection = {
         labels: this.storageChartLabels,
         datasets: this.setMaker()
-        // datasets: [
-        //   this.setting("#3F39FF", this.storageChartDatasets["SBP"]),
-        //   this.setting("#AF0F0F", this.storageChartDatasets["SBP"])
-        // ]
-        // [
-        //   {
-        //     label: "test",
-        //     // backgroundColor: "#00000000",
-        //     borderColor: "#3F39FF",
-        //     fill: false,
-        //     lineTension: 0,
-        //     spanGaps: true,
-        //     // data: [this.getRandomInt(), this.getRandomInt()]
-        //     // data: [38.26, 36.53, 34.43]
-        //     data: this.DB.vital_signs["urineVolume"]
-        //   }
-        // ]
-        // labels: [
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt(),
-        //   this.getRandomInt()
-        // ],
-        //   {
-        //     label: "Data One",
-        //     fill: false,
-        //     lineTension: 0,
-        //     borderColor: "#12356F",
-        //     data: [
-        //       this.getRandomInt(),
-        //       this.getRandomInt(),
-        //       this.getRandomInt(),
-        //       this.getRandomInt(),
-        //       this.getRandomInt(),
-        //       this.getRandomInt()
-        //     ]
-        //   }
-        // ]
       }),
         { responsive: true, maintainAspectRatio: false };
     },
@@ -343,6 +315,12 @@ export default {
   //   // }
   // }
 };
+
+var rawData = function(raw) {
+  return raw;
+}
+
+
 
 const customTooltips = function(tooltip) {
   // Tooltip Element
@@ -408,6 +386,9 @@ console.log("bodyLinesTitle",bodyLinesTitle)
         ;
     });
     innerHtml += "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
+    console.log("bodyLines",bodyLines)
+        console.log("raw_data",rawData )
+
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
@@ -415,7 +396,9 @@ console.log("bodyLinesTitle",bodyLinesTitle)
       style += "; border-width: 2px";
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-      innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
+      // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
+            innerHtml += "<tr><td style='text-align: left;' >" + span + testRawData[i] + "</td></tr>";
+// Hot Fixme
     });
     innerHtml += "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
     const tableRoot = tooltipEl.querySelector("table");
