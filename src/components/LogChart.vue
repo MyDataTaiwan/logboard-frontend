@@ -120,8 +120,8 @@ export default {
           display: true
         },
         tooltips: {
-          // enabled: false,
-          enabled: true,
+          enabled: false,
+          // enabled: true,
           mode: "index",
           position: "nearest",
           custom: customTooltips
@@ -371,7 +371,13 @@ const customTooltips = function(tooltip) {
   // Set Text
   if (tooltip.body) {
     const titleLines = tooltip.title || [];
-    const bodyLines = tooltip.body.map(getBody);
+    // const bodyLines = tooltip.body.map(getBody);
+        const bodyLines = tooltip.body.map(getBody);
+        const bodyLinesTitle = tooltip.title;
+
+console.log("bodyLines",bodyLines)
+console.log("bodyLinesTitle",bodyLinesTitle)
+
     let innerVUE = `
   <div slot="reference" style="width: 500px;">
     <template>
@@ -387,14 +393,21 @@ const customTooltips = function(tooltip) {
 
     titleLines.forEach(function(title) {
       innerHtml +=
-        "<tr><th>" +
-        title +
-        `   <img class="fit-picture"
-                src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-                   alt="Grapefruit slice atop a pile of other slices">` +
-        "</th></tr>";
+        "<tr><th >" +
+        // title +
+        // `   <img class="fit-picture"
+        //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+        //            alt="Grapefruit slice atop a pile of other slices">` +
+        // "</th></tr>";
+           title 
+        // `   <img class="fit-picture"
+        //        src="img/LogBoardLOGO.56c0f5e3.svg
+        //           alt="bar">` +
+        "</th></tr>"
+      
+        ;
     });
-    innerHtml += "</thead><tbody>";
+    innerHtml += "</thead><tbody><tr><td style='border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; visibility: hidden;'>hhhh</td></tr>";
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
@@ -404,11 +417,11 @@ const customTooltips = function(tooltip) {
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
       innerHtml += "<tr><td>" + span + body + "</td></tr>";
     });
-    innerHtml += "</tbody>";
+    innerHtml += "<tr><td style='border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
-    console.log(innerHtml);
-    tableRoot.innerHTML = innerVUE;
+    console.log(innerVUE);
+    tableRoot.innerHTML = innerHtml;
   }
   const positionY = this._chart.canvas.offsetTop;
   const positionX = this._chart.canvas.offsetLeft;
