@@ -8,11 +8,14 @@ on:
   push:
     branches: 
       # Push events on  branch
-      - develop #當開發分支推進的時候，我們部署到測試服務器
-      #- master ＃當master分支按下的時候，我們部署到生產服務器
+      # - develop #當開發分支推進的時候，我們部署到測試服務器
+      # - master ＃當master分支按下的時候，我們部署到生產服務器
       #-test ＃當測試分支推進的時候，我們部署到測試服務器
+      - gitpage ＃當測試分支推進的時候，我們部署到測試服務器
+
   pull_request:
-    branches: [ develop ]
+    branches: [ gitpage ]
+    #branches: [ develop ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
