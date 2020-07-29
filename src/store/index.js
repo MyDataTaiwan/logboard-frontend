@@ -202,6 +202,8 @@ export default new Vuex.Store({
 			return axios.get(`${$http}records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
 				console.log("fetchTODaysApi_get")
 				console.log(response)
+				console.log(response.url)
+
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
 					console.log("fetchTODaysApi_200")
