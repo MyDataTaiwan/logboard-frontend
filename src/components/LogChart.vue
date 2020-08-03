@@ -1,12 +1,10 @@
 <template>
   <div id="ChartView" style="width: 100%;">
     <!-- <h3>{{ msg }}</h3> -->
-    <div id="ChartSelectBar" class="SelectBar">
+    <!-- <div id="ChartSelectBar" class="SelectBar">
       <img class="SelectBarTitle" alt="bar" src="../assets/icon/Log.svg" width="5%" />
-      <!-- <div class="SelectItmes">口體溫</div>
       <div class="SelectItmes">口體溫</div>
-      <div class="SelectItmes">口體溫</div> -->
-    </div>
+    </div>-->
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
     :height="200"style="  padding-right: 10%;" />-->
     <div id="Chart">
@@ -25,12 +23,10 @@
 </template>
 
 <script>
-
 import LineChart from "./LineChart.js";
 // Hot Fixme
 
-
-var testRawData=[];
+var testRawData = [];
 export default {
   name: "LogChart",
   props: {
@@ -60,7 +56,7 @@ export default {
     },
     storageChartDatasets() {
       return this.$store.state.storeChartDatasets;
-    },
+    }
     // raw_data() {
     //   return this.raw_data;
     // }
@@ -104,7 +100,7 @@ export default {
         scales: {
           yAxes: [
             {
-              stacked: false,//折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
+              stacked: false, //折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
               ticks: {
                 beginAtZero: true
               },
@@ -213,7 +209,7 @@ export default {
       //   width: "100%",
       //   position: "relative"
       // }
-    raw_data:[]
+      raw_data: []
     };
   },
   mounted() {
@@ -236,7 +232,7 @@ export default {
       });
       let db = this.normalLines(temp);
       this.raw_data = temp;
-      testRawData= temp;
+      testRawData = temp;
       console.log("setting raw_data", this.raw_data);
 
       console.log("setting", db);
@@ -273,6 +269,17 @@ export default {
       }
       console.log("outputSet", outputSet);
       return outputSet;
+      // let photoDiary = [];
+      // for (let i = 0; i < list.length; i++) {
+      //   photoDiary.push({
+      //     id: i,
+      //     type: "photoDiary"
+      //   });
+      // }
+      // return outputSet.push(
+      //   ///產生photo
+      //   this.setting(this.colors[0], photoDiary, list[0])
+      // );
     },
     normalLines(data) {
       let MAX = Math.max(...data);
@@ -280,18 +287,18 @@ export default {
       let r = MAX - MIN;
       let t = r / 100;
       let output = [];
-      console.log("normalLines",r, t, output, data.length);
+      console.log("normalLines", r, t, output, data.length);
       data.map(index => {
         if (index == "nan") {
           output.push("nan");
         } else {
           let temp = index - MIN;
-          console.log("normalLines",index, temp, temp / t);
-           output.push(temp / t);
+          console.log("normalLines", index, temp, temp / t);
+          output.push(temp / t);
         }
       });
-      console.log("normalLines_output",output);
-      return output
+      console.log("normalLines_output", output);
+      return output;
     },
     fillData() {
       (this.datacollection = {
@@ -318,9 +325,7 @@ export default {
 
 var rawData = function(raw) {
   return raw;
-}
-
-
+};
 
 const customTooltips = function(tooltip) {
   // Tooltip Element
@@ -350,11 +355,11 @@ const customTooltips = function(tooltip) {
   if (tooltip.body) {
     const titleLines = tooltip.title || [];
     // const bodyLines = tooltip.body.map(getBody);
-        const bodyLines = tooltip.body.map(getBody);
-        const bodyLinesTitle = tooltip.title;
+    const bodyLines = tooltip.body.map(getBody);
+    const bodyLinesTitle = tooltip.title;
 
-console.log("bodyLines",bodyLines)
-console.log("bodyLinesTitle",bodyLinesTitle)
+    console.log("bodyLines", bodyLines);
+    console.log("bodyLinesTitle", bodyLinesTitle);
 
     let innerVUE = `
   <div slot="reference" style="width: 500px;">
@@ -377,35 +382,41 @@ console.log("bodyLinesTitle",bodyLinesTitle)
         //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         //            alt="Grapefruit slice atop a pile of other slices">` +
         // "</th></tr>";
-           title 
-        // `   <img class="fit-picture"
-        //        src="img/LogBoardLOGO.56c0f5e3.svg
-        //           alt="bar">` +
-        "</th></tr>"
-      
-        ;
+        title;
+      // `   <img class="fit-picture"
+      //        src="img/LogBoardLOGO.56c0f5e3.svg
+      //           alt="bar">` +
+      ("</th></tr>");
     });
-    innerHtml += "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
-    console.log("bodyLines",bodyLines)
-        console.log("raw_data",rawData )
+    innerHtml +=
+      "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
+    console.log("bodyLines", bodyLines);
+    console.log("raw_data", rawData);
 
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
       style += "; border-color:" + colors.borderColor;
       style += "; border-width: 2px";
-      let swp = body[0]
-            console.log("bodybodybodybody",body)
+      let swp = body[0];
+      console.log("bodybodybodybody", body);
 
-      let temp =swp.split(":");
-      console.log("DADADADDA",temp)
+      let temp = swp.split(":");
+      console.log("DADADADDA", temp);
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
       // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
-            innerHtml += "<tr><td style='text-align: left;' >" + span +temp[0]+" : "+ testRawData[i] + "</td></tr>";
-// Hot Fixme
+      innerHtml +=
+        "<tr><td style='text-align: left;' >" +
+        span +
+        temp[0] +
+        " : " +
+        testRawData[i] +
+        "</td></tr>";
+      // Hot Fixme
     });
-    innerHtml += "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
+    innerHtml +=
+      "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
@@ -457,7 +468,7 @@ console.log("bodyLinesTitle",bodyLinesTitle)
   margin: 0px 5px 20px 5px;
 }
 h3 {
-  margin: 40px 0 0;
+  /* margin: 40px 0 0; */
 }
 ul {
   list-style-type: none;
