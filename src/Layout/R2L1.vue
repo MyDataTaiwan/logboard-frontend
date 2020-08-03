@@ -2,15 +2,15 @@
   <div id="R2L1">
     <div id="R10">
       <div id="R5Top">
-        asd R
+        come soon R
         <h4>DASHBOARD</h4>
       </div>
       <div id="R5Botton">
-        asd R
+        come soon R
         <h4>DASHBOARD</h4>
       </div>
     </div>
-    <div id="L10">sasasasasasasasasasa</div>
+    <div id="L10">come soon</div>
   </div>
 </template>
 
