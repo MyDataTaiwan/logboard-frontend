@@ -5,7 +5,7 @@
         <div id="Logo">
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
-        <div id="NavItems">
+        <div slot="reference" id="NavItems">
           <router-link :to="{ name: 'dashboard' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
             <h4>DASHBOARD</h4>
@@ -14,10 +14,10 @@
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
             <h4>PHOTODIARY</h4>
           </router-link>
-          <router-link :to="{ name: 'camps' }" class="Nav">
+          <!-- <router-link :to="{ name: 'camps' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
             <h4>實習營健康表</h4>
-          </router-link>
+          </router-link>-->
         </div>
       </div>
       <div id="Content" style="overflow: hidden;">
@@ -29,7 +29,7 @@
               <img alt="menu logo" src="./assets/icon/menu.svg" height="25" />
             </button>
           </div>
-          <div id="NavItems" v-if="isShow">
+          <div  id="NavItems" v-if="isShow">
             <router-link :to="{ name: 'camps' }" class="Nav">
               <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
               <h4>實習營健康表</h4>
@@ -43,6 +43,8 @@
               <h4>PHOTODIARY</h4>
             </router-link>
             <DateSelectBar id="DateSelectBarMobile" v-if="true" />
+
+           
           </div>
         </div>
         <router-view></router-view>
@@ -70,12 +72,12 @@ export default {
   },
   watch: {
     storageUserId: function() {
-      console.log("storageUserId change",this.storageUserId);
+      console.log("storageUserId change", this.storageUserId);
     }
   },
   computed: {
     storageUserId() {
-        this.$store.commit("updateUserId",this.$route.params.id)
+      this.$store.commit("updateUserId", this.$route.params.id);
       return this.$route.params.id;
     }
   },
@@ -83,9 +85,12 @@ export default {
     return {
       uid: this.computed,
       isShow: false,
-      drawer: true
+      drawer: true,
+         visible: false,
+      DataTable: [{}, {}, {}]
     };
   },
+
   methods: {
     toggle: function() {
       this.isShow = !this.isShow;
