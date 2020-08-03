@@ -1,13 +1,14 @@
 <template>
   <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
+  row-style="height:40px"
     empty-text="資料包中無此區資料"
     :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
-    style="width:50vw"
-  >
-    <el-table-column fixed label="症狀" width="110">
+     size = "small"
+    style="width:50%"  >
+    <el-table-column fixed label="症狀" width="130px">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <!-- <p>症狀: {{ scope.row.name }}</p>
@@ -16,8 +17,8 @@
         <div slot="reference">
           <!-- <h6>{{ scope.row }}</h6>
           <h6>{{ scope.column }}</h6>-->
-          <h6>呼吸道症狀</h6>
-          <h3>{{ scope.row.name }}</h3>
+          <div class="h7">呼吸道症狀</div>
+          <h2>{{ scope.row.name }}</h2>
           <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
       </template>
@@ -28,13 +29,15 @@
       :key="prop"
       :prop="prop"
       :label="label"
+      width="60"
+     
     >
-      <template slot-scope="scope">
+      <template  slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
         <!-- <h6>{{ scope.column }}</h6>
         <h6>{{ scope.row }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
-        <el-popover trigger="hover" placement="top">
+        <el-popover  trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h4>Symptom</h4>
@@ -54,7 +57,7 @@
             <h3>{{scope.column.property }}</h3>-->
 
             <template v-if="scope.row.symptom[scope.column.property]==true">
-              <el-tag color="#5C6F75" effect="dark" size="small">
+              <el-tag color="#5C6F75" effect="dark" size="mini">
                 <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
                 <h3></h3>
                 <!-- <h3>顯示今天的症狀</h3> -->
@@ -64,6 +67,7 @@
         </el-popover>
       </template>
     </el-table-column>
+    
     <!-- <el-table-column prop="times[0].2020-07-16T19:02:36Z" label="A2020-07-16T19:02:36Z"></el-table-column>
     <el-table-column prop="times[1].2020-07-19T19:02:36Z" label="A2020-07-19T19:02:36Z"></el-table-column>
     <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>-->
@@ -169,6 +173,16 @@ export default {
   font: large !important;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
+}
+.h7 {
+  font-size: 8px !important ; 
+  font-family: "Montserrat", sans-serif;
+  /* font-weight: 900; */
+  font-weight: bold;
+  word-wrap: break-word;
+  white-space: nowrap;
+  flex-wrap: nowrap !important;
+  /* Medium */
 }
 </style>
 0: {…}
