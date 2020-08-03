@@ -1,5 +1,5 @@
 <template>
-  <div class="CalendarSweet">
+  <div class="CalendarSweet" >
     <calendar
       :eventCategories="eventCategories"
       v-bind:events="events"
@@ -10,8 +10,8 @@
     {{selectDateformatEnd}}
     {{$store.state.selectDateformat[0]}}
     {{$store.state.selectDateformat[1]}}
-    <h2>{{ message }}</h2> -->
-
+    <h2>{{ message }}</h2>-->
+  
     <button @click="goToday" class>Today</button>
   </div>
 </template>
@@ -21,20 +21,19 @@ import { Calendar } from "vue-sweet-calendar";
 import "vue-sweet-calendar/dist/SweetCalendar.css";
 export default {
   name: "CalendarSweet",
-  props: {
-  },
+  props: {},
   components: {
     Calendar
   },
+
   watch: {
     selectDateformatStart: function() {
-      console.log("selectDateformatStart change",this.selectDateformatStart);
+      console.log("selectDateformatStart change", this.selectDateformatStart);
     },
     selectDateformatEnd: function() {
-      console.log("selectDateformatEnd change",this.selectDateformatEnd);
+      console.log("selectDateformatEnd change", this.selectDateformatEnd);
     }
   },
-
   computed: {
     selectDateformatStart() {
       return this.$store.state.selectDateformat[0];
@@ -83,7 +82,7 @@ export default {
           textColor: "white",
           backgroundColor: "#FC9500"
         }
-      ],
+      ]
     };
   },
   methods: {
@@ -100,7 +99,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+  /* margin: 40px 0 0; */
 }
 ul {
   list-style-type: none;
@@ -117,6 +116,4 @@ a {
   flex: 1;
   /* height: 100% !important; */
 }
-
-
 </style>
