@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
+const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/?uid=c32b3920-09f1-4490-911d-3c0ccfd0a02f";
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
 export default new Vuex.Store({
@@ -16,7 +17,9 @@ export default new Vuex.Store({
 
 		// uid: "8d83c9c8-72c6-43b7-8476-6b189a4e786f",
 		uid: null,
+		openPopUp: false,
 		storeData: null,
+		storeRAWData: null,
 		message: "",
 		DB: {},
 		userList: [],
@@ -34,11 +37,13 @@ export default new Vuex.Store({
 		selectTemplateTargetSet: null,
 		zipSymptoms: null,
 		// TableTitle: [],
+		thumbnailList: [],
 		TableTitle: [
 			{ prop: 0, label: "2020-07-23T01:41:40Z" },
 			{ prop: 1, label: "2020-07-23T01:57:46Z" },
 			{ prop: 2, label: "2020-07-23T02:16:24Z" }
 		],
+		storeDataID:[],
 		storeTableTitle: null,
 		storeTableData: null,
 		storeChartLabels: [],
@@ -55,7 +60,11 @@ export default new Vuex.Store({
 		increment(state) {
 			state.count++
 		},
-
+		saveRAW(state, payload) {
+			state.storeRAWData = payload;
+			// state.openPopUp=true;
+			console.log("saveRAW  Store", state.storeRAWData);
+		},
 		saveDB(state, payload) {
 			state.storeData = payload;
 			console.log("saveDB Store", state.storeData);
@@ -73,10 +82,22 @@ export default new Vuex.Store({
 			state.storeChartLabels = payload;
 			console.log("save Labels Store " + payload.length, state.storeChartLabels);
 		},
+		saveFormatDataIDs(state, payload) {
+			state.storeDataID = [];
+			state.storeDataID = payload;
+			console.log("save ID Store " + payload.length, state.storeDataID);
+		},
 		saveFormatChartDatasets(state, payload) {
 			state.storeChartDatasets = [];
 			state.storeChartDatasets = payload;
+			///產生photo
 			console.log("save Datasets Store", payload);
+		},
+		saveFormatThumbnailsSets(state, payload) {
+			state.storeChartDatasets = [];
+			state.thumbnailList = payload;
+			///產生photo
+			console.log("save thumbnailList Store", payload);
 		},
 
 		updateUserId(state, payload) {
@@ -134,7 +155,7 @@ export default new Vuex.Store({
 			// return axios.get(test_url).then(response => {
 			// if (test_url!=`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`){
 			return axios.get(`${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`).then(response => {
-				console.log("fetchSummaryApi_get", `${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log("fetchSummaryApi_get", response,`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
 				console.log(response)
 				console.log(response.data.length)
 				if (response.status === 200) {
@@ -145,31 +166,42 @@ export default new Vuex.Store({
 					let FormatTableData = null;
 					let FormatChartLabels = null;
 					let FormatChartDatasets = null;
+					let FormatDataIDs = null;
+					// let FormatThumbnailsSets = null;
 					for (let id = 0; id < response.data.date.length; id++) {
-						FormatTableTitle.push({ prop: id, label: response.data.date[id] })
+						let swp = response.data.date[id]
+						let temp = swp.split("-");
+						console.log("DADADADDA", temp)
+						FormatTableTitle.push({ prop: id, label: temp[1] + "-" + temp[2] })
 					}
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
 					FormatChartDatasets = response.data.vital_signs;
+					// FormatThumbnailsSets = response.response.data.thumbnail_list;
+					// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
+					// console.log("fetch thumbnailList",FormatThumbnailsSets)
+					FormatDataIDs = response.data.id_list;
+					commit('saveFormatDataIDs', FormatDataIDs);
 					commit('saveFormatTableTitle', FormatTableTitle);
 					commit('saveFormatTableData', FormatTableData);
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
+					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 					// }
 				}
 				console.log("fetchSummaryApi_end")
 			})
 		},
-		fetchDaysApi({
-			commit,
-		}, payload) {
-			console.log("fetchDaysApi_start")
+		fetchDaysApi({///past-days
+			commit,///past-days
+		}, payload) {///past-days
+			console.log("fetch past-days Api_start")///past-days
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
 			return axios.get(`${$http}records/past-days/?uid=${this.state.uid}&template=${this.state.selectTemplate}&range=${payload.range}`).then(response => {
-				console.log("fetchDaysApi_get")
-				console.log(response)
-				console.log(response.data.length)
+				console.log("fetchDaysApi_get", response)///past-days
+				console.log(response)///past-days
+				console.log(response.data.length)///past-days
 				if (response.status === 200) {
 					console.log("fetchSummaryApi_200")
 					if (response.data.id_list != null) {
@@ -178,20 +210,32 @@ export default new Vuex.Store({
 						let FormatTableData = null;
 						let FormatChartLabels = null;
 						let FormatChartDatasets = null;
+						let FormatDataIDs = null;
+
+						// let FormatThumbnailsSets = null;
 						for (let id = 0; id < response.data.date.length; id++) {
-							FormatTableTitle.push({ prop: id, label: response.data.date[id] })
+							let swp = response.data.date[id]
+							let temp = swp.split("-");
+							console.log("DADADADDA", temp)
+							FormatTableTitle.push({ prop: id, label: temp[1] + "-" + temp[2] })
 						}
 						FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
 						FormatChartDatasets = response.data.vital_signs;
+						// FormatThumbnailsSets = response.response.data.thumbnail_list;
+						// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
+						// console.log("fetch thumbnailList",FormatThumbnailsSets)
+						FormatDataIDs = response.data.id_list;
+						commit('saveFormatDataIDs', FormatDataIDs);
 						commit('saveFormatTableTitle', FormatTableTitle);
 						commit('saveFormatTableData', FormatTableData);
 						commit('saveFormatChartLabels', FormatChartLabels);
 						commit('saveFormatChartDatasets', FormatChartDatasets);
+						// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
 					}
 				}
-				console.log("fetchDaysApi_end")
+				console.log("fetch past-days Api_end")
 			})
 		},
 		fetchToDaysApi({
@@ -200,7 +244,7 @@ export default new Vuex.Store({
 			console.log("fetchTODaysApi_start")
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
 			return axios.get(`${$http}records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
-				console.log("fetchTODaysApi_get")
+				console.log("fetchTODaysApi_get", response)
 				console.log(response)
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
@@ -210,6 +254,9 @@ export default new Vuex.Store({
 					// let FormatTableData = null;
 					let FormatChartLabels = null;
 					let FormatChartDatasets = null;
+					// let FormatThumbnailsSets = null;
+					let FormatDataIDs = null;
+
 					// for (let id = 0; id < response.data.timestamp.length; id++) {
 					// 	FormatTableTitle.push({ prop: id, label: response.data.timestamp[id] })
 					// }
@@ -217,16 +264,41 @@ export default new Vuex.Store({
 					// FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.timestamp;
 					FormatChartDatasets = response.data.vital_signs;
+					// FormatThumbnailsSets = response.response.data.thumbnails;
+					// console.log("fetch thumbnailList",response.response.data.thumbnails)
+					// console.log("fetch thumbnailList",FormatThumbnailsSets)
 					console.log("fetch TODaysApi_Labels", FormatChartLabels)
-
 					// commit('saveFormatTableTitle', FormatTableTitle);
 					// commit('saveFormatTableData', FormatTableData);
+					FormatDataIDs = response.data.id;
+					commit('saveFormatDataIDs', FormatDataIDs);
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
+					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 
 				}
 				console.log("fetchTODaysApi_end")
+			})
+		},
+		fetchRawDataApi({
+			commit,
+		}) {
+			console.log("fetchRawDataApi_start")
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
+			return axios.get($raw_api).then(response => {
+				console.log("fetchRawDataApi_get", response)
+				console.log(response.data[0])
+				if (response.status === 200) {
+					if (response.data[0].content_parsed === "success") {
+						if (response.data[0].photo != null) {
+							console.log("fetchRawDataApi_200")
+							console.log("success ", response.data.content_parsed)
+							return commit('saveRAW', response.data[0]);
+						}
+					}
+				}
+				console.log("fetchRawDataApi_end")
 			})
 		},
 		//新增 api

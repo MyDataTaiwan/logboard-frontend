@@ -27,6 +27,8 @@ import LineChart from "./LineChart.js";
 // Hot Fixme
 
 var testRawData = [];
+var testIDSets = [];
+var testtorageLabels = [];
 export default {
   name: "LogChart",
   props: {
@@ -46,6 +48,14 @@ export default {
       this.fillData();
       console.log("storageChartDatasets change", this.storageChartDatasets);
     },
+    // storageThumbnailSets: function() {
+    //   this.fillData();
+    //   console.log("storageThumbnailSets change", this.storageThumbnailSets);
+    // },
+    storageIDSets: function() {
+      this.fillData();
+      console.log("storageIDSets change", this.storageIDSets);
+    },
     raw_data: function() {
       console.log("raw_data change", this.raw_data);
     }
@@ -56,6 +66,12 @@ export default {
     },
     storageChartDatasets() {
       return this.$store.state.storeChartDatasets;
+    },
+    // storageThumbnailSets() {
+    //   return this.$store.state.thumbnailList;
+    // }
+    storageIDSets() {
+      return this.$store.state.storeDataID;
     }
     // raw_data() {
     //   return this.raw_data;
@@ -126,8 +142,8 @@ export default {
           display: true
         },
         tooltips: {
-          enabled: false,
-          // enabled: true,
+          // enabled: false,
+          enabled: true,
           mode: "index",
           position: "nearest",
           custom: customTooltips
@@ -232,7 +248,12 @@ export default {
       });
       let db = this.normalLines(temp);
       this.raw_data = temp;
-      testRawData = temp;
+      // testRawData = temp;
+      testRawData = this.storageChartDatasets;
+      testtorageLabels = this.storageChartLabels;
+      testIDSets = this.storageIDSets;
+      console.log("setting testtorageLabels", testtorageLabels);
+      console.log("setting testIDSets", testIDSets);
       console.log("setting raw_data", this.raw_data);
 
       console.log("setting", db);
@@ -373,8 +394,9 @@ const customTooltips = function(tooltip) {
   </div>
         `;
     let innerHtml = "<thead>";
-
+    let titleID = null; ///預計要取得的ID
     titleLines.forEach(function(title) {
+      titleID = testtorageLabels.indexOf(title); ///取得的ID
       innerHtml +=
         "<tr><th style='text-align: left; ' >" +
         // title +
@@ -382,7 +404,9 @@ const customTooltips = function(tooltip) {
         //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         //            alt="Grapefruit slice atop a pile of other slices">` +
         // "</th></tr>";
-        title;
+        title +
+        "| id:" +
+        testIDSets[titleID];
       // `   <img class="fit-picture"
       //        src="img/LogBoardLOGO.56c0f5e3.svg
       //           alt="bar">` +
@@ -390,8 +414,10 @@ const customTooltips = function(tooltip) {
     });
     innerHtml +=
       "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
-    console.log("bodyLines", bodyLines);
-    console.log("raw_data", rawData);
+    console.log("HTML bodyLines", bodyLines);
+    console.log("HTML raw_data", rawData);
+    console.log("HTML testRawData", testRawData);
+    console.log("HTML testRawData", testRawData[0]);
 
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
@@ -411,12 +437,18 @@ const customTooltips = function(tooltip) {
         span +
         temp[0] +
         " : " +
-        testRawData[i] +
+        testRawData[temp[0]][titleID] +
         "</td></tr>";
       // Hot Fixme
     });
+    //testIDSets[i][0]
+    console.log(testIDSets[titleID][0]);
+
     innerHtml +=
-      "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
+      "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
+      '<img class="fit-picture"src="' +
+      '"alt="Grapefruit slice atop a pile of other slices">' +
+      "</tbody>";
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
