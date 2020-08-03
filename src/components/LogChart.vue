@@ -50,11 +50,11 @@ export default {
       console.log("storageChartDatasets change", this.storageChartDatasets);
     },
     storageThumbnailSets: function() {
-      this.fillData();
+      // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
     storageIDSets: function() {
-      this.fillData();
+      // this.fillData();
       console.log("storageIDSets change", this.storageIDSets);
     },
     raw_data: function() {
@@ -143,8 +143,8 @@ export default {
           display: true
         },
         tooltips: {
-          // enabled: false,
-          enabled: true,
+          enabled: false,
+          // enabled: true,
           mode: "index",
           position: "nearest",
           custom: customTooltips
@@ -259,6 +259,7 @@ export default {
       console.log("setting raw_data", this.raw_data);
 
       console.log("setting", db);
+
       return {
         label: name,
         borderColor: color,
@@ -291,6 +292,31 @@ export default {
         );
       }
       console.log("outputSet", outputSet);
+
+      // ////add Photo data list
+      // let PhotoDataList = [];
+      // this.storageChartDatasets[list[0]].map(index => {
+      //   if (index == null) {
+      //     PhotoDataList.push("nan");
+      //   } else {
+      //     PhotoDataList.push(1);
+      //   }
+      // });
+      // console.log("add chart PhotoDataList",PhotoDataList);
+
+      //    outputSet.push(
+      //       {
+      //   label: "PhotoDataList",
+      //   borderColor: "#F0F",
+      //   fill: false,
+      //   lineTension: 0,
+      //   spanGaps: true,
+      //   data: [1,1,0,1,1,1]
+      // }
+      //   );
+      // // outputSet.push(PhotoDataList);
+      // console.log("add  chart PhotoDataList end ", outputSet);
+
       return outputSet;
       // let photoDiary = [];
       // for (let i = 0; i < list.length; i++) {
@@ -445,13 +471,28 @@ const customTooltips = function(tooltip) {
     });
     //testIDSets[i][0]
     console.log(testIDSets[titleID][0]);
-    console.log( "testThumbnailSets", testThumbnailSets[titleID][0]);
+    console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
 
     innerHtml +=
       "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
-      '<img class="fit-picture" src="'+testThumbnailSets[titleID][0]+'" alt="Grapefruit slice atop a pile of other slices">' +
+      '<img class="fit-picture" src="' +
+      testThumbnailSets[titleID][0] +
+      '" alt="Grapefruit slice atop a pile of other slices">' +
       "</tbody>";
-      
+    if (testThumbnailSets[titleID][0] == null) {
+      innerHtml +=
+        "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
+        "NO Photo" +
+        "</tbody>";
+    } else {
+      innerHtml +=
+        "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
+        '<img class="fit-picture" src="' +
+        testThumbnailSets[titleID][0] +
+        '" alt="Grapefruit slice atop a pile of other slices">' +
+        "</tbody>";
+    }
+
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
