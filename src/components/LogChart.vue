@@ -29,6 +29,7 @@ import LineChart from "./LineChart.js";
 var testRawData = [];
 var testIDSets = [];
 var testtorageLabels = [];
+var testThumbnailSets = [];
 export default {
   name: "LogChart",
   props: {
@@ -48,10 +49,10 @@ export default {
       this.fillData();
       console.log("storageChartDatasets change", this.storageChartDatasets);
     },
-    // storageThumbnailSets: function() {
-    //   this.fillData();
-    //   console.log("storageThumbnailSets change", this.storageThumbnailSets);
-    // },
+    storageThumbnailSets: function() {
+      this.fillData();
+      console.log("storageThumbnailSets change", this.storageThumbnailSets);
+    },
     storageIDSets: function() {
       this.fillData();
       console.log("storageIDSets change", this.storageIDSets);
@@ -67,9 +68,9 @@ export default {
     storageChartDatasets() {
       return this.$store.state.storeChartDatasets;
     },
-    // storageThumbnailSets() {
-    //   return this.$store.state.thumbnailList;
-    // }
+    storageThumbnailSets() {
+      return this.$store.state.thumbnailList;
+    },
     storageIDSets() {
       return this.$store.state.storeDataID;
     }
@@ -252,6 +253,7 @@ export default {
       testRawData = this.storageChartDatasets;
       testtorageLabels = this.storageChartLabels;
       testIDSets = this.storageIDSets;
+      testThumbnailSets = this.storageThumbnailSets;
       console.log("setting testtorageLabels", testtorageLabels);
       console.log("setting testIDSets", testIDSets);
       console.log("setting raw_data", this.raw_data);
@@ -443,12 +445,13 @@ const customTooltips = function(tooltip) {
     });
     //testIDSets[i][0]
     console.log(testIDSets[titleID][0]);
+    console.log( "testThumbnailSets", testThumbnailSets[titleID][0]);
 
     innerHtml +=
       "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
-      '<img class="fit-picture"src="' +
-      '"alt="Grapefruit slice atop a pile of other slices">' +
+      '<img class="fit-picture" src="'+testThumbnailSets[titleID][0]+'" alt="Grapefruit slice atop a pile of other slices">' +
       "</tbody>";
+      
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);

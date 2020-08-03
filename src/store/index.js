@@ -94,7 +94,7 @@ export default new Vuex.Store({
 			console.log("save Datasets Store", payload);
 		},
 		saveFormatThumbnailsSets(state, payload) {
-			state.storeChartDatasets = [];
+			state.thumbnailList = [];
 			state.thumbnailList = payload;
 			///產生photo
 			console.log("save thumbnailList Store", payload);
@@ -211,8 +211,7 @@ export default new Vuex.Store({
 						let FormatChartLabels = null;
 						let FormatChartDatasets = null;
 						let FormatDataIDs = null;
-
-						// let FormatThumbnailsSets = null;
+						let FormatThumbnailsSets = null;
 						for (let id = 0; id < response.data.date.length; id++) {
 							let swp = response.data.date[id]
 							let temp = swp.split("-");
@@ -222,16 +221,16 @@ export default new Vuex.Store({
 						FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
 						FormatChartDatasets = response.data.vital_signs;
-						// FormatThumbnailsSets = response.response.data.thumbnail_list;
-						// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
-						// console.log("fetch thumbnailList",FormatThumbnailsSets)
+						console.log("fetch thumbnailList",response.data.thumbnail_list)
+						FormatThumbnailsSets = response.data.thumbnail_list;
+						console.log("fetch thumbnailList",FormatThumbnailsSets)
 						FormatDataIDs = response.data.id_list;
 						commit('saveFormatDataIDs', FormatDataIDs);
 						commit('saveFormatTableTitle', FormatTableTitle);
 						commit('saveFormatTableData', FormatTableData);
 						commit('saveFormatChartLabels', FormatChartLabels);
 						commit('saveFormatChartDatasets', FormatChartDatasets);
-						// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
+						commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
 					}
 				}
