@@ -77,7 +77,7 @@ export default {
         },
         {
           value: "commonCold",
-          label: "COVID-19"
+          label: "普通感冒"
         }
       ];
 
@@ -148,8 +148,10 @@ export default {
           end_date: end_date
         });
       } else if (mode == "today") {
-        // this.toggle() 
+        // this.toggle()
+
         this.$store.dispatch("fetchToDaysApi");
+        this.$store.dispatch("fetchRawDataApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
           // range: "this-week"
@@ -272,13 +274,13 @@ export default {
   font: 1em sans-serif;
   padding: 0px 15px 0px 15px;
   /*FIXME */
-  margin: 0px 5px 16px 5px;  /*FIXME */
+  margin: 0px 5px 16px 5px; /*FIXME */
   /*FIXME */
 
   /* margin: 0px 5px 0px 5px; */
 }
 h3 {
-  margin: 40px 0 0;
+  /* margin: 50px 0 0; */
 }
 ul {
   list-style-type: none;
