@@ -204,6 +204,8 @@ export default new Vuex.Store({
 				console.log(response.data.length)///past-days
 				if (response.status === 200) {
 					console.log("fetchSummaryApi_200")
+					commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length-1]]);
+
 					if (response.data.id_list != null) {
 						console.log("success ", response.data.id_list)
 						let FormatTableTitle = [];
@@ -247,6 +249,7 @@ export default new Vuex.Store({
 				console.log(response)
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
+					console.log("fetchTODaysApi_200")
 					console.log("fetchTODaysApi_200")
 					console.log("success ", response.data.id_list)
 					// let FormatTableTitle = [];
