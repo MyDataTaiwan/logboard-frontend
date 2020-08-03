@@ -473,12 +473,7 @@ const customTooltips = function(tooltip) {
     console.log(testIDSets[titleID][0]);
     console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
 
-    innerHtml +=
-      "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
-      '<img class="fit-picture" src="' +
-      testThumbnailSets[titleID][0] +
-      '" alt="Grapefruit slice atop a pile of other slices">' +
-      "</tbody>";
+  
     if (testThumbnailSets[titleID][0] == null) {
       innerHtml +=
         "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
