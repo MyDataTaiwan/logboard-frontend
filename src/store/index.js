@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/?uid=";
+const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/";
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
 export default new Vuex.Store({
@@ -302,36 +302,46 @@ export default new Vuex.Store({
 		fetchRawDataApi({
 			commit,
 		}) {
+			let output = [];
 			console.log("fetchRawDataApi_start")
-			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
-			return axios.get(`${$raw_api}${this.state.uid}`).then(response => {
-				console.log("fetchRawDataApi_get", response)
-				console.log(response.data[0])
-				if (response.status === 200) {
-					if (response.data[0].content_parsed === "success") {
-						console.log("fetch Raw Data output response.data  ",response.data)
-
-						let output = [];
-						this.state.PopUpidList.map(index => {
-							response.data.filter(value=>{
-									if (value.id == index) {
-										return output.push(value)
-									}
-								})
-						})
-						console.log("fetch Raw Data output ",output)
-						return commit('saveRAW', output);
-
-						// if (response.data[0].photo != null) {
-						// 	console.log("fetchRawDataApi_200")
-						// 	console.log("success ", response.data.content_parsed)
-						// 	return commit('saveRAW', response.data[0]);
-						// }
-
+			this.state.PopUpidList.map(index => {
+				axios.get(`${$raw_api}${index}/?uid=${this.state.uid}`).then(response => {
+					console.log("fetchRawDataApi_get", response)
+					console.log(response.data)
+					if (response.status === 200) {
+						if (response.data.content_parsed === "success") {
+							console.log("fetch Raw Data output response.data  ", response.data)
+							output.push(response.data)
+							console.log("fetch Raw Data output ", output)
+						}
 					}
-				}
-				console.log("fetchRawDataApi_end")
+					console.log("fetchRawDataApi_end")
+				})
 			})
+			return commit('saveRAW', output);
+
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
+			// return axios.get(`${$raw_api}${this.state.uid}`).then(response => {
+			// 	console.log("fetchRawDataApi_get", response)
+			// 	console.log(response.data[0])
+			// 	if (response.status === 200) {
+			// 		if (response.data[0].content_parsed === "success") {
+			// 			console.log("fetch Raw Data output response.data  ",response.data)
+			// 			let output = [];
+			// 			this.state.PopUpidList.map(index => {
+			// 				response.data.filter(value=>{
+			// 						if (value.id == index) {
+			// 							return output.push(value)
+			// 						}
+			// 					})
+			// 			})
+			// 			console.log("fetch Raw Data output ",output)
+			// 			return commit('saveRAW', output);
+			// 		}
+			// 	}
+			// 	console.log("fetchRawDataApi_end")
+			// })
+
 		},
 		//新增 api
 		updateApi({
