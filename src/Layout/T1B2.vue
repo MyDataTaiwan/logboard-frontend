@@ -28,17 +28,23 @@
             <el-collapse style="overflow:auto;  height:250px;" accordion>
               <div v-for="item in storageRaw_Data" :key="item">
                 <el-collapse-item :title="item.id+':'+item.timestamp">
-                  <!-- <h6>id : {{item.id}}</h6> -->
-                  <h6>owner : {{item.owner}}</h6>
-                  <h6>thumbnail : {{item.thumbnail}}</h6>
-                  <h6>transaction_hash : {{item.transaction_hash}}</h6>
-                  <h6>transaction_hash_validated : {{item.transaction_hash_validated}}</h6>
-                  <h6>content_hash_verified : {{item.content_hash_verified}}</h6>
-                  <h6>content_parsed : {{item.content_parsed}}</h6>,
-                  <h6>template_name : {{item.template_name}}</h6>:
-                  <!-- <h6>timestamp : {{item.timestamp}}</h6> -->
-                  <h6>proof : {{item.proof}}</h6>
-                  <!-- <h6>fields : {{item.fields}}</h6> -->
+                  <div style="display: flex;flex: 1;flex-direction: row;">
+                    <!-- <h6>id : {{item.id}}</h6> -->
+                    <div style="display: flex;flex: 1;flex-direction: column;">
+                      <h6>owner : {{item.owner}}</h6>
+                      <!-- <h6>thumbnail : {{item.thumbnail}}</h6> -->
+                      <a :href="item.thumbnail">thumbnail</a>
+                      <h6>transaction_hash : {{item.transaction_hash}}</h6>
+                      <h6>transaction_hash_validated : {{item.transaction_hash_validated}}</h6>
+                      <h6>content_hash_verified : {{item.content_hash_verified}}</h6>
+                      <h6>content_parsed : {{item.content_parsed}}</h6>,
+                      <h6>template_name : {{item.template_name}}</h6>:
+                      <!-- <h6>timestamp : {{item.timestamp}}</h6> -->
+                      <h6>proof : {{item.proof}}</h6>
+                      <!-- <h6>fields : {{item.fields}}</h6> -->
+                    </div>
+                    <img class="fit-picture" :src="item.photo" alt="No Photo in這裡" />
+                  </div>
 
                   <el-table style="width:100%" height="200px" :data="item.fields">
                     <div v-for="subitem in Object.keys(item.fields[0])" :key="subitem">
@@ -54,8 +60,8 @@
                   "dataGroup": "note",
                   "isKeyField": false,
                   "defaultValue": null-->
-                  <h6>photo : {{item.photo}}</h6>
-                  <img class="fit-picture" src="item.photo" alt="No Photo in這裡" />
+                  <!-- <h6>photo : {{item.photo}}</h6> -->
+                  <a :href="item.photo">photo</a>
                 </el-collapse-item>
               </div>
               <el-collapse-item title="raw">
