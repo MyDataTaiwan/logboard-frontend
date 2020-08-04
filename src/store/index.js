@@ -7,15 +7,19 @@ Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/?uid=c32b3920-09f1-4490-911d-3c0ccfd0a02f";
+const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/?uid=";
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
 export default new Vuex.Store({
 	state: {
 		// 初始化狀態
 		// uid: "4b539876-d395-4e01-b987-8ae8ea754b0e",
-
 		// uid: "8d83c9c8-72c6-43b7-8476-6b189a4e786f",
+		displayPopUp: false,
+		PopUpindex: null,
+		PopUpidList: [],
+
+
 		uid: null,
 		openPopUp: false,
 		storeData: null,
@@ -43,7 +47,7 @@ export default new Vuex.Store({
 			{ prop: 1, label: "2020-07-23T01:57:46Z" },
 			{ prop: 2, label: "2020-07-23T02:16:24Z" }
 		],
-		storeDataID:[],
+		storeDataID: [],
 		storeTableTitle: null,
 		storeTableData: null,
 		storeChartLabels: [],
@@ -59,6 +63,18 @@ export default new Vuex.Store({
 	mutations: {
 		increment(state) {
 			state.count++
+		},
+
+		ChangDisplayPopUp(state, payload) {
+			state.displayPopUp = payload.display;
+			if (payload.index != -1) {
+				state.PopUpindex = payload.index;
+				state.PopUpidList = payload.idList
+				console.log("GET  displayPopUp idList", payload.idList);
+
+			}
+			// state.openPopUp=true;
+			console.log("save  displayPopUp", state.displayPopUp, state.PopUpindex);
 		},
 		saveRAW(state, payload) {
 			state.storeRAWData = payload;
@@ -155,7 +171,7 @@ export default new Vuex.Store({
 			// return axios.get(test_url).then(response => {
 			// if (test_url!=`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`){
 			return axios.get(`${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`).then(response => {
-				console.log("fetchSummaryApi_get", response,`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log("fetchSummaryApi_get", response, `${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
 				console.log(response)
 				console.log(response.data.length)
 				if (response.status === 200) {
@@ -204,7 +220,7 @@ export default new Vuex.Store({
 				console.log(response.data.length)///past-days
 				if (response.status === 200) {
 					console.log("fetchSummaryApi_200")
-					commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length-1]]);
+					commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length - 1]]);
 
 					if (response.data.id_list != null) {
 						console.log("success ", response.data.id_list)
@@ -223,9 +239,9 @@ export default new Vuex.Store({
 						FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
 						FormatChartDatasets = response.data.vital_signs;
-						console.log("fetch thumbnailList",response.data.thumbnail_list)
+						console.log("fetch thumbnailList", response.data.thumbnail_list)
 						FormatThumbnailsSets = response.data.thumbnail_list;
-						console.log("fetch thumbnailList",FormatThumbnailsSets)
+						console.log("fetch thumbnailList", FormatThumbnailsSets)
 						FormatDataIDs = response.data.id_list;
 						commit('saveFormatDataIDs', FormatDataIDs);
 						commit('saveFormatTableTitle', FormatTableTitle);
@@ -288,16 +304,30 @@ export default new Vuex.Store({
 		}) {
 			console.log("fetchRawDataApi_start")
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
-			return axios.get($raw_api).then(response => {
+			return axios.get(`${$raw_api}${this.state.uid}`).then(response => {
 				console.log("fetchRawDataApi_get", response)
 				console.log(response.data[0])
 				if (response.status === 200) {
 					if (response.data[0].content_parsed === "success") {
-						if (response.data[0].photo != null) {
-							console.log("fetchRawDataApi_200")
-							console.log("success ", response.data.content_parsed)
-							return commit('saveRAW', response.data[0]);
-						}
+						console.log("fetch Raw Data output response.data  ",response.data)
+
+						let output = [];
+						this.state.PopUpidList.map(index => {
+							response.data.filter(value=>{
+									if (value.id == index) {
+										return output.push(value)
+									}
+								})
+						})
+						console.log("fetch Raw Data output ",output)
+						return commit('saveRAW', output);
+
+						// if (response.data[0].photo != null) {
+						// 	console.log("fetchRawDataApi_200")
+						// 	console.log("success ", response.data.content_parsed)
+						// 	return commit('saveRAW', response.data[0]);
+						// }
+
 					}
 				}
 				console.log("fetchRawDataApi_end")

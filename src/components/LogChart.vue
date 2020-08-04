@@ -7,6 +7,9 @@
     </div>-->
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
     :height="200"style="  padding-right: 10%;" />-->
+    <!-- <div>{{ selectedData }}</div>
+    <div>{{ $store.state.displayPopUp }}</div> -->
+
     <div id="Chart">
       <!-- <el-button>click 激活</el-button> -->
 
@@ -15,7 +18,7 @@
         :options="{responsive: true, maintainAspectRatio: false}"
       ></line-chart>-->
 
-      <line-chart :chart-data="datacollection" :options="options"></line-chart>
+      <line-chart @on-receive="update" :chart-data="datacollection" :options="options"></line-chart>
 
       <!-- <button @click="fillData()">Randomize</button> -->
     </div>
@@ -80,6 +83,7 @@ export default {
   },
   data() {
     return {
+      selectedData: {},
       labels: ["January", "February"],
 
       colors: [
@@ -99,6 +103,7 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        onClick: this.handle,
         responsiveAnimationDuration: 0,
         // responsive: true,
         // maintainAspectRatio: false,
@@ -233,6 +238,22 @@ export default {
     this.fillData();
   },
   methods: {
+    handle(point, event) {
+      const item = event[0];
+      this.$store.commit("ChangDisplayPopUp", {display:true,index:event[0]._index,idList:this.storageIDSets[event[0]._index]});
+
+      console.log("我被點了", point, event[0]._index);
+      this.selectedData = event[0]._index;
+      this.$emit("on-receive", {
+        index: item._index,
+        backgroundColor: item._view.backgroundColor,
+        value: this.values[item._index]
+      });
+      // this.$store.commit("updateUserId", this.$route.params.id);
+    }, ////捕捉點擊
+    update(data) {
+      this.selectedData = data;
+    }, ////捕捉點擊
     getImg() {
       return `<img class="fit-picture"
      src="/media/examples/grapefruit-slice-332-332.jpg"
@@ -473,7 +494,6 @@ const customTooltips = function(tooltip) {
     console.log(testIDSets[titleID][0]);
     console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
 
-  
     if (testThumbnailSets[titleID][0] == null) {
       innerHtml +=
         "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
