@@ -1,14 +1,15 @@
 <template>
   <div id="ChartView" style="width: 100%;">
     <!-- <h3>{{ msg }}</h3> -->
-    <div id="ChartSelectBar" class="SelectBar">
+    <!-- <div id="ChartSelectBar" class="SelectBar">
       <img class="SelectBarTitle" alt="bar" src="../assets/icon/Log.svg" width="5%" />
-      <!-- <div class="SelectItmes">口體溫</div>
       <div class="SelectItmes">口體溫</div>
-      <div class="SelectItmes">口體溫</div> -->
-    </div>
+    </div>-->
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
     :height="200"style="  padding-right: 10%;" />-->
+    <!-- <div>{{ selectedData }}</div>
+    <div>{{ $store.state.displayPopUp }}</div> -->
+
     <div id="Chart">
       <!-- <el-button>click 激活</el-button> -->
 
@@ -17,7 +18,7 @@
         :options="{responsive: true, maintainAspectRatio: false}"
       ></line-chart>-->
 
-      <line-chart :chart-data="datacollection" :options="options"></line-chart>
+      <line-chart @on-receive="update" :chart-data="datacollection" :options="options"></line-chart>
 
       <!-- <button @click="fillData()">Randomize</button> -->
     </div>
@@ -25,12 +26,13 @@
 </template>
 
 <script>
-
 import LineChart from "./LineChart.js";
 // Hot Fixme
 
-
-var testRawData=[];
+var testRawData = [];
+var testIDSets = [];
+var testtorageLabels = [];
+var testThumbnailSets = [];
 export default {
   name: "LogChart",
   props: {
@@ -50,6 +52,14 @@ export default {
       this.fillData();
       console.log("storageChartDatasets change", this.storageChartDatasets);
     },
+    storageThumbnailSets: function() {
+      // this.fillData();
+      console.log("storageThumbnailSets change", this.storageThumbnailSets);
+    },
+    storageIDSets: function() {
+      // this.fillData();
+      console.log("storageIDSets change", this.storageIDSets);
+    },
     raw_data: function() {
       console.log("raw_data change", this.raw_data);
     }
@@ -61,12 +71,19 @@ export default {
     storageChartDatasets() {
       return this.$store.state.storeChartDatasets;
     },
+    storageThumbnailSets() {
+      return this.$store.state.thumbnailList;
+    },
+    storageIDSets() {
+      return this.$store.state.storeDataID;
+    }
     // raw_data() {
     //   return this.raw_data;
     // }
   },
   data() {
     return {
+      selectedData: {},
       labels: ["January", "February"],
 
       colors: [
@@ -86,6 +103,7 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        onClick: this.handle,
         responsiveAnimationDuration: 0,
         // responsive: true,
         // maintainAspectRatio: false,
@@ -104,7 +122,7 @@ export default {
         scales: {
           yAxes: [
             {
-              stacked: false,//折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
+              stacked: false, //折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
               ticks: {
                 beginAtZero: true
               },
@@ -213,13 +231,29 @@ export default {
       //   width: "100%",
       //   position: "relative"
       // }
-    raw_data:[]
+      raw_data: []
     };
   },
   mounted() {
     this.fillData();
   },
   methods: {
+    handle(point, event) {
+      const item = event[0];
+      this.$store.commit("ChangDisplayPopUp", {display:true,index:event[0]._index,idList:this.storageIDSets[event[0]._index]});
+
+      console.log("我被點了", point, event[0]._index);
+      this.selectedData = event[0]._index;
+      this.$emit("on-receive", {
+        index: item._index,
+        backgroundColor: item._view.backgroundColor,
+        value: this.values[item._index]
+      });
+      // this.$store.commit("updateUserId", this.$route.params.id);
+    }, ////捕捉點擊
+    update(data) {
+      this.selectedData = data;
+    }, ////捕捉點擊
     getImg() {
       return `<img class="fit-picture"
      src="/media/examples/grapefruit-slice-332-332.jpg"
@@ -236,10 +270,17 @@ export default {
       });
       let db = this.normalLines(temp);
       this.raw_data = temp;
-      testRawData= temp;
+      // testRawData = temp;
+      testRawData = this.storageChartDatasets;
+      testtorageLabels = this.storageChartLabels;
+      testIDSets = this.storageIDSets;
+      testThumbnailSets = this.storageThumbnailSets;
+      console.log("setting testtorageLabels", testtorageLabels);
+      console.log("setting testIDSets", testIDSets);
       console.log("setting raw_data", this.raw_data);
 
       console.log("setting", db);
+
       return {
         label: name,
         borderColor: color,
@@ -272,7 +313,43 @@ export default {
         );
       }
       console.log("outputSet", outputSet);
+
+      // ////add Photo data list
+      // let PhotoDataList = [];
+      // this.storageChartDatasets[list[0]].map(index => {
+      //   if (index == null) {
+      //     PhotoDataList.push("nan");
+      //   } else {
+      //     PhotoDataList.push(1);
+      //   }
+      // });
+      // console.log("add chart PhotoDataList",PhotoDataList);
+
+      //    outputSet.push(
+      //       {
+      //   label: "PhotoDataList",
+      //   borderColor: "#F0F",
+      //   fill: false,
+      //   lineTension: 0,
+      //   spanGaps: true,
+      //   data: [1,1,0,1,1,1]
+      // }
+      //   );
+      // // outputSet.push(PhotoDataList);
+      // console.log("add  chart PhotoDataList end ", outputSet);
+
       return outputSet;
+      // let photoDiary = [];
+      // for (let i = 0; i < list.length; i++) {
+      //   photoDiary.push({
+      //     id: i,
+      //     type: "photoDiary"
+      //   });
+      // }
+      // return outputSet.push(
+      //   ///產生photo
+      //   this.setting(this.colors[0], photoDiary, list[0])
+      // );
     },
     normalLines(data) {
       let MAX = Math.max(...data);
@@ -280,18 +357,18 @@ export default {
       let r = MAX - MIN;
       let t = r / 100;
       let output = [];
-      console.log("normalLines",r, t, output, data.length);
+      console.log("normalLines", r, t, output, data.length);
       data.map(index => {
         if (index == "nan") {
           output.push("nan");
         } else {
           let temp = index - MIN;
-          console.log("normalLines",index, temp, temp / t);
-           output.push(temp / t);
+          console.log("normalLines", index, temp, temp / t);
+          output.push(temp / t);
         }
       });
-      console.log("normalLines_output",output);
-      return output
+      console.log("normalLines_output", output);
+      return output;
     },
     fillData() {
       (this.datacollection = {
@@ -299,6 +376,8 @@ export default {
         datasets: this.setMaker()
       }),
         { responsive: true, maintainAspectRatio: false };
+              this.$store.commit("ChangisLoading", false);
+
     },
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
@@ -318,9 +397,7 @@ export default {
 
 var rawData = function(raw) {
   return raw;
-}
-
-
+};
 
 const customTooltips = function(tooltip) {
   // Tooltip Element
@@ -350,11 +427,11 @@ const customTooltips = function(tooltip) {
   if (tooltip.body) {
     const titleLines = tooltip.title || [];
     // const bodyLines = tooltip.body.map(getBody);
-        const bodyLines = tooltip.body.map(getBody);
-        const bodyLinesTitle = tooltip.title;
+    const bodyLines = tooltip.body.map(getBody);
+    const bodyLinesTitle = tooltip.title;
 
-console.log("bodyLines",bodyLines)
-console.log("bodyLinesTitle",bodyLinesTitle)
+    console.log("bodyLines", bodyLines);
+    console.log("bodyLinesTitle", bodyLinesTitle);
 
     let innerVUE = `
   <div slot="reference" style="width: 500px;">
@@ -368,8 +445,9 @@ console.log("bodyLinesTitle",bodyLinesTitle)
   </div>
         `;
     let innerHtml = "<thead>";
-
+    let titleID = null; ///預計要取得的ID
     titleLines.forEach(function(title) {
+      titleID = testtorageLabels.indexOf(title); ///取得的ID
       innerHtml +=
         "<tr><th style='text-align: left; ' >" +
         // title +
@@ -377,35 +455,61 @@ console.log("bodyLinesTitle",bodyLinesTitle)
         //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         //            alt="Grapefruit slice atop a pile of other slices">` +
         // "</th></tr>";
-           title 
-        // `   <img class="fit-picture"
-        //        src="img/LogBoardLOGO.56c0f5e3.svg
-        //           alt="bar">` +
-        "</th></tr>"
-      
-        ;
+        title +
+        "| id:" +
+        testIDSets[titleID];
+      // `   <img class="fit-picture"
+      //        src="img/LogBoardLOGO.56c0f5e3.svg
+      //           alt="bar">` +
+      ("</th></tr>");
     });
-    innerHtml += "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
-    console.log("bodyLines",bodyLines)
-        console.log("raw_data",rawData )
+    innerHtml +=
+      "</thead><tbody><tr><td  style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>Symptom</td></tr>";
+    console.log("HTML bodyLines", bodyLines);
+    console.log("HTML raw_data", rawData);
+    console.log("HTML testRawData", testRawData);
+    console.log("HTML testRawData", testRawData[0]);
 
     bodyLines.forEach(function(body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
       style += "; border-color:" + colors.borderColor;
       style += "; border-width: 2px";
-      let swp = body[0]
-            console.log("bodybodybodybody",body)
+      let swp = body[0];
+      console.log("bodybodybodybody", body);
 
-      let temp =swp.split(":");
-      console.log("DADADADDA",temp)
+      let temp = swp.split(":");
+      console.log("DADADADDA", temp);
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
       // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
-            innerHtml += "<tr><td style='text-align: left;' >" + span +temp[0]+" : "+ testRawData[i] + "</td></tr>";
-// Hot Fixme
+      innerHtml +=
+        "<tr><td style='text-align: left;' >" +
+        span +
+        temp[0] +
+        " : " +
+        testRawData[temp[0]][titleID] +
+        "</td></tr>";
+      // Hot Fixme
     });
-    innerHtml += "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr></tbody>";
+    //testIDSets[i][0]
+    console.log(testIDSets[titleID][0]);
+    console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
+
+    if (testThumbnailSets[titleID][0] == null) {
+      innerHtml +=
+        "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
+        "NO Photo" +
+        "</tbody>";
+    } else {
+      innerHtml +=
+        "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
+        '<img class="fit-picture" src="' +
+        testThumbnailSets[titleID][0] +
+        '" alt="Grapefruit slice atop a pile of other slices">' +
+        "</tbody>";
+    }
+
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
@@ -457,7 +561,7 @@ console.log("bodyLinesTitle",bodyLinesTitle)
   margin: 0px 5px 20px 5px;
 }
 h3 {
-  margin: 40px 0 0;
+  /* margin: 40px 0 0; */
 }
 ul {
   list-style-type: none;

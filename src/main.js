@@ -5,6 +5,12 @@ import router from './router'
 import store from './store' //引入狀態管理 store
 import Axios from 'axios'
 import 'typeface-montserrat'
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+// Init plugin
+Vue.use(Loading);
+Vue.component('Loading', Loading)
 
 // Vue.prototype.$http = 'http://172.105.199.206:5566'
 Vue.prototype.axios = Axios
