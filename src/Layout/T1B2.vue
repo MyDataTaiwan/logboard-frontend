@@ -135,7 +135,9 @@ export default {
   created() {},
   watch: {
     storageRaw_Data: function() {
-      console.log("", this.storageRaw_Data);
+      console.log("storageRaw_Data change", this.storageRaw_Data);
+      this.$store.commit("ChangisLoading", false);
+
       // this.fillData();
       // this.visible = truestorageRaw_Data change;
     },

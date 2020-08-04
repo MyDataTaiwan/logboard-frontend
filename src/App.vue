@@ -1,7 +1,11 @@
 <template>
   <div id="main">
+    <!-- <loading :active.sync="visible" :can-cancel="true"></loading> -->
+    <loading :active.sync="storageisLoading"></loading>
+
     <div id="App">
       <div v-if="true" id="NavBar">
+        <el-button size="mini" @click="onCancel">B</el-button>
         <div id="Logo">
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
@@ -29,7 +33,7 @@
               <img alt="menu logo" src="./assets/icon/menu.svg" height="25" />
             </button>
           </div>
-          <div  id="NavItems" v-if="isShow">
+          <div id="NavItems" v-if="isShow">
             <router-link :to="{ name: 'camps' }" class="Nav">
               <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
               <h4>實習營健康表</h4>
@@ -43,8 +47,6 @@
               <h4>PHOTODIARY</h4>
             </router-link>
             <DateSelectBar id="DateSelectBarMobile" v-if="true" />
-
-           
           </div>
         </div>
         <router-view></router-view>
@@ -73,12 +75,18 @@ export default {
   watch: {
     storageUserId: function() {
       console.log("storageUserId change", this.storageUserId);
+    },
+    storageisLoading: function() {
+      console.log("storageisLoading change", this.storageisLoading);
     }
   },
   computed: {
     storageUserId() {
       this.$store.commit("updateUserId", this.$route.params.id);
       return this.$route.params.id;
+    },
+    storageisLoading() {
+      return this.$store.state.isLoading;
     }
   },
   data() {
@@ -86,14 +94,27 @@ export default {
       uid: this.computed,
       isShow: false,
       drawer: true,
-         visible: false,
+      visible: false,
       DataTable: [{}, {}, {}]
+      // isLoading: false
     };
   },
 
   methods: {
     toggle: function() {
       this.isShow = !this.isShow;
+    },
+    open() {
+      console.log("open was clicked, will auto hide");
+      let loader = this.$loading.show({
+        loader: "dots"
+      });
+      setTimeout(() => loader.hide(), 3 * 1000);
+    },
+    show() {
+      console.log("show was clicked, click to hide");
+      // do AJAX here
+      this.visible = true;
     }
   }
 };

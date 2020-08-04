@@ -21,6 +21,7 @@
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.0",
     "vue-date-fns": "^2.0.1",
+    "vue-loading-overlay": "^3.3.2",
     "vue-router": "^3.3.4",
     "vue-sweet-calendar": "^0.3.1",
     "vue-template-loader": "^1.1.0",

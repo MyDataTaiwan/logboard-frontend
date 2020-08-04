@@ -376,6 +376,8 @@ export default {
         datasets: this.setMaker()
       }),
         { responsive: true, maintainAspectRatio: false };
+              this.$store.commit("ChangisLoading", false);
+
     },
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;

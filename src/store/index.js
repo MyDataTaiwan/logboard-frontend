@@ -19,7 +19,7 @@ export default new Vuex.Store({
 		PopUpindex: null,
 		PopUpidList: [],
 
-
+		isLoading: false,
 		uid: null,
 		openPopUp: false,
 		storeData: null,
@@ -64,7 +64,9 @@ export default new Vuex.Store({
 		increment(state) {
 			state.count++
 		},
-
+		ChangisLoading(state, payload) {
+			state.isLoading = payload
+		},
 		ChangDisplayPopUp(state, payload) {
 			state.displayPopUp = payload.display;
 			if (payload.index != -1) {
@@ -167,6 +169,7 @@ export default new Vuex.Store({
 			commit,
 		}, payload) {
 			console.log("fetchSummaryApi_start", payload)
+			commit('ChangisLoading', true);
 			// let test_url= `https://logboard-dev.numbersprotocol.io/api/v1/records/summary/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&start_date=2020-07-15&end_date=2020-07-24`;
 			// return axios.get(test_url).then(response => {
 			// if (test_url!=`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`){
@@ -213,6 +216,7 @@ export default new Vuex.Store({
 			commit,///past-days
 		}, payload) {///past-days
 			console.log("fetch past-days Api_start")///past-days
+			commit('ChangisLoading', true);
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
 			return axios.get(`${$http}records/past-days/?uid=${this.state.uid}&template=${this.state.selectTemplate}&range=${payload.range}`).then(response => {
 				console.log("fetchDaysApi_get", response)///past-days
@@ -259,6 +263,7 @@ export default new Vuex.Store({
 			commit,
 		}) {
 			console.log("fetchTODaysApi_start")
+			commit('ChangisLoading', true);
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
 			return axios.get(`${$http}records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
 				console.log("fetchTODaysApi_get", response)
@@ -302,6 +307,7 @@ export default new Vuex.Store({
 		fetchRawDataApi({
 			commit,
 		}) {
+			commit('ChangisLoading', true);
 			let output = [];
 			console.log("fetchRawDataApi_start")
 			this.state.PopUpidList.map(index => {
