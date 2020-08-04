@@ -1,8 +1,6 @@
 <template >
   <div id="T1B2" style="width: 100%;">
     <div id="Top10">
-      <button @click="visible=!visible">open</button>
-
       <LogChart msg="LogChart Plugins" />
     </div>
     <div id="Buttom10">
