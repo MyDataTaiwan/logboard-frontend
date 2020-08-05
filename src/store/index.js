@@ -270,6 +270,8 @@ export default new Vuex.Store({
 				console.log(response)
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
+					commit('updateDateformat', [response.data.date, response.data.date]);
+
 					console.log("fetchTODaysApi_200")
 					console.log("fetchTODaysApi_200")
 					console.log("success ", response.data.id_list)
