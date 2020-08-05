@@ -5,7 +5,6 @@
 
     <div id="App">
       <div v-if="true" id="NavBar">
-        <el-button size="mini" @click="onCancel">B</el-button>
         <div id="Logo">
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
