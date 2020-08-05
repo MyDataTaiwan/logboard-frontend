@@ -2,7 +2,6 @@
   <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
     class="table-fixed"
-    row-style="height:40px"
     ref="multipleTable"
     empty-text="資料包中無此區資料"
     :span-method="arraySpanMethod"
@@ -53,9 +52,13 @@
           <p>症狀: {{ scope.row.name }}</p>
           <p>時間: {{scope.column.property}}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
-          <h3>顯示今天的症狀</h3>
+          <h3>今天的症狀</h3>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
+
+          <!-- <h3>顯示今天的症狀</h3>
           <h2>PhotoDiary</h2>
+          <img class="fit-picture"  src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Grapefruit slice atop a pile of other slices">
+          <img class="fit-picture" :src="testThumbnailSets[2][0]" alt="Grapefruit slice atop a pile of other slices">-->
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <div slot="reference" class="name-wrapper">
             <!-- <el-tag size="mini">{{1}}</el-tag>
@@ -90,21 +93,51 @@ export default {
   },
   watch: {
     storageTableTitle: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("storageTableTitle change");
     },
     storageTableData: function() {
       console.log("storageTableData change");
       this.$refs.tableRef.bodyWrapper.scrollTop = 5;
-      this.$refs.multipleTable.doLayout();
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
     },
     selectTemplate: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("selectTemplate change");
     },
     storageData: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("storageData change");
+    },
+    storageThumbnailSets: function() {
+      // this.fillData();
+      console.log("storageThumbnailSets change", this.storageThumbnailSets);
     }
   },
   computed: {
+    storageThumbnailSets() {
+      return this.$store.state.thumbnailList;
+    },
     storageTableTitle() {
       if (this.storageData.symptoms[0] == null) {
         return [
@@ -142,6 +175,18 @@ export default {
     // });
   },
   methods: {
+    doResize() {
+      setTimeout(function() {
+        //手動觸發窗口resize事件
+        if (document.createEvent) {
+          var event = document.createEvent("HTMLEvents");
+          event.initEvent("resize", true, true);
+          window.dispatchEvent(event);
+        } else if (document.createEventObject) {
+          window.fireEvent("onresize");
+        }
+      }, 100);
+    },
     DateToTableTitle(date) {
       let TableTitle = [];
       console.log("TableTitleA", date);
@@ -177,8 +222,8 @@ export default {
   display: flex;
   flex-direction: row;
 }
-.el-table__fixed-right{
-    height: 100% !important;
+.el-table__fixed-right {
+  height: 100% !important;
 }
 .h3 {
   /* font: 1em sans-serif; */
@@ -196,6 +241,20 @@ export default {
   white-space: nowrap;
   flex-wrap: nowrap !important;
   /* Medium */
+}
+.el-table th.gutter {
+  display: table-cell !important;
+}
+.el-table--border th.gutter:last-of-type {
+  display: block !important;
+  width: 17px !important;
+}
+.el-table th {
+  display: table-cell !important;
+}
+
+body .el-table th.gutter {
+  display: table-cell !important;
 }
 </style>
 0: {…}

@@ -130,6 +130,23 @@ export default {
   }
 }*/
 
+.el-table th.gutter {
+    display: table-cell!important;
+}
+.el-table--border th.gutter:last-of-type {
+    display: block!important;
+    width: 17px!important;
+}
+.el-table th {
+	display: table-cell!important; 
+}
+
+
+ 
+body .el-table th.gutter{
+    display: table-cell!important;
+}
+
 #main .el-date-editor--daterange.el-input__inner {
   width: 100%;
 }
