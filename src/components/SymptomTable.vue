@@ -1,14 +1,22 @@
 <template>
   <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
-  row-style="height:40px"
+    class="table-fixed"
+    row-style="height:40px"
+    ref="multipleTable"
     empty-text="資料包中無此區資料"
     :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
-     size = "small"
-    style="width:50%"  >
-    <el-table-column fixed label="症狀" width="130px">
+    size="small"
+    style="width:50%"
+  >
+    <el-table-column
+      style="{ visibility: show1 ? 'hidden' : 'visible' }"
+      fixed="left"
+      label="症狀"
+      width="130px"
+    >
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <!-- <p>症狀: {{ scope.row.name }}</p>
@@ -23,21 +31,21 @@
         </div>
       </template>
     </el-table-column>
+    <el-table-column width="10" prop=" " label=" "></el-table-column>
 
     <el-table-column
-      v-for="{ prop, label } in storageTableTitle"
+      v-for="{ prop, label } in storageTableTitle.slice(0)"
       :key="prop"
       :prop="prop"
       :label="label"
       width="60"
-     
     >
-      <template  slot-scope="scope">
+      <template slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
         <!-- <h6>{{ scope.column }}</h6>
         <h6>{{ scope.row }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
-        <el-popover  trigger="hover" placement="top">
+        <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h4>Symptom</h4>
@@ -67,7 +75,7 @@
         </el-popover>
       </template>
     </el-table-column>
-    
+
     <!-- <el-table-column prop="times[0].2020-07-16T19:02:36Z" label="A2020-07-16T19:02:36Z"></el-table-column>
     <el-table-column prop="times[1].2020-07-19T19:02:36Z" label="A2020-07-19T19:02:36Z"></el-table-column>
     <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>-->
@@ -86,6 +94,8 @@ export default {
     },
     storageTableData: function() {
       console.log("storageTableData change");
+      this.$refs.tableRef.bodyWrapper.scrollTop = 5;
+      this.$refs.multipleTable.doLayout();
     },
     selectTemplate: function() {
       console.log("selectTemplate change");
@@ -167,6 +177,9 @@ export default {
   display: flex;
   flex-direction: row;
 }
+.el-table__fixed-right{
+    height: 100% !important;
+}
 .h3 {
   /* font: 1em sans-serif; */
   /* font-size: 16pt !important; */
@@ -175,7 +188,7 @@ export default {
     "Lucida Sans", Arial, sans-serif;
 }
 .h7 {
-  font-size: 8px !important ; 
+  font-size: 8px !important ;
   font-family: "Montserrat", sans-serif;
   /* font-weight: 900; */
   font-weight: bold;
