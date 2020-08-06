@@ -1,14 +1,21 @@
 <template>
   <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
-  row-style="height:40px"
+    class="table-fixed"
+    ref="multipleTable"
     empty-text="資料包中無此區資料"
     :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
-     size = "small"
-    style="width:50%"  >
-    <el-table-column fixed label="症狀" width="130px">
+    size="small"
+    style="width:50%"
+  >
+    <el-table-column
+      style="{ visibility: show1 ? 'hidden' : 'visible' }"
+      fixed="left"
+      label="症狀"
+      width="130px"
+    >
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <!-- <p>症狀: {{ scope.row.name }}</p>
@@ -23,21 +30,21 @@
         </div>
       </template>
     </el-table-column>
+    <el-table-column width="10" prop=" " label=" "></el-table-column>
 
     <el-table-column
-      v-for="{ prop, label } in storageTableTitle"
+      v-for="{ prop, label } in storageTableTitle.slice(0)"
       :key="prop"
       :prop="prop"
       :label="label"
       width="60"
-     
     >
-      <template  slot-scope="scope">
+      <template slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
         <!-- <h6>{{ scope.column }}</h6>
         <h6>{{ scope.row }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
-        <el-popover  trigger="hover" placement="top">
+        <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h4>Symptom</h4>
@@ -45,9 +52,13 @@
           <p>症狀: {{ scope.row.name }}</p>
           <p>時間: {{scope.column.property}}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
-          <h3>顯示今天的症狀</h3>
+          <h3>今天的症狀</h3>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
+
+          <!-- <h3>顯示今天的症狀</h3>
           <h2>PhotoDiary</h2>
+          <img class="fit-picture"  src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Grapefruit slice atop a pile of other slices">
+          <img class="fit-picture" :src="testThumbnailSets[2][0]" alt="Grapefruit slice atop a pile of other slices">-->
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <div slot="reference" class="name-wrapper">
             <!-- <el-tag size="mini">{{1}}</el-tag>
@@ -67,7 +78,7 @@
         </el-popover>
       </template>
     </el-table-column>
-    
+
     <!-- <el-table-column prop="times[0].2020-07-16T19:02:36Z" label="A2020-07-16T19:02:36Z"></el-table-column>
     <el-table-column prop="times[1].2020-07-19T19:02:36Z" label="A2020-07-19T19:02:36Z"></el-table-column>
     <el-table-column v-for="{ prop, label } in colConfigs" :key="prop" :prop="prop" :label="label"></el-table-column>-->
@@ -82,19 +93,51 @@ export default {
   },
   watch: {
     storageTableTitle: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("storageTableTitle change");
     },
     storageTableData: function() {
       console.log("storageTableData change");
+      this.$refs.tableRef.bodyWrapper.scrollTop = 5;
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
     },
     selectTemplate: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("selectTemplate change");
     },
     storageData: function() {
+      this.$nextTick(() => {
+        this.$refs.multipleTable.doLayout();
+
+        this.$refs.multipleTable.$el.style.width = "95%";
+      });
+      this.$refs.multipleTable.$el.style.width = "95%";
       console.log("storageData change");
+    },
+    storageThumbnailSets: function() {
+      // this.fillData();
+      console.log("storageThumbnailSets change", this.storageThumbnailSets);
     }
   },
   computed: {
+    storageThumbnailSets() {
+      return this.$store.state.thumbnailList;
+    },
     storageTableTitle() {
       if (this.storageData.symptoms[0] == null) {
         return [
@@ -132,6 +175,18 @@ export default {
     // });
   },
   methods: {
+    doResize() {
+      setTimeout(function() {
+        //手動觸發窗口resize事件
+        if (document.createEvent) {
+          var event = document.createEvent("HTMLEvents");
+          event.initEvent("resize", true, true);
+          window.dispatchEvent(event);
+        } else if (document.createEventObject) {
+          window.fireEvent("onresize");
+        }
+      }, 100);
+    },
     DateToTableTitle(date) {
       let TableTitle = [];
       console.log("TableTitleA", date);
@@ -167,6 +222,9 @@ export default {
   display: flex;
   flex-direction: row;
 }
+.el-table__fixed-right {
+  height: 100% !important;
+}
 .h3 {
   /* font: 1em sans-serif; */
   /* font-size: 16pt !important; */
@@ -175,7 +233,7 @@ export default {
     "Lucida Sans", Arial, sans-serif;
 }
 .h7 {
-  font-size: 8px !important ; 
+  font-size: 8px !important ;
   font-family: "Montserrat", sans-serif;
   /* font-weight: 900; */
   font-weight: bold;
@@ -183,6 +241,20 @@ export default {
   white-space: nowrap;
   flex-wrap: nowrap !important;
   /* Medium */
+}
+.el-table th.gutter {
+  display: table-cell !important;
+}
+.el-table--border th.gutter:last-of-type {
+  display: block !important;
+  width: 17px !important;
+}
+.el-table th {
+  display: table-cell !important;
+}
+
+body .el-table th.gutter {
+  display: table-cell !important;
 }
 </style>
 0: {…}

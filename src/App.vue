@@ -5,7 +5,6 @@
 
     <div id="App">
       <div v-if="true" id="NavBar">
-        <el-button size="mini" @click="onCancel">B</el-button>
         <div id="Logo">
           <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
         </div>
@@ -130,6 +129,23 @@ export default {
     color: red;
   }
 }*/
+
+.el-table th.gutter {
+    display: table-cell!important;
+}
+.el-table--border th.gutter:last-of-type {
+    display: block!important;
+    width: 17px!important;
+}
+.el-table th {
+	display: table-cell!important; 
+}
+
+
+ 
+body .el-table th.gutter{
+    display: table-cell!important;
+}
 
 #main .el-date-editor--daterange.el-input__inner {
   width: 100%;

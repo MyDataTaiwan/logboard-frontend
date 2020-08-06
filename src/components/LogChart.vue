@@ -8,7 +8,7 @@
     <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
     :height="200"style="  padding-right: 10%;" />-->
     <!-- <div>{{ selectedData }}</div>
-    <div>{{ $store.state.displayPopUp }}</div> -->
+    <div>{{ $store.state.displayPopUp }}</div>-->
 
     <div id="Chart">
       <!-- <el-button>click 激活</el-button> -->
@@ -103,7 +103,18 @@ export default {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        onClick: this.handle,
+        onClick: this.onClick, //////影響症狀切換
+
+        // onClick: function(evt, array) {
+        //     if (array.length != 0) {
+        //         var position = array[0]._index;
+        //         var activeElement = this.tooltip._data.datasets[0].data[position]
+        //         console.log(activeElement);
+        //     } else {
+        //         console.log("You selected the background!");
+        //     }
+        // },
+
         responsiveAnimationDuration: 0,
         // responsive: true,
         // maintainAspectRatio: false,
@@ -238,9 +249,44 @@ export default {
     this.fillData();
   },
   methods: {
+    onClick(event, array) {
+      console.log("我被點了 B", event, array);
+
+      if (array.length != 0) {
+        // var position = array[0]._index;
+        // var activeElement = this.tooltip._data.datasets[0].data[position];
+        // console.log(activeElement);
+
+        const item = array[0];
+        console.log("我被點了 B2", event, array);
+
+        this.$store.commit("ChangDisplayPopUp", {
+          display: true,
+          index: array[0]._index,
+          idList: this.storageIDSets[array[0]._index]
+        });
+
+        console.log("我被點了", event, array[0]._index);
+        this.selectedData = array[0]._index;
+        this.$emit("on-receive", {
+          index: item._index,
+          backgroundColor: item._view.backgroundColor,
+          value: this.values[item._index]
+        });
+      } else {
+        console.log("You selected the background!");
+      }
+    },
+
     handle(point, event) {
       const item = event[0];
-      this.$store.commit("ChangDisplayPopUp", {display:true,index:event[0]._index,idList:this.storageIDSets[event[0]._index]});
+      console.log("我被點了 Ａ", point, event);
+
+      this.$store.commit("ChangDisplayPopUp", {
+        display: true,
+        index: event[0]._index,
+        idList: this.storageIDSets[event[0]._index]
+      });
 
       console.log("我被點了", point, event[0]._index);
       this.selectedData = event[0]._index;
@@ -376,8 +422,7 @@ export default {
         datasets: this.setMaker()
       }),
         { responsive: true, maintainAspectRatio: false };
-              this.$store.commit("ChangisLoading", false);
-
+      this.$store.commit("ChangisLoading", false);
     },
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
