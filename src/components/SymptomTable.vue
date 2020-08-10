@@ -140,15 +140,19 @@ export default {
     },
     storageTableTitle() {
       if (this.storageData.symptoms[0] == null) {
-        return [
-          { prop: 0, label: "暫時" },
-          { prop: 1, label: "沒有" },
-          { prop: 2, label: "資料" }
-        ];
+        // return [
+        //   { prop: 0, label: "暫時" },
+        //   { prop: 1, label: "沒有" },
+        //   { prop: 2, label: "資料" }
+        // ];
+        return  [];
       }
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
+       if (this.storageData.symptoms[0] == null) {
+        return  [];
+      }
       return this.$store.state.storeTableData;
     },
     storageData() {
