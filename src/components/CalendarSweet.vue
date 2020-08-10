@@ -11,8 +11,8 @@
     {{$store.state.selectDateformat[0]}}
     {{$store.state.selectDateformat[1]}}
     <h2>{{ message }}</h2>-->
-  
-    <button @click="goToday" class>Today</button>
+  <!-- /////FIXME 暫時移除單之後 QA 可能會抱怨跨月份不會自動跳轉 -->
+    <!-- <button @click="goToday" class>Today</button> -->
   </div>
 </template>
 
