@@ -191,7 +191,7 @@ export default new Vuex.Store({
 						let swp = response.data.date[id]
 						let temp = swp.split("-");
 						console.log("DADADADDA", temp)
-						FormatTableTitle.push({ prop: id, label: temp[1] + "-" + temp[2] })
+						FormatTableTitle.push({ prop: id+1, label: temp[1] + "-" + temp[2] })
 					}
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
@@ -238,7 +238,7 @@ export default new Vuex.Store({
 							let swp = response.data.date[id]
 							let temp = swp.split("-");
 							console.log("DADADADDA", temp)
-							FormatTableTitle.push({ prop: id, label: temp[1] + "-" + temp[2] })
+							FormatTableTitle.push({ prop: id+1, label: temp[1] + "-" + temp[2] })
 						}
 						FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
@@ -270,32 +270,44 @@ export default new Vuex.Store({
 				console.log(response)
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
-					commit('updateDateformat', [response.data.date, response.data.date]);
-
+					commit('updateDateformat', []);
+			//		timestamp
 					console.log("fetchTODaysApi_200")
 					console.log("fetchTODaysApi_200")
 					console.log("success ", response.data.id_list)
-					// let FormatTableTitle = [];
-					// let FormatTableData = null;
+					let FormatTableTitle = [];
+					let FormatTableData = null;
 					let FormatChartLabels = null;
 					let FormatChartDatasets = null;
 					// let FormatThumbnailsSets = null;
 					let FormatDataIDs = null;
-
+					let ID_list=[];
+					// FormatTableTitle = response.data.timestamp;
+					for (let id = 0; id < response.data.timestamp.length; id++) {
+						let swp = response.data.timestamp[id]
+						let temp = swp.slice(11);
+						console.log("DADADADDA", temp)
+						FormatTableTitle.push({ prop: id+1, label: temp })
+					}
+					FormatTableData=response.data.symptoms;
 					// for (let id = 0; id < response.data.timestamp.length; id++) {
 					// 	FormatTableTitle.push({ prop: id, label: response.data.timestamp[id] })
 					// }
-
+					// .slice(10)
+					for (let index = 0; index < response.data.id.length; index++) {
+						let swp = response.data.id[index]
+						ID_list.push(swp)
+					}
+					FormatDataIDs =  [ID_list];
 					// FormatTableData = response.data.symptoms;
-					FormatChartLabels = response.data.timestamp;
+					FormatChartLabels = response.data.timestamp.map(index=>{return index.slice(11)});
 					FormatChartDatasets = response.data.vital_signs;
 					// FormatThumbnailsSets = response.response.data.thumbnails;
 					// console.log("fetch thumbnailList",response.response.data.thumbnails)
 					// console.log("fetch thumbnailList",FormatThumbnailsSets)
 					console.log("fetch TODaysApi_Labels", FormatChartLabels)
-					// commit('saveFormatTableTitle', FormatTableTitle);
-					// commit('saveFormatTableData', FormatTableData);
-					FormatDataIDs = response.data.id;
+					commit('saveFormatTableTitle', FormatTableTitle);
+					commit('saveFormatTableData', FormatTableData);
 					commit('saveFormatDataIDs', FormatDataIDs);
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
