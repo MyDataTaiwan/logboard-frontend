@@ -43,9 +43,9 @@
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
                 <!-- <h6>{{ scope.column}}</h6> -->
 
-        <h6>{{ scope.column.property}}</h6>
+        <!-- <h6>{{ scope.column.property}}</h6>
         <h6>{{ scope.row.id }}</h6>
-         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6>
+         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6> -->
         <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
