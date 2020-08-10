@@ -16,4 +16,5 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        VUE_APP_S3D_BUCKET: 'logboard-frontend'
+        VUE_APP_S3D_BUCKET: ${{ secrets.AWS_S3_BUCKET_QA }}
+        VUE_APP_S3D_CLOUDFRONT_ID: ${{ secrets.AWS_CF_ID_QA }}

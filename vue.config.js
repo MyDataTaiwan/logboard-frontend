@@ -12,7 +12,6 @@ module.exports = {
   pluginOptions: {
     s3Deploy: {
       registry: undefined,
-      awsProfile: 's3',
       overrideEndpoint: false,
       region: 'us-east-1',
       bucket: 'logboard-frontend',
