@@ -500,9 +500,10 @@ const customTooltips = function(tooltip) {
         //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
         //            alt="Grapefruit slice atop a pile of other slices">` +
         // "</th></tr>";
-        title +
-        "| id:" +
-        testIDSets[titleID];
+        title
+         +
+        // "| id:" +
+        // testIDSets[titleID];
       // `   <img class="fit-picture"
       //        src="img/LogBoardLOGO.56c0f5e3.svg
       //           alt="bar">` +

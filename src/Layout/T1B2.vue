@@ -17,7 +17,7 @@
             <el-header style="text-align: right; font-size: 12px">
               <!-- <img class="PhotoDiary" style=" height: 50px;" alt="bar" :src="storageRaw_Data.photo" /> -->
               <!-- <el-button size="mini" @click="visible=!visible">關閉</el-button> -->
-              <div>{{ storagePopUp_id }}</div>
+              <!-- <div>{{ storagePopUp_id }}</div> -->
 
               <el-button size="mini" @click="off">關閉</el-button>
             </el-header>
@@ -25,7 +25,7 @@
 
             <el-collapse style="overflow:auto;  height:250px;" accordion>
               <div v-for="item in storageRaw_Data" :key="item">
-                <el-collapse-item :title="item.id+':'+item.timestamp">
+                <el-collapse-item :title="item.timestamp">
                   <div style="display: flex;flex: 1;flex-direction: row;">
                     <!-- <h6>id : {{item.id}}</h6> -->
                     <div style="display: flex;flex: 1;flex-direction: column;">
