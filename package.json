@@ -2,11 +2,11 @@
   "name": "logboard-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mydatataiwan.github.io/logboard-frontend",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vue-cli-service s3-deploy"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -20,6 +20,7 @@
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-chartjs": "^3.5.0",
+    "vue-cli-plugin-s3-deploy": "^4.0.0-rc4",
     "vue-date-fns": "^2.0.1",
     "vue-loading-overlay": "^3.3.2",
     "vue-router": "^3.3.4",
@@ -54,5 +55,6 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "homepage": "https://mydatataiwan.github.io/logboard-frontend"
 }

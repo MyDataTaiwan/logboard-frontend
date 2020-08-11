@@ -1,0 +1,20 @@
+name: qa-release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Deploy
+      uses: jackdcasey/vue-cli-plugin-s3-deploy-action@master
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        VUE_APP_S3D_BUCKET: ${{ secrets.AWS_S3_BUCKET_QA }}
+        VUE_APP_S3D_CLOUDFRONT_ID: ${{ secrets.AWS_CF_ID_QA }}
