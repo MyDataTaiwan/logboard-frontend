@@ -53,7 +53,7 @@
     </div>
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
-      © 2020 copyright. all rights reserved
+      © 2020 copyright. all rights reserved  v0.1.5
       {{storageUserId}}
     </div>
   </div>

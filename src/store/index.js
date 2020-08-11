@@ -209,6 +209,7 @@ export default new Vuex.Store({
 					return commit('saveDB', response.data);
 					// }
 				}
+				else{alert("請檢查網路或重新整理頁面")}
 				console.log("fetchSummaryApi_end")
 			})
 		},
@@ -255,7 +256,7 @@ export default new Vuex.Store({
 						commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
 					}
-				}
+				}	else{alert("請檢查網路或重新整理頁面")}
 				console.log("fetch past-days Api_end")
 			})
 		},
@@ -314,7 +315,7 @@ export default new Vuex.Store({
 					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 
-				}
+				}	else{alert("請檢查網路或重新整理頁面")}
 				console.log("fetchTODaysApi_end")
 			})
 		},
@@ -334,7 +335,7 @@ export default new Vuex.Store({
 							output.push(response.data)
 							console.log("fetch Raw Data output ", output)
 						}
-					}
+					}	else{alert("請檢查網路或重新整理頁面")}
 					console.log("fetchRawDataApi_end")
 				})
 			})
