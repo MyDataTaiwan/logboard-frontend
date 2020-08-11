@@ -404,7 +404,14 @@ export default {
       let MIN = Math.min(...data);
       let output = [];
       let r = MAX - MIN;
-      console.log("normalLines_cale", r,MAX,MIN,Math.max(...data),Math.min(...data));
+      console.log(
+        "normalLines_cale",
+        r,
+        MAX,
+        MIN,
+        Math.max(...data),
+        Math.min(...data)
+      );
 
       let t = r / 100;
       console.log("normalLines", r, t, output, data.length);
@@ -412,6 +419,9 @@ export default {
         if (index == null) {
           output.push("nan");
         } else {
+          if ((r == 0) | (MAX == MIN)) {
+            output.push(index);
+          }
           let temp = index - MIN;
           console.log("normalLines", index, temp, temp / t);
           // if (r == 0) {
