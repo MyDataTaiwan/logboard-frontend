@@ -25,28 +25,9 @@
       </div>
       <div id="Content" style="overflow: hidden;">
         <DateSelectBar id="DateSelectBar" v-if="true" />
+  
         <div id="NavBarMobile">
-          <div id="LogoMobile">
-            <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="30" class="LogoMobile" />
-            <button @click="toggle" class="menu">
-              <img alt="menu logo" src="./assets/icon/menu.svg" height="25" />
-            </button>
-          </div>
-          <div id="NavItems" v-if="isShow">
-            <router-link :to="{ name: 'camps' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-              <h4>實習營健康表</h4>
-            </router-link>
-            <router-link :to="{ name: 'dashboard' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
-              <h4>DASHBOARD</h4>
-            </router-link>
-            <router-link :to="{ name: 'photodiary' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
-              <h4>PHOTODIARY</h4>
-            </router-link>
-            <DateSelectBar id="DateSelectBarMobile" v-if="true" />
-          </div>
+        <DateSelectBarMobile/>
         </div>
         <router-view></router-view>
       </div>
@@ -61,12 +42,14 @@
 
 <script>
 import DateSelectBar from "./components/DateSelectBar.vue";
+import DateSelectBarMobile from "./components/DateSelectBarMobile.vue";
 import "reset-css";
 
 export default {
   name: "App",
   components: {
-    DateSelectBar
+    DateSelectBar,
+    DateSelectBarMobile
   },
   props: {
     source: String
@@ -186,6 +169,10 @@ body .el-table th.gutter{
   height: 97vh;
 }
 
+#DateSelectBarMobile{
+
+}
+
 @media screen and (max-width: 800px) {
   #DateSelectBar {
     display: none;
@@ -216,6 +203,9 @@ body .el-table th.gutter{
     display: none;
   }
 }
+#NavBarMobile {
+   width: 100%;
+  }
 #Footer {
   width: "100%";
   /* height: "20x"; */
