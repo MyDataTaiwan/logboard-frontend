@@ -34,7 +34,10 @@
     </div>
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
-      © 2020 copyright. all rights reserved  v0.1.5
+      <template id="version">
+       version v{{version}}
+       </template>
+      © 2020 copyright. all rights reserved 
       {{storageUserId}}
     </div>
   </div>
@@ -44,12 +47,13 @@
 import DateSelectBar from "./components/DateSelectBar.vue";
 import DateSelectBarMobile from "./components/DateSelectBarMobile.vue";
 import "reset-css";
-
+import config from '../package.json' 
 export default {
   name: "App",
   components: {
     DateSelectBar,
-    DateSelectBarMobile
+    DateSelectBarMobile,
+    config
   },
   props: {
     source: String
@@ -73,6 +77,7 @@ export default {
   },
   data() {
     return {
+      version:config.version,
       uid: this.computed,
       isShow: false,
       drawer: true,
@@ -81,11 +86,16 @@ export default {
       // isLoading: false
     };
   },
+   created() {
+    // this.GetAPI("this-week");
+    console.log("version",config.version)
 
+  },
   methods: {
     toggle: function() {
       this.isShow = !this.isShow;
     },
+    
     open() {
       console.log("open was clicked, will auto hide");
       let loader = this.$loading.show({
