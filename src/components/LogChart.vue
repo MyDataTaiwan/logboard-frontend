@@ -87,6 +87,14 @@ export default {
       labels: ["January", "February"],
 
       colors: [
+        "#5C6F75",
+        "#EC8EDA",
+        "#CFFFA0",
+        "#DAADA9",
+        "#AF8A31",
+        "#0E376F",
+        "#F99F00",
+        "#7512FF",
         "#FF0000",
         "#FFBA07",
         "#FAFF12",
