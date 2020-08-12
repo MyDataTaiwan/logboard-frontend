@@ -49,18 +49,20 @@
       <!-- <div class="DateSelectItmes">2020/05/09 ~ 2020/05/13</div> -->
 
       <div id="NavItems" v-if="NavIshow">
-        <router-link :to="{ name: 'camps' }" class="Nav">
-          <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
-          <h4>實習營健康表</h4>
-        </router-link>
+       
         <router-link :to="{ name: 'dashboard' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/DASHBOARD.svg" width="32" />
           <h4>DASHBOARD</h4>
+        </router-link>
+         <router-link :to="{ name: 'camps' }" class="Nav">
+          <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
+          <h4>健康聲明表</h4>
         </router-link>
         <router-link :to="{ name: 'photodiary' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
           <h4>PHOTODIARY</h4>
         </router-link>
+        <!-- <template id="version">version v{{version}}</template> -->
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnListMobile" v-if="isShow">
@@ -204,9 +206,12 @@ export default {
   methods: {
     NAVtoggle() {
       this.NavIshow = !this.NavIshow;
+             this.isShow =false;
+
     },
     toggle() {
       this.isShow = !this.isShow;
+       this.NavIshow =false;
     },
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
