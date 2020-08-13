@@ -207,7 +207,6 @@ export default {
     NAVtoggle() {
       this.NavIshow = !this.NavIshow;
              this.isShow =false;
-
     },
     toggle() {
       this.isShow = !this.isShow;

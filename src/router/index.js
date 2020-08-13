@@ -25,8 +25,8 @@ export default new VueRouter({
 				allowAnonymous: true
 			}
 		},
-		{ path: "/photodiary/:id/", name: 'photodiary', component: R2L1 },
-		{ path: "/camps/:id/", name: 'camps', component: CAMP },
+		{ path: "/:id/", name: 'photodiary', component: R2L1 },
+		{ path: "/:id/", name: 'camps', component: CAMP },
 	]
 });
 

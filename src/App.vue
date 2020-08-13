@@ -4,9 +4,9 @@
     <loading :active.sync="storageisLoading"></loading>
 
     <div id="App">
-      <div v-if="true" id="NavBar">
+      <!-- <div v-if="true" id="NavBar">
         <div id="Logo">
-          <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
+          <img alt="LogBoard logo" src="./assets/logologboard.svg" width="130" />
         </div>
         <div slot="reference" id="NavItems">
           <router-link :to="{ name: 'dashboard' }" class="Nav">
@@ -17,12 +17,13 @@
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
             <h4>PHOTODIARY</h4>
           </router-link>
-          <!-- <router-link :to="{ name: 'camps' }" class="Nav">
+          <router-link :to="{ name: 'camps' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-            <h4>實習營健康表</h4>
-          </router-link>-->
+            <h4>健康聲明表</h4>
+          </router-link>
         </div>
-      </div>
+      </div> -->
+      <NavBar id="NavBar"/>
       <div id="Content" style="overflow: hidden;">
         <DateSelectBar id="DateSelectBar" v-if="true" />
   
@@ -46,6 +47,7 @@
 <script>
 import DateSelectBar from "./components/DateSelectBar.vue";
 import DateSelectBarMobile from "./components/DateSelectBarMobile.vue";
+import NavBar from "./components/NavBar.vue";
 import "reset-css";
 import config from '../package.json' 
 export default {
@@ -53,7 +55,7 @@ export default {
   components: {
     DateSelectBar,
     DateSelectBarMobile,
-    config
+    NavBar
   },
   props: {
     source: String
@@ -201,12 +203,12 @@ body .el-table th.gutter{
 @media screen and (min-width: 567px) {
   #NavBar {
     /* background: #f0afff; */
-    display: flex;
+    /* display: flex;
     flex: 1;
     width: 15%;
     flex-direction: column;
     -webkit-justify-content: center;
-    justify-content: center;
+    justify-content: center; */
     /* height: 100vh; */
   }
   #NavBarMobile {
