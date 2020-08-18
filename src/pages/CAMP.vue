@@ -3,7 +3,7 @@
     <h1>健康聲明表</h1>
     {{uuid}}
     <!-- <el-switch v-model="value" active-color="#13ce66" inactive-color="#ff4949"></el-switch> -->
-    <div id="HealthCardList">
+    <div  v-if="CardData!=[]" id="HealthCardList">
       <!-- <HealthCard v-for="item in card" :key="item.date" v-bind:data="item" /> -->
       <!-- <HealthCard v-for="item in card" :key="item.date" v-bind:data="item" /> -->
       <HealthCard v-for="item in CardData" :key="item.date" v-bind:data="item" />
@@ -18,7 +18,7 @@
       <p>storageCardData{{this.storageCardData[0]}}</p>
       <p>symptom{{this.storageCardData[0].symptom[0]}}</p>
       <p>symptom{{this.storageCardData[0].symptom[0]}}</p>
-      <p>storagePhotoSets{{this.storagePhotoSets[0]}}</p> -->
+      <p>storagePhotoSets{{this.storagePhotoSets[0]}}</p>-->
 
       <!-- {{this.storageChartDatasets.bodyTemperature[0]}}
       {{this.storageChartDatasets}}-->
@@ -200,76 +200,75 @@ export default {
       return this.$store.state.selectTemplate;
     },
     porcessing() {
-     if(this.storageData.date[0]!=null){
+      if (this.storageData.date[0] != null) {
         let DB = this.storageData;
-      console.log("porcesData in ", DB);
-      console.log("porcesData in date ", DB.date[0]);
-      console.log("porcesData in symptom ", DB.symptoms[0]);
-      console.log("porcesData in symptom ", DB.symptoms[0].name);
-      console.log("porcesData in symptom ", DB.symptoms[0].symptom[0]);
-      console.log("porcesData in vital_signs ", DB.vital_signs.bodyTemperature[0]);
-      console.log("porcesData in thumbnail_list ", DB.photo_list[0]);
-            console.log("porcesData in photo_list ", DB.thumbnail_list[0]);
+        console.log("porcesData in ", DB);
+        console.log("porcesData in date ", DB.date[0]);
+        console.log("porcesData in symptom ", DB.symptoms[0]);
+        console.log("porcesData in symptom ", DB.symptoms[0].name);
+        console.log("porcesData in symptom ", DB.symptoms[0].symptom[0]);
+        console.log(
+          "porcesData in vital_signs ",
+          DB.vital_signs.bodyTemperature[0]
+        );
+        console.log("porcesData in thumbnail_list ", DB.photo_list[0]);
+        console.log("porcesData in photo_list ", DB.thumbnail_list[0]);
 
-      
-
-      //       date: (...)
-      // id_list: Array(8)
-      // photo_list: (...)
-      // symptoms: (...)
-      // thumbnail_list: (...)
-      // vital_signs: (...)
-      let porcesData = [];
-      // console.log("porcesData in ", tsData, porcesData);
-      for (let i = 0; i < DB.date.length; i++) {
-        console.log("porcesData index ", i);
-        // console.log("porcesData Template ", Template);
-        porcesData.push({
-          date: DB.date[i],
-          bt: DB.vital_signs.bodyTemperature[i],
-          symptom: [
-            {
-              name: "goAbroad",
-              present: DB.symptoms[0].symptom[i],
-            },
-            {
-              name: "fever",
-              present: DB.symptoms[1].symptom[i],
-            },
-            {
-              name: "contactWithQuarantined",
-              present: DB.symptoms[2].symptom[i],
-            },
-            {
-              name: "contactWithHighTravelRisk",
-              present: DB.symptoms[3].symptom[i],
-            },
-          ],
-          thumbnail_list: DB.thumbnail_list[i]
-          // [
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/dddd3af73aa0df8fe26479c3544faf6a8da9fc5a55815e7a3470288cb67.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=D2ZDCWF6vSXZZz0OZ5DohLUqjZU%3D&Expires=1597756545",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/0a61608302d87bfa5a7959263d901541ee198f3bacf41351d798a4f3481.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=9oHn%2B54kRtl0FOHpGsKF74U4Dz4%3D&Expires=1597756545",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/6d0b2a6dac3ebf496a90a16a0369223e39be7adb422b77802a514c7c1de.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=2wK4%2BP4CmRm1QkJ3Mkhs1sW6uX0%3D&Expires=1597756545",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/93cfffa65fec6dd2a9df05ae5df747a783aa4de385f21879abb0909241b.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=i%2BqQzqhkOfKVO3luU%2FyswbUSW9M%3D&Expires=1597756545",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/a7990faea271b2085b2a9d694017c6a436c02d76bde9b09fb913101f7bc.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=tNT6aJqfTxeBzfA0i%2B%2B4moKdNFM%3D&Expires=1597756545",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/e2ba5afb1128e042e07dcf521c7cc46663321a56ee5938ad3f3241f82cb.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=7JZNnEUkbJmzlwJ5nPSnKiXi%2F%2Fw%3D&Expires=1597756546",
-          //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/56eedecdfc5276c5c5b9e58f738a5e68ce848a861395f7595c54a88c24c.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=yz11ELRzOyyC09IFAWzJtG55JVk%3D&Expires=1597756546",
-          // ],
-        });
-      }
-      console.log("porcesData", porcesData);
-      return ()=>{
-        this.CardData=porcesData
+        //       date: (...)
+        // id_list: Array(8)
+        // photo_list: (...)
+        // symptoms: (...)
+        // thumbnail_list: (...)
+        // vital_signs: (...)
+        let porcesData = [];
+        // console.log("porcesData in ", tsData, porcesData);
+        for (let i = 0; i < DB.date.length; i++) {
+          console.log("porcesData index ", i);
+          // console.log("porcesData Template ", Template);
+          porcesData.push({
+            date: DB.date[i],
+            bt: DB.vital_signs.bodyTemperature[i],
+            symptom: [
+              {
+                name: "goAbroad",
+                present: DB.symptoms[0].symptom[i],
+              },
+              {
+                name: "fever",
+                present: DB.symptoms[1].symptom[i],
+              },
+              {
+                name: "contactWithQuarantined",
+                present: DB.symptoms[2].symptom[i],
+              },
+              {
+                name: "contactWithHighTravelRisk",
+                present: DB.symptoms[3].symptom[i],
+              },
+            ],
+            thumbnail_list: DB.thumbnail_list[i],
+            // [
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/dddd3af73aa0df8fe26479c3544faf6a8da9fc5a55815e7a3470288cb67.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=D2ZDCWF6vSXZZz0OZ5DohLUqjZU%3D&Expires=1597756545",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/0a61608302d87bfa5a7959263d901541ee198f3bacf41351d798a4f3481.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=9oHn%2B54kRtl0FOHpGsKF74U4Dz4%3D&Expires=1597756545",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/6d0b2a6dac3ebf496a90a16a0369223e39be7adb422b77802a514c7c1de.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=2wK4%2BP4CmRm1QkJ3Mkhs1sW6uX0%3D&Expires=1597756545",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/93cfffa65fec6dd2a9df05ae5df747a783aa4de385f21879abb0909241b.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=i%2BqQzqhkOfKVO3luU%2FyswbUSW9M%3D&Expires=1597756545",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/a7990faea271b2085b2a9d694017c6a436c02d76bde9b09fb913101f7bc.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=tNT6aJqfTxeBzfA0i%2B%2B4moKdNFM%3D&Expires=1597756545",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/e2ba5afb1128e042e07dcf521c7cc46663321a56ee5938ad3f3241f82cb.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=7JZNnEUkbJmzlwJ5nPSnKiXi%2F%2Fw%3D&Expires=1597756546",
+            //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/56eedecdfc5276c5c5b9e58f738a5e68ce848a861395f7595c54a88c24c.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=yz11ELRzOyyC09IFAWzJtG55JVk%3D&Expires=1597756546",
+            // ],
+          });
+        }
+        console.log("porcesData", porcesData);
+        return () => {
+          this.CardData = porcesData;
           // alert("做完")
-      this.$store.commit("ChangisLoading", false);
+          console.log("做完");
+          this.$store.commit("ChangisLoading", false);
         };
-     }
-     else{
-      return       console.log("錯誤啊");
-
-      // alert("錯誤啊");
-
-     }
+      } else {
+        return console.log("錯誤啊");
+        // alert("錯誤啊");
+      }
     },
   },
 
@@ -325,7 +324,7 @@ export default {
   },
   data() {
     return {
-      CardData:[],
+      CardData: [],
       tsData: [
         "2020-08-10",
         "2020-08-11",

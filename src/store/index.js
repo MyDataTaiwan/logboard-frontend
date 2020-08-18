@@ -208,7 +208,7 @@ export default new Vuex.Store({
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
 					FormatChartDatasets = response.data.vital_signs;
-					FormatPhotoSets= response.data.photo_list;
+					FormatPhotoSets = response.data.photo_list;
 					// selectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformat = response.response.data.thumbnail_list;
 					// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
 					// console.log("fetch thumbnailList",FormatThumbnailsSets)
@@ -220,7 +220,7 @@ export default new Vuex.Store({
 					commit('saveFormatChartDatasets', FormatChartDatasets);
 					commit('saveFormatPhotoSets', FormatPhotoSets);
 
-					
+
 					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 					// }
@@ -244,10 +244,14 @@ export default new Vuex.Store({
 				console.log(response.data.length)///past-days
 				if (response.status === 200) {
 					console.log("fetchSummaryApi_200")
-					commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length - 1]]);
-
-					if (response.data.id_list != null) {
-						console.log("success ", response.data.id_list)
+					if (response.data.date[0] != null) {
+						commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length - 1]]);
+					} else {
+						commit('ChangisLoading', false);
+						alert("本資料包無此紀錄，請見諒")
+					}
+					if (response.data.id_list !== []) {
+						console.log("success response.data.id_lis ", response.data.id_list)
 						let FormatTableTitle = [];
 						let FormatTableData = null;
 						let FormatChartLabels = null;
@@ -270,7 +274,7 @@ export default new Vuex.Store({
 						FormatDataIDs = response.data.id_list;
 						// alert("做完")
 
-						FormatPhotoSets= response.data.photo_list;
+						FormatPhotoSets = response.data.photo_list;
 
 						commit('saveFormatDataIDs', FormatDataIDs);
 						commit('saveFormatTableTitle', FormatTableTitle);
@@ -281,10 +285,13 @@ export default new Vuex.Store({
 
 						commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
+					} else {
+						commit('ChangisLoading', false);
+						alert("本資料包無此紀錄，請見諒")
 					}
 				} else {
 					commit('ChangisLoading', false);
-					alert("請檢查網路或重新整理頁面")
+					alert("請檢查網路或重新整理頁面 fetch past-days Api_end")
 				}
 				console.log("fetch past-days Api_end")
 			})
