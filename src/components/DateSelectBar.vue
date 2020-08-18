@@ -46,20 +46,74 @@
 export default {
   name: "DateSelectBar",
   props: {
-    msg: String
+    msg: String,
   },
   watch: {
     // selectTemplateList: function() {
     //   console.log("selectTemplateList change");
     // },
-    selectValue: function() {
+    // Goto(index) {
+    //   if (this.$route.name !== index) {
+    //     this.$router.push({
+    //       name: index,
+    //     });
+    //   }
+    // },
+    selectValue: function () {////確保 症狀包選擇後可以顯示在對應的組件頁面
       this.$store.commit("updateSelectTemplate", this.selectValue);
-      this.GetAPI("this-week");
-      console.log("selectValue change" + this.selectValue);
+      if (this.selectValue == "healthDeclaration") {
+        if (this.$route.name !== "camps") {
+          this.$router.push({
+            name: "camps",
+          });
+        } else {
+           this.$router.push({
+            name: "camps",
+          });
+          // this.GetAPI("this-week");
+        }
+      } else {
+        if (this.$route.name !== "dashboard") {
+          this.$router.push({
+            name: "dashboard",
+          });
+        } else {
+          this.GetAPI("this-week");
+          console.log("selectValue change" + this.selectValue);
+        }
+      }
     },
-    options: function() {
+    options: function () {
       console.log("options change");
-    }
+    },
+    selectDateformatStart: function () {
+      console.log(
+        "selectDateformatStart change back",
+        this.selectDateformatStart
+      );
+    },
+    selectDateformatEnd: function () {
+      console.log("selectDateformatEnd change back", this.selectDateformatEnd);
+    },
+    selectDateformat: function () {
+      this.dateValue = [
+        new Date(this.selectDateformatStart),
+        new Date(this.selectDateformatEnd),
+      ];
+      console.log(
+        "selectDateformat change back",
+        new Date(this.selectDateformatStart)
+      );
+      console.log(
+        "selectDateformat change back",
+        this.selectDateformat,
+        this.dateValue
+      );
+    },
+    //     dateValue(){
+    //             console.log("dateValue change", this.dateValue);
+    // Date.UTC(2020-08-09)
+    //     },
   },
   created() {
     this.GetAPI("this-week");
@@ -68,17 +122,35 @@ export default {
     // selectTemplateList() {
     //   return this.$store.state.templateList;
     // },
+    //  dateValue(){
+    //    return [
+    //      this.selectDateformatStart,this.selectDateformatEnd
+    //   ]
+    //  },
+    selectDateformat() {
+      return this.$store.state.selectDateformat;
+    },
+    selectDateformatStart() {
+      return this.$store.state.selectDateformat[0];
+    },
+    selectDateformatEnd() {
+      return this.$store.state.selectDateformat[1];
+    },
     options() {
       // let optionsList = [];
       let optionsList = [
         {
           value: "heartFailure",
-          label: "心衰竭"
+          label: "心衰竭",
         },
         {
           value: "commonCold",
-          label: "普通感冒"
-        }
+          label: "普通感冒",
+        },
+        {
+          value: "healthDeclaration",
+          label: "健康聲明書",
+        },
       ];
 
       // this.selectTemplateList.map(index => {
@@ -108,13 +180,18 @@ export default {
       //   //烤鴨,commonCold,heartFailure
       // });
       return optionsList;
-    }
+    },
   },
 
   data() {
     return {
       // value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
+      // dateValue: [
+      //   new Date(2000, 10, 10, 10, 10),
+      //   new Date(2000, 10, 11, 10, 10),
+      // ],
       dateValue: [],
+
       value2: "",
       // options: [
       //   {
@@ -134,7 +211,7 @@ export default {
       //     label: "烤鸭"
       //   }
       // ],
-      selectValue: ""
+      selectValue: "",
     };
   },
   methods: {
@@ -145,17 +222,15 @@ export default {
           // start_date: "2020-07-15",
           // end_date: "2020-07-24"
           start_date: start_date,
-          end_date: end_date
+          end_date: end_date,
         });
       } else if (mode == "today") {
-        // this.toggle()
-
         this.$store.dispatch("fetchToDaysApi");
         this.$store.dispatch("fetchRawDataApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
           // range: "this-week"
-          range: mode
+          range: mode,
         });
       }
     },
@@ -191,7 +266,6 @@ export default {
       this.$store.commit("updateDateformat", [start, end]);
       // console.log("$store", this.$store.state.selectDate); // -> 1
       // console.log("$store", this.$store.state.selectDate); // -> 1
-
       // this.$store.dispatch("fetchSummaryApi", {
       //   start_date: new Date(start).toISOString().substring(0, 10),
       //   end_date: new Date(end).toISOString().substring(0, 10)
@@ -210,8 +284,8 @@ export default {
       console.log("$store", this.$store.state.selectDateformat[1]); // -> 1
       // console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
       // console.log("$end", new Date(this.$store.state.selectDateformat[1])); // -> 1
-    }
-  }
+    },
+  },
 };
 </script>
 

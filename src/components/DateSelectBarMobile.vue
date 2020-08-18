@@ -1,60 +1,23 @@
 <template>
   <div id="DateSelectBarMobile">
-    <!-- <img alt="bar" src="../assets/bar.png" width="100%" /> -->
-    <!-- <h1>{{ msg }}</h1> -->
-
     <div id="LogoMobile">
       <img alt="LogBoard logo" src="../assets/LogBoardLOGO.svg" height="30" class="LogoMobile" />
-      <!-- 
-      <el-select v-model="selectValue" :placeholder="options[0].label">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>-->
       <span class="el-dropdown-link" @click="NAVtoggle">
         DASHBOARD
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
-      <!-- <el-dropdown :hide-on-click="false">
-        <span class="el-dropdown-link">
-          DASHBOARD
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu style=" color:#FFF; background-color: #5c6f75;" slot="dropdown">
-          <el-dropdown-item class="Nav" command="dashboard">
-            <img id="Icon" alt="LogBoard Icon" src="../assets/icon/DASHBOARD.svg" width="32" />
-            <h3 style=" color:#FFF; ">DASHBOARD</h3>
-          </el-dropdown-item>
-          <el-dropdown-item class="Nav" command="camps">
-            <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
-            <h3 style=" color:#FFF; ">實習營健康表</h3>
-          </el-dropdown-item>
-          <el-dropdown-item class="Nav" command="photodiary">
-            <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
-            <h3 style=" color:#FFF; ">PHOTODIARY</h3>
-          </el-dropdown-item>
-     
-        </el-dropdown-menu>
-      </el-dropdown>-->
-
       <button @click="toggle" class="menu">
         <img alt="menu logo" src="../assets/icon/menu.svg" height="25" />
       </button>
     </div>
 
     <div class="SelectBarStarMobile">
-      <!-- <div class="DateSelectItmes">2020/05/09 ~ 2020/05/13</div> -->
-
       <div id="NavItems" v-if="NavIshow">
-       
         <router-link :to="{ name: 'dashboard' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/DASHBOARD.svg" width="32" />
           <h4>DASHBOARD</h4>
         </router-link>
-         <router-link :to="{ name: 'camps' }" class="Nav">
+        <router-link :to="{ name: 'camps' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
           <h4>健康聲明表</h4>
         </router-link>
@@ -62,9 +25,7 @@
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
           <h4>PHOTODIARY</h4>
         </router-link>
-        <!-- <template id="version">version v{{version}}</template> -->
       </div>
-      <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
       <div id="btnListMobile" v-if="isShow">
         <div id="btnSubListMobile">
           <button @click="GetAPI('this-month')" class="SelectItmesMobile">This Month</button>
@@ -124,6 +85,17 @@ export default {
     options: function () {
       console.log("options change");
     },
+        selectDateformatStart: function () {
+      console.log("selectDateformatStart change back", this.selectDateformatStart);
+    },
+    selectDateformatEnd: function () {
+      console.log("selectDateformatEnd change back", this.selectDateformatEnd);
+    },
+    selectDateformat: function () {
+      this.dateValue=[new Date(this.selectDateformatStart),new Date(this.selectDateformatEnd)]
+            console.log("selectDateformat change back", new Date(this.selectDateformatStart));
+            console.log("selectDateformat change back", this.selectDateformat,this.dateValue);
+    },
   },
   created() {
     this.GetAPI("this-week");
@@ -132,6 +104,15 @@ export default {
     // selectTemplateList() {
     //   return this.$store.state.templateList;
     // },
+     selectDateformat() {
+      return this.$store.state.selectDateformat;
+    },
+    selectDateformatStart() {
+      return this.$store.state.selectDateformat[0];
+    },
+    selectDateformatEnd() {
+      return this.$store.state.selectDateformat[1];
+    },
     options() {
       // let optionsList = [];
       let optionsList = [
@@ -206,11 +187,11 @@ export default {
   methods: {
     NAVtoggle() {
       this.NavIshow = !this.NavIshow;
-             this.isShow =false;
+      this.isShow = false;
     },
     toggle() {
       this.isShow = !this.isShow;
-       this.NavIshow =false;
+      this.NavIshow = false;
     },
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
