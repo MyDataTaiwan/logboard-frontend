@@ -33,31 +33,33 @@
     <div v-if="!data.data[1].present" class="subTitle">沒 接觸過正在檢疫或隔離的人士</div>
     {{ data.data[1].note }} {{ data.data[1].present }}-->
 
-
-     <div class="cardSubTitle">
+    <div class="cardSubTitle">
       <div class="lableL">有出國</div>
-      <div class="lableR">{{ data.data[0].present }}</div>
+      <div class="lableR">{{ data.symptom[0].present }}</div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">有發燒</div>
-      <div class="lableR">{{ data.data[2].present }}</div>
+      <div class="lableR">{{ data.symptom[1].present }}</div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">接觸過正在檢疫或隔離的人士</div>
-      <div class="lableR">{{ data.data[1].present }}</div>
+      <div class="lableR">{{ data.symptom[2].present }}</div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">接觸過至高風險地區旅遊人士</div>
-      <div class="lableR">{{ data.data[1].present }}</div>
+      <div class="lableR">{{ data.symptom[3].present }}</div>
     </div>
-    <div class="cardSubTitle">備註</div>
-    <!-- <div v-if="!data.data[1].present" class="cardSubTitle">沒有備註</div> -->
-    {{ data.data[1].note }} {{ data.data[1].present }}
-    <img
+    <!-- <div class="cardSubTitle">備註</div>
+    {{ data.data[1].note }} {{ data.data[1].present }}-->
+    <!-- <template v-for="item in thumbnail_list" :key="item.date" v-bind:data="item" />
+    -->
+
+    <img alt="LogBoard logo" :src="data.thumbnail_list[0]" height="100" />
+    <!-- <img
       alt="LogBoard logo"
       src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
       height="100"
-    />
+    />-->
   </div>
 </template>
     <!-- <h2>
@@ -83,10 +85,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-.lableR{
+.lableR {
   flex: 1;
 }
-.lableL{
+.lableL {
   flex: 9;
 }
 .Title {

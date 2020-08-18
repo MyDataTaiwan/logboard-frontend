@@ -42,6 +42,7 @@ export default new Vuex.Store({
 		zipSymptoms: null,
 		// TableTitle: [],
 		thumbnailList: [],
+		photoList: [],
 		TableTitle: [
 			{ prop: 0, label: "2020-07-23T01:41:40Z" },
 			{ prop: 1, label: "2020-07-23T01:57:46Z" },
@@ -119,6 +120,13 @@ export default new Vuex.Store({
 			///產生photo
 			console.log("save thumbnailList Store", payload);
 		},
+		saveFormatPhotoSets(state, payload) {
+			state.photoList = [];
+			state.photoList = payload;
+			///產生photo
+			console.log("save photoList Store", payload);
+		},
+
 
 		updateUserId(state, payload) {
 			state.uid = payload;
@@ -188,6 +196,8 @@ export default new Vuex.Store({
 					let FormatChartLabels = null;
 					let FormatChartDatasets = null;
 					let FormatDataIDs = null;
+					let FormatPhotoSets = null;
+
 					// let FormatThumbnailsSets = null;
 					for (let id = 0; id < response.data.date.length; id++) {
 						let swp = response.data.date[id]
@@ -198,6 +208,7 @@ export default new Vuex.Store({
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
 					FormatChartDatasets = response.data.vital_signs;
+					FormatPhotoSets= response.data.photo_list;
 					// selectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformat = response.response.data.thumbnail_list;
 					// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
 					// console.log("fetch thumbnailList",FormatThumbnailsSets)
@@ -207,11 +218,17 @@ export default new Vuex.Store({
 					commit('saveFormatTableData', FormatTableData);
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
+					commit('saveFormatPhotoSets', FormatPhotoSets);
+
+					
 					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 					// }
 				}
-				else { alert("請檢查網路或重新整理頁面") }
+				else {
+					commit('ChangisLoading', false);
+					alert("請檢查網路或重新整理頁面")
+				}
 				console.log("fetchSummaryApi_end")
 			})
 		},
@@ -237,6 +254,7 @@ export default new Vuex.Store({
 						let FormatChartDatasets = null;
 						let FormatDataIDs = null;
 						let FormatThumbnailsSets = null;
+						let FormatPhotoSets = null;
 						for (let id = 0; id < response.data.date.length; id++) {
 							let swp = response.data.date[id]
 							let temp = swp.split("-");
@@ -250,15 +268,24 @@ export default new Vuex.Store({
 						FormatThumbnailsSets = response.data.thumbnail_list;
 						console.log("fetch thumbnailList", FormatThumbnailsSets)
 						FormatDataIDs = response.data.id_list;
+						// alert("做完")
+
+						FormatPhotoSets= response.data.photo_list;
+
 						commit('saveFormatDataIDs', FormatDataIDs);
 						commit('saveFormatTableTitle', FormatTableTitle);
 						commit('saveFormatTableData', FormatTableData);
 						commit('saveFormatChartLabels', FormatChartLabels);
 						commit('saveFormatChartDatasets', FormatChartDatasets);
+						commit('saveFormatPhotoSets', FormatPhotoSets);
+
 						commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
 					}
-				} else { alert("請檢查網路或重新整理頁面") }
+				} else {
+					commit('ChangisLoading', false);
+					alert("請檢查網路或重新整理頁面")
+				}
 				console.log("fetch past-days Api_end")
 			})
 		},
@@ -317,7 +344,10 @@ export default new Vuex.Store({
 					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 
-				} else { alert("請檢查網路或重新整理頁面") }
+				} else {
+					commit('ChangisLoading', false);
+					alert("請檢查網路或重新整理頁面")
+				}
 				console.log("fetchTODaysApi_end")
 			})
 		},
@@ -337,7 +367,10 @@ export default new Vuex.Store({
 							output.push(response.data)
 							console.log("fetch Raw Data output ", output)
 						}
-					} else { alert("請檢查網路或重新整理頁面") }
+					} else {
+						commit('ChangisLoading', true);
+						alert("請檢查網路或重新整理頁面")
+					}
 					console.log("fetchRawDataApi_end")
 				})
 			})
