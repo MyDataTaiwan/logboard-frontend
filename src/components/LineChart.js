@@ -4,7 +4,7 @@ import Chart from 'chart.js'
 // 2. Import the `generateChart()` method to create the vue component.
 // Chart.defaults.global.defaultFontColor = 'dodgerblue';
 Chart.defaults.global.pointHitDetectionRadius = 30;
-Chart.defaults.global.elements.point.radius = 10
+Chart.defaults.global.elements.point.radius = 5
 Chart.defaults.global.elements.point.hitRadius = 20
 Chart.defaults.global.elements.point.hoverBorderWidth = 4
 // Chart.defaults.global.defaultFontSize = 16;
