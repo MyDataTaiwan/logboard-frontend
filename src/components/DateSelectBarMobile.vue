@@ -77,24 +77,61 @@ export default {
     // selectTemplateList: function() {
     //   console.log("selectTemplateList change");
     // },
+    // selectValue: function () {
+    //   this.$store.commit("updateSelectTemplate", this.selectValue);
+    //   this.GetAPI("this-week");
+    //   console.log("selectValue change" + this.selectValue);
+    // },
     selectValue: function () {
+      ////確保 症狀包選擇後可以顯示在對應的組件頁面
       this.$store.commit("updateSelectTemplate", this.selectValue);
       this.GetAPI("this-week");
-      console.log("selectValue change" + this.selectValue);
+      if (this.selectValue == "healthDeclaration") {
+        if (this.$route.name !== "camps") {
+          this.$router.push({
+            name: "camps",
+          });
+        } else {
+          // this.GetAPI("this-week");
+          // this.GetAPI("this-week");
+          console.log("no change");
+        }
+      } else {
+        if (this.$route.name !== "dashboard") {
+          this.$router.push({
+            name: "dashboard",
+          });
+        } else {
+          console.log("selectValue change" + this.selectValue);
+        }
+      }
     },
     options: function () {
       console.log("options change");
     },
-        selectDateformatStart: function () {
-      console.log("selectDateformatStart change back", this.selectDateformatStart);
+    selectDateformatStart: function () {
+      console.log(
+        "selectDateformatStart change back",
+        this.selectDateformatStart
+      );
     },
     selectDateformatEnd: function () {
       console.log("selectDateformatEnd change back", this.selectDateformatEnd);
     },
     selectDateformat: function () {
-      this.dateValue=[new Date(this.selectDateformatStart),new Date(this.selectDateformatEnd)]
-            console.log("selectDateformat change back", new Date(this.selectDateformatStart));
-            console.log("selectDateformat change back", this.selectDateformat,this.dateValue);
+      this.dateValue = [
+        new Date(this.selectDateformatStart),
+        new Date(this.selectDateformatEnd),
+      ];
+      console.log(
+        "selectDateformat change back",
+        new Date(this.selectDateformatStart)
+      );
+      console.log(
+        "selectDateformat change back",
+        this.selectDateformat,
+        this.dateValue
+      );
     },
   },
   created() {
@@ -104,7 +141,7 @@ export default {
     // selectTemplateList() {
     //   return this.$store.state.templateList;
     // },
-     selectDateformat() {
+    selectDateformat() {
       return this.$store.state.selectDateformat;
     },
     selectDateformatStart() {
@@ -251,11 +288,26 @@ export default {
       //   start_date: new Date(start).toISOString().substring(0, 10),
       //   end_date: new Date(end).toISOString().substring(0, 10)
       // });
-      this.GetAPI(
-        "Summary",
-        new Date(start).toISOString().substring(0, 10),
-        new Date(end).toISOString().substring(0, 10)
-      );
+      if (start == end) {
+        //FIXME
+
+        if (
+          new Date(start).getMonth() == new Date().getMonth() &&
+          new Date().getDay(start) == new Date().getDay()
+        ) {
+          console.log("$sstart,end tore", start, end); // -> 1
+          //等於當日 FIX ISSUE 50
+          this.$store.dispatch("fetchToDaysApi");
+        }
+        //FIXME
+        // 執行TO(被選中的單日)Day
+      } else {
+        this.GetAPI(
+          "Summary",
+          new Date(start).toISOString().substring(0, 10),
+          new Date(end).toISOString().substring(0, 10)
+        );
+      }
       console.log(
         "dateselectDateformat",
         new Date(start).toISOString().substring(0, 10),

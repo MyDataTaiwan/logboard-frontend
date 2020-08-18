@@ -72,6 +72,7 @@ export default {
         } else {
           // this.GetAPI("this-week");
           // this.GetAPI("this-week");
+          console.log("no change");
         }
       } else {
         if (this.$route.name !== "dashboard") {
@@ -228,7 +229,7 @@ export default {
         });
       } else if (mode == "today") {
         this.$store.dispatch("fetchToDaysApi");
-        this.$store.dispatch("fetchRawDataApi");
+        // this.$store.dispatch("fetchRawDataApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
           // range: "this-week"
@@ -272,11 +273,27 @@ export default {
       //   start_date: new Date(start).toISOString().substring(0, 10),
       //   end_date: new Date(end).toISOString().substring(0, 10)
       // });
-      this.GetAPI(
-        "Summary",
-        new Date(start).toISOString().substring(0, 10),
-        new Date(end).toISOString().substring(0, 10)
-      );
+      if (start == end) {
+        //FIXME
+
+        if (
+          new Date(start).getMonth() == new Date().getMonth() &&
+          new Date().getDay(start) == new Date().getDay()
+        ) {
+          console.log("$sstart,end tore", start, end); // -> 1
+          //等於當日 FIX ISSUE 50
+          this.$store.dispatch("fetchToDaysApi");
+        }
+        //FIXME
+        // 執行TO(被選中的單日)Day
+      } else {
+        this.GetAPI(
+          "Summary",
+          new Date(start).toISOString().substring(0, 10),
+          new Date(end).toISOString().substring(0, 10)
+        );
+      }
+
       console.log(
         "dateselectDateformat",
         new Date(start).toISOString().substring(0, 10),
