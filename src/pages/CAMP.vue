@@ -209,6 +209,9 @@ export default {
       console.log("porcesData in symptom ", DB.symptoms[0].symptom[0]);
       console.log("porcesData in vital_signs ", DB.vital_signs.bodyTemperature[0]);
       console.log("porcesData in thumbnail_list ", DB.photo_list[0]);
+            console.log("porcesData in photo_list ", DB.thumbnail_list[0]);
+
+      
 
       //       date: (...)
       // id_list: Array(8)
@@ -242,7 +245,7 @@ export default {
               present: DB.symptoms[3].symptom[i],
             },
           ],
-          thumbnail_list: DB.photo_list[0]
+          thumbnail_list: DB.thumbnail_list[i]
           // [
           //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/dddd3af73aa0df8fe26479c3544faf6a8da9fc5a55815e7a3470288cb67.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=D2ZDCWF6vSXZZz0OZ5DohLUqjZU%3D&Expires=1597756545",
           //   "https://logboard-dev.s3.amazonaws.com/39e8e6ad-ea65-4685-bfc4-454a6f809006/0a61608302d87bfa5a7959263d901541ee198f3bacf41351d798a4f3481.jpg?AWSAccessKeyId=AKIATMMDCJ5FLONYQYE2&Signature=9oHn%2B54kRtl0FOHpGsKF74U4Dz4%3D&Expires=1597756545",

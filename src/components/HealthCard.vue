@@ -35,26 +35,94 @@
 
     <div class="cardSubTitle">
       <div class="lableL">有出國</div>
-      <div class="lableR">{{ data.symptom[0].present }}</div>
+      <div class="lableR">
+        <!-- {{ data.symptom[0].present }} -->
+        <img
+          v-if="data.symptom[0].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/NO.svg"
+          height="20px"
+        />
+        <img
+          v-if="!data.symptom[0].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/OK.svg"
+          height="20px"
+        />
+      </div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">有發燒</div>
-      <div class="lableR">{{ data.symptom[1].present }}</div>
+      <div class="lableR">
+        <!-- {{ data.symptom[1].present }} -->
+        <img
+          v-if="data.symptom[1].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/NO.svg"
+          height="20px"
+        />
+        <img
+          v-if="!data.symptom[1].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/OK.svg"
+          height="20px"
+        />
+      </div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">接觸過正在檢疫或隔離的人士</div>
-      <div class="lableR">{{ data.symptom[2].present }}</div>
+      <div class="lableR">
+        <!-- {{ data.symptom[2].present }} -->
+        <img
+          v-if="data.symptom[2].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/NO.svg"
+          height="20px"
+        />
+        <img
+          v-if="!data.symptom[2].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/OK.svg"
+          height="20px"
+        />
+      </div>
     </div>
     <div class="cardSubTitle">
       <div class="lableL">接觸過至高風險地區旅遊人士</div>
-      <div class="lableR">{{ data.symptom[3].present }}</div>
+      <div class="lableR">
+        <!-- {{ data.symptom[3].present }} -->
+        <img
+          v-if="data.symptom[3].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/NO.svg"
+          height="20px"
+        />
+        <img
+          v-if="!data.symptom[3].present"
+          id="icons"
+          alt="bar"
+          src="../assets/icon/OK.svg"
+          height="20px"
+        />
+      </div>
     </div>
     <!-- <div class="cardSubTitle">備註</div>
     {{ data.data[1].note }} {{ data.data[1].present }}-->
     <!-- <template v-for="item in thumbnail_list" :key="item.date" v-bind:data="item" />
     -->
+    <div class="cardImg">
+      <img alt="LogBoard logo" :src="data.thumbnail_list[0]" height="90" width="90" />
+      <img alt="LogBoard logo" :src="data.thumbnail_list[1]" height="90" width="90" />
+      <img alt="LogBoard logo" :src="data.thumbnail_list[2]" height="90" width="90" />
+    </div>
 
-    <img alt="LogBoard logo" :src="data.thumbnail_list[0]" height="100" />
     <!-- <img
       alt="LogBoard logo"
       src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
@@ -85,6 +153,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+.cardImg {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 .lableR {
   flex: 1;
 }
