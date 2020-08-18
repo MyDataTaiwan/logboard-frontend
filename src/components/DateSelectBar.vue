@@ -59,17 +59,18 @@ export default {
     //     });
     //   }
     // },
-    selectValue: function () {////確保 症狀包選擇後可以顯示在對應的組件頁面
+    selectValue: function () {
+      ////確保 症狀包選擇後可以顯示在對應的組件頁面
       this.$store.commit("updateSelectTemplate", this.selectValue);
+      this.GetAPI("this-week");
       if (this.selectValue == "healthDeclaration") {
         if (this.$route.name !== "camps") {
+          // this.GetAPI("this-week");
           this.$router.push({
             name: "camps",
           });
         } else {
-           this.$router.push({
-            name: "camps",
-          });
+          // this.GetAPI("this-week");
           // this.GetAPI("this-week");
         }
       } else {
@@ -77,8 +78,9 @@ export default {
           this.$router.push({
             name: "dashboard",
           });
+          // this.GetAPI("this-week");
         } else {
-          this.GetAPI("this-week");
+          // this.GetAPI("this-week");
           console.log("selectValue change" + this.selectValue);
         }
       }
