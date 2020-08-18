@@ -6,7 +6,9 @@ import Vuex from 'vuex'; //引入 vuex
 Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1/";
+// const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1/";
+const $http =  "https://logboard-dev.numbersprotocol.io/api/v1/";
+
 const $raw_api = `${$http}/records/`;
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
