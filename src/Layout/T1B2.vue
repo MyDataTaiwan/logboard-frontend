@@ -1,4 +1,7 @@
 <template >
+
+   
+
   <div id="T1B2" style="width: 100%;">
     <div id="Top10">
       <LogChart msg="LogChart Plugins" />
@@ -118,23 +121,29 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
 import LogChart from "../components/LogChart.vue";
 import SymptomTable from "../components/SymptomTable.vue";
 import CalendarSweet from "../components/CalendarSweet.vue";
+// import { ContentLoader } from "vue-content-loader";
 
 export default {
   name: "T1B2",
   components: {
     LogChart,
     SymptomTable,
-    CalendarSweet
+    CalendarSweet,
+    // ContentLoader,
   },
   created() {},
   watch: {
-    storageRaw_Data: function() {
+    skeleton: function () {
+      console.log("skeleton change", this.skeleton);
+    },
+    storageRaw_Data: function () {
       console.log("storageRaw_Data change", this.storageRaw_Data);
       this.$store.commit("ChangisLoading", false);
 
@@ -149,13 +158,16 @@ export default {
     //   console.log("storageRaw_photo change", this.storageRaw_photo);
     //   // this.fillData();
     // }
-    storagePopUp_id: function() {
+    storagePopUp_id: function () {
       console.log("storagePopUp_id change", this.storagePopUp_id);
       this.$store.dispatch("fetchRawDataApi");
       // this.fillData();
-    }
+    },
   },
   computed: {
+    skeleton() {
+      return this.$store.state.isLoading;
+    },
     storageRaw_Data() {
       console.log("storageRaw_Data change", this.$store.state.storeRAWData);
       return this.$store.state.storeRAWData;
@@ -168,13 +180,13 @@ export default {
     // },
     storagePopUp_id() {
       return this.$store.state.PopUpidList;
-    }
+    },
   },
   methods: {
     off() {
       // this.$store.commit("ChangDisplayPopUp", false);
       this.$store.commit("ChangDisplayPopUp", { display: false, index: -1 });
-    }
+    },
   },
   data() {
     return {
@@ -188,11 +200,11 @@ export default {
               label: "二级 1-1",
               children: [
                 {
-                  label: "三级 1-1-1"
-                }
-              ]
-            }
-          ]
+                  label: "三级 1-1-1",
+                },
+              ],
+            },
+          ],
         },
         {
           label: "一级 2",
@@ -201,19 +213,19 @@ export default {
               label: "二级 2-1",
               children: [
                 {
-                  label: "三级 2-1-1"
-                }
-              ]
+                  label: "三级 2-1-1",
+                },
+              ],
             },
             {
               label: "二级 2-2",
               children: [
                 {
-                  label: "三级 2-2-1"
-                }
-              ]
-            }
-          ]
+                  label: "三级 2-2-1",
+                },
+              ],
+            },
+          ],
         },
         {
           label: "一级 3",
@@ -222,23 +234,23 @@ export default {
               label: "二级 3-1",
               children: [
                 {
-                  label: "三级 3-1-1"
-                }
-              ]
+                  label: "三级 3-1-1",
+                },
+              ],
             },
             {
               label: "二级 3-2",
               children: [
                 {
-                  label: "三级 3-2-1"
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  label: "三级 3-2-1",
+                },
+              ],
+            },
+          ],
+        },
+      ],
     };
-  }
+  },
 };
 </script>
 

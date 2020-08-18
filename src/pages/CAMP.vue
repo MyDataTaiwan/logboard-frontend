@@ -1,9 +1,72 @@
 <template>
   <div id="CAMP">
+    <!-- <content-loader
+      :width="800"
+      :height="600"
+      :speed="2"
+      primaryColor="#ffafff"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="112" y="40" rx="3" ry="3" width="88" height="6" />
+      <rect x="112" y="58" rx="3" ry="3" width="52" height="6" />
+      <rect x="64" y="88" rx="3" ry="3" width="410" height="6" />
+      <rect x="64" y="104" rx="3" ry="3" width="380" height="6" />
+      <rect x="64" y="120" rx="3" ry="3" width="178" height="6" />
+      <circle cx="20" cy="20" r="20" />
+    </content-loader>-->
+
     <h1>健康聲明表</h1>
     {{uuid}}
+    <content-loader
+      v-if="skeleton==true"
+      :width="1000"
+      :height="600"
+      :speed="3"
+      primaryColor="#000000"
+      secondaryColor="#ecebeb"
+    >
+      <rect x="17" y="23" rx="29" ry="29" width="310" height="310" />
+      <rect x="346" y="102" rx="3" ry="3" width="288" height="26" />
+      <rect x="345" y="132" rx="3" ry="3" width="288" height="8" />
+      <rect x="346" y="146" rx="3" ry="3" width="288" height="26" />
+      <rect x="346" y="176" rx="3" ry="3" width="288" height="8" />
+      <rect x="346" y="190" rx="3" ry="3" width="288" height="26" />
+      <rect x="346" y="221" rx="3" ry="3" width="288" height="8" />
+      <rect x="350" y="245" rx="29" ry="29" width="87" height="87" />
+      <rect x="448" y="245" rx="29" ry="29" width="87" height="87" />
+      <rect x="543" y="244" rx="29" ry="29" width="87" height="87" />
+      <rect x="345" y="63" rx="3" ry="3" width="121" height="26" />
+      <rect x="511" y="63" rx="3" ry="3" width="121" height="26" />
+      <rect x="347" y="26" rx="24" ry="24" width="288" height="26" />
+      <rect x="27" y="439" rx="3" ry="3" width="288" height="26" />
+      <rect x="26" y="469" rx="3" ry="3" width="288" height="8" />
+      <rect x="27" y="483" rx="3" ry="3" width="288" height="26" />
+      <rect x="27" y="513" rx="3" ry="3" width="288" height="8" />
+      <rect x="27" y="527" rx="3" ry="3" width="288" height="26" />
+      <rect x="27" y="558" rx="3" ry="3" width="288" height="8" />
+      <rect x="31" y="582" rx="29" ry="29" width="87" height="87" />
+      <rect x="129" y="582" rx="29" ry="29" width="87" height="87" />
+      <rect x="224" y="581" rx="29" ry="29" width="87" height="87" />
+      <rect x="26" y="400" rx="3" ry="3" width="121" height="26" />
+      <rect x="192" y="400" rx="3" ry="3" width="121" height="26" />
+      <rect x="28" y="363" rx="24" ry="24" width="288" height="26" />
+      <rect x="344" y="364" rx="29" ry="29" width="310" height="310" />
+      <rect x="669" y="18" rx="29" ry="29" width="310" height="310" />
+      <rect x="679" y="434" rx="3" ry="3" width="288" height="26" />
+      <rect x="678" y="464" rx="3" ry="3" width="288" height="8" />
+      <rect x="679" y="478" rx="3" ry="3" width="288" height="26" />
+      <rect x="679" y="508" rx="3" ry="3" width="288" height="8" />
+      <rect x="679" y="522" rx="3" ry="3" width="288" height="26" />
+      <rect x="679" y="553" rx="3" ry="3" width="288" height="8" />
+      <rect x="683" y="577" rx="29" ry="29" width="87" height="87" />
+      <rect x="781" y="577" rx="29" ry="29" width="87" height="87" />
+      <rect x="876" y="576" rx="29" ry="29" width="87" height="87" />
+      <rect x="678" y="395" rx="3" ry="3" width="121" height="26" />
+      <rect x="844" y="395" rx="3" ry="3" width="121" height="26" />
+      <rect x="680" y="358" rx="24" ry="24" width="288" height="26" />
+    </content-loader>
     <!-- <el-switch v-model="value" active-color="#13ce66" inactive-color="#ff4949"></el-switch> -->
-    <div  v-if="CardData!=[]" id="HealthCardList">
+    <div v-if="CardData!=[]" id="HealthCardList">
       <!-- <HealthCard v-for="item in card" :key="item.date" v-bind:data="item" /> -->
       <!-- <HealthCard v-for="item in card" :key="item.date" v-bind:data="item" /> -->
       <HealthCard v-for="item in CardData" :key="item.date" v-bind:data="item" />
@@ -64,12 +127,14 @@
 <script>
 import HealthForm from "../components/HealthForm.vue";
 import HealthCard from "../components/HealthCard.vue";
+import { ContentLoader } from "vue-content-loader";
 
 export default {
   name: "CAMP",
   components: {
     HealthForm,
     HealthCard,
+    ContentLoader,
   },
   created() {
     if (this.selectTemplate == "healthDeclaration") {
@@ -150,6 +215,9 @@ export default {
       // this.fillData();
       console.log("porcessing change", this.porcessing);
     },
+    skeleton: function () {
+      console.log("skeleton change", this.skeleton);
+    },
     storageChartDatasets: function () {
       // console.log("bodyTemperature change", this.storageChartDatasets);
       // console.log("bodyTemperature change", this.storageChartDatasets);
@@ -168,6 +236,9 @@ export default {
     },
   },
   computed: {
+    skeleton() {
+      return this.$store.state.isLoading;
+    },
     storageChartLabels() {
       return this.$store.state.storeChartLabels;
     },

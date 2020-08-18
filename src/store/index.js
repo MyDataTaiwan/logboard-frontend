@@ -248,6 +248,8 @@ export default new Vuex.Store({
 					console.log("fetchSummaryApi_200")
 					if (response.data.date[0] != null) {
 						commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length - 1]]);
+						commit('ChangisLoading', true);
+
 					} else {
 						commit('ChangisLoading', false);
 						alert("本資料包無此紀錄，請見諒")
