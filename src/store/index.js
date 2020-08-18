@@ -288,9 +288,9 @@ export default new Vuex.Store({
 						let swp = response.data.timestamp[id]
 						let temp = swp.slice(11);
 						console.log("DADADADDA", temp)
-						FormatTableTitle.push({ prop: id + 1, label: temp })
+						// FormatTableTitle.push({ prop: id + 1, label: temp })
 					}
-					FormatTableData = response.data.symptoms;
+					// FormatTableData = response.data.symptoms;
 					// for (let id = 0; id < response.data.timestamp.length; id++) {
 					// 	FormatTableTitle.push({ prop: id, label: response.data.timestamp[id] })
 					// }
