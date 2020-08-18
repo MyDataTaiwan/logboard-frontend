@@ -68,7 +68,9 @@ export default new Vuex.Store({
 			state.isLoading = payload
 		},
 		ChangDisplayPopUp(state, payload) {
-			state.displayPopUp = payload.display;
+			// state.displayPopUp = payload.display;
+			state.displayPopUp = false;
+
 			if (payload.index != -1) {
 				state.PopUpindex = payload.index;
 				state.PopUpidList = payload.idList
@@ -196,7 +198,7 @@ export default new Vuex.Store({
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
 					FormatChartDatasets = response.data.vital_signs;
-					// FormatThumbnailsSets = response.response.data.thumbnail_list;
+					// selectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformat = response.response.data.thumbnail_list;
 					// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
 					// console.log("fetch thumbnailList",FormatThumbnailsSets)
 					FormatDataIDs = response.data.id_list;
