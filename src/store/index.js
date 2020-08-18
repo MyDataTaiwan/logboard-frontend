@@ -1,13 +1,13 @@
-
 import Vue from 'vue';
+
+import axios from 'axios';
 import Vuex from 'vuex'; //引入 vuex
 
-import axios from 'axios'
 Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $raw_api = "https://logboard-dev.numbersprotocol.io/api/v1/records/";
+const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1/";
+const $raw_api = `${$http}/records/`;
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
 export default new Vuex.Store({
@@ -191,7 +191,7 @@ export default new Vuex.Store({
 						let swp = response.data.date[id]
 						let temp = swp.split("-");
 						console.log("DADADADDA", temp)
-						FormatTableTitle.push({ prop: id+1, label: temp[1] + "-" + temp[2] })
+						FormatTableTitle.push({ prop: id + 1, label: temp[1] + "-" + temp[2] })
 					}
 					FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.date;
@@ -209,7 +209,7 @@ export default new Vuex.Store({
 					return commit('saveDB', response.data);
 					// }
 				}
-				else{alert("請檢查網路或重新整理頁面")}
+				else { alert("請檢查網路或重新整理頁面") }
 				console.log("fetchSummaryApi_end")
 			})
 		},
@@ -239,7 +239,7 @@ export default new Vuex.Store({
 							let swp = response.data.date[id]
 							let temp = swp.split("-");
 							console.log("DADADADDA", temp)
-							FormatTableTitle.push({ prop: id+1, label: temp[1] + "-" + temp[2] })
+							FormatTableTitle.push({ prop: id + 1, label: temp[1] + "-" + temp[2] })
 						}
 						FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
@@ -256,7 +256,7 @@ export default new Vuex.Store({
 						commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 						return commit('saveDB', response.data);
 					}
-				}	else{alert("請檢查網路或重新整理頁面")}
+				} else { alert("請檢查網路或重新整理頁面") }
 				console.log("fetch past-days Api_end")
 			})
 		},
@@ -272,7 +272,7 @@ export default new Vuex.Store({
 				console.log(response.data.timestamp)
 				if (response.status === 200) {
 					commit('updateDateformat', []);
-			//		timestamp
+					//		timestamp
 					console.log("fetchTODaysApi_200")
 					console.log("fetchTODaysApi_200")
 					console.log("success ", response.data.id_list)
@@ -282,15 +282,15 @@ export default new Vuex.Store({
 					let FormatChartDatasets = null;
 					// let FormatThumbnailsSets = null;
 					let FormatDataIDs = null;
-					let ID_list=[];
+					let ID_list = [];
 					// FormatTableTitle = response.data.timestamp;
 					for (let id = 0; id < response.data.timestamp.length; id++) {
 						let swp = response.data.timestamp[id]
 						let temp = swp.slice(11);
 						console.log("DADADADDA", temp)
-						FormatTableTitle.push({ prop: id+1, label: temp })
+						FormatTableTitle.push({ prop: id + 1, label: temp })
 					}
-					FormatTableData=response.data.symptoms;
+					FormatTableData = response.data.symptoms;
 					// for (let id = 0; id < response.data.timestamp.length; id++) {
 					// 	FormatTableTitle.push({ prop: id, label: response.data.timestamp[id] })
 					// }
@@ -299,9 +299,9 @@ export default new Vuex.Store({
 						let swp = response.data.id[index]
 						ID_list.push(swp)
 					}
-					FormatDataIDs =  [ID_list];
+					FormatDataIDs = [ID_list];
 					// FormatTableData = response.data.symptoms;
-					FormatChartLabels = response.data.timestamp.map(index=>{return index.slice(11)});
+					FormatChartLabels = response.data.timestamp.map(index => { return index.slice(11) });
 					FormatChartDatasets = response.data.vital_signs;
 					// FormatThumbnailsSets = response.response.data.thumbnails;
 					// console.log("fetch thumbnailList",response.response.data.thumbnails)
@@ -315,7 +315,7 @@ export default new Vuex.Store({
 					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 
-				}	else{alert("請檢查網路或重新整理頁面")}
+				} else { alert("請檢查網路或重新整理頁面") }
 				console.log("fetchTODaysApi_end")
 			})
 		},
@@ -335,7 +335,7 @@ export default new Vuex.Store({
 							output.push(response.data)
 							console.log("fetch Raw Data output ", output)
 						}
-					}	else{alert("請檢查網路或重新整理頁面")}
+					} else { alert("請檢查網路或重新整理頁面") }
 					console.log("fetchRawDataApi_end")
 				})
 			})

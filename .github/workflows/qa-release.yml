@@ -18,3 +18,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         VUE_APP_S3D_BUCKET: ${{ secrets.AWS_S3_BUCKET_QA }}
         VUE_APP_S3D_CLOUDFRONT_ID: ${{ secrets.AWS_CF_ID_QA }}
+        VUE_APP_API_HOST: ${{ secrets.API_HOST_QA }}
