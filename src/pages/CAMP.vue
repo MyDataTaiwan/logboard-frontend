@@ -260,12 +260,14 @@ export default {
       console.log("porcesData", porcesData);
       return ()=>{
         this.CardData=porcesData
-          alert("做完")
+          // alert("做完")
       this.$store.commit("ChangisLoading", false);
         };
      }
      else{
-      return alert("錯誤啊");
+      return       console.log("錯誤啊");
+
+      // alert("錯誤啊");
 
      }
     },
