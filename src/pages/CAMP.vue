@@ -601,6 +601,7 @@ h1 {
   /* background: #646464; */
   /* display: flex; */
   flex-direction: column;
+  flex-wrap: wrap;
   /* flex: 1; */
   /* margin: 20px;
   padding: 10px;
