@@ -266,13 +266,13 @@ export default {
         // console.log(activeElement);
 
         const item = array[0];
-        console.log("我被點了 B2", event, array);
+        console.log("我被點了 B2", item, event, array);
 
-        this.$store.commit("ChangDisplayPopUp", {
-          display: true,
-          index: array[0]._index,
-          idList: this.storageIDSets[array[0]._index],
-        });
+        // this.$store.commit("ChangDisplayPopUp", {
+        //   display: true,
+        //   index: array[0]._index,
+        //   idList: this.storageIDSets[array[0]._index],
+        // });
 
         console.log("我被點了", event, array[0]._index);
         this.selectedData = array[0]._index;
@@ -290,14 +290,27 @@ export default {
       const item = event[0];
       console.log("我被點了 Ａ", point, event);
 
-      this.$store.commit("ChangDisplayPopUp", {
-        display: true,
-        index: event[0]._index,
-        idList: this.storageIDSets[event[0]._index],
-      });
+      // this.$store.commit("ChangDisplayPopUp", {
+      //   display: true,
+      //   index: event[0]._index,
+      //   idList: this.storageIDSets[event[0]._index],
+      // });
 
       console.log("我被點了", point, event[0]._index);
+      console.log("我被點了 event[0]._index", event[0]._index);
       this.selectedData = event[0]._index;
+
+      console.log("我被點了 on-_index", item._index);
+      console.log("我被點了 on-backgroundColor", item._view.backgroundColor);
+      console.log("我被點了 on-values_index", this.values[item._index]);
+      console.log("我被點了 on-values", this.values);
+      console.log(
+        "我被點了 on-receive",
+        item._index,
+        item._view.backgroundColor,
+        this.values[item._index],
+        this.values
+      );
       this.$emit("on-receive", {
         index: item._index,
         backgroundColor: item._view.backgroundColor,
@@ -307,6 +320,7 @@ export default {
     }, ////捕捉點擊
     update(data) {
       this.selectedData = data;
+      console.log("我被點了 selectedData", this.selectedData);
     }, ////捕捉點擊
     getImg() {
       return `<img class="fit-picture"
@@ -540,7 +554,8 @@ const customTooltips = function (tooltip) {
     console.log("HTML bodyLines", bodyLines);
     console.log("HTML raw_data", rawData);
     console.log("HTML testRawData", testRawData);
-    console.log("HTML testRawData", testRawData[0]);
+    console.log("HTML testRawData name", testRawData[0]);
+    console.log("HTML titleID", [titleID]);
 
     bodyLines.forEach(function (body, i) {
       const colors = tooltip.labelColors[i];
@@ -551,21 +566,29 @@ const customTooltips = function (tooltip) {
       console.log("bodybodybodybody", body);
 
       let temp = swp.split(":");
+      let name = temp[0];
+      console.log("HTML testRawData name", testRawData[name]);
+      console.log("HTML testRawData name titleID", testRawData[name][titleID]);
+
+      console.log("HTML temp", name);
       console.log("DADADADDA", temp);
+
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
       // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
       innerHtml +=
         "<tr><td style='text-align: left;' >" +
         span +
-        temp[0] +
+        name +
         " : " +
-        testRawData[temp[0]][titleID] +
+        testRawData[name][titleID] +
         "</td></tr>";
       // Hot Fixme
     });
     //testIDSets[i][0]
-    console.log(testIDSets[titleID][0]);
+
+    // console.log(testIDSets[titleID][0]);
+    // console.log("testIDSets", testIDSets[titleID][0], titleID);
     console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
 
     if (testThumbnailSets[titleID][0] == null) {
@@ -581,6 +604,7 @@ const customTooltips = function (tooltip) {
         '" alt="Grapefruit slice atop a pile of other slices">' +
         "</tbody>";
     }
+    // innerHtml += "</tbody>";
 
     const tableRoot = tooltipEl.querySelector("table");
     // tableRoot.innerHTML = innerHtml;
