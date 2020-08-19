@@ -15,7 +15,7 @@
       <circle cx="20" cy="20" r="20" />
     </content-loader>-->
 
-    <h1>健康聲明表</h1>
+    <h1>健康聲明書</h1>
     {{uuid}}
     <content-loader
       v-if="skeleton==true"

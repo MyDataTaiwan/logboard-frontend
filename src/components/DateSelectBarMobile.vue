@@ -19,7 +19,7 @@
         </router-link>
         <router-link :to="{ name: 'camps' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
-          <h4>健康聲明表</h4>
+          <h4>健康聲明書</h4>
         </router-link>
         <router-link :to="{ name: 'photodiary' }" class="Nav">
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
