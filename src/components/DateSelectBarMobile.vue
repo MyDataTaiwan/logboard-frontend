@@ -233,6 +233,7 @@ export default {
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
       if (mode == "Summary") {
+        console.log("fetchSummaryApi input date", start_date, end_date); // -> 1
         this.$store.dispatch("fetchSummaryApi", {
           // start_date: "2020-07-15",
           // end_date: "2020-07-24"
@@ -290,22 +291,55 @@ export default {
       // });
       if (start == end) {
         //FIXME
-
-        if (
-          new Date(start).getMonth() == new Date().getMonth() &&
-          new Date().getDay(start) == new Date().getDay()
-        ) {
-          console.log("$sstart,end tore", start, end); // -> 1
-          //等於當日 FIX ISSUE 50
           this.$store.dispatch("fetchToDaysApi");
-        }
+
+        // if (
+        //   // new Date(start).getUTCMonth() == new Date().getMonth() &&
+        //   // new Date(start).getUTCDate() == new Date().getUTCDate()
+        //   new Date(start).getMonth() == new Date().getMonth() &&
+        //   new Date(start).getDate() == new Date().getDate()
+        // ) {
+        //   console.log("$start == end tore", start, end); // -> 1
+        //   //等於當日 FIX ISSUE 50
+        //   this.$store.dispatch("fetchToDaysApi");
+        // }
         //FIXME
         // 執行TO(被選中的單日)Day
       } else {
+        console.log(
+          "GetAPI start",
+          start,
+          new Date(start)
+            .toLocaleString()
+            .replace("/", "-")
+            .replace("/", "-")
+            .substring(0, 9)
+        ); // -> 1
+        console.log(
+          "GetAPI end",
+          end,
+          new Date(end)
+            .toLocaleString()
+            .replace("/", "-")
+            .replace("/", "-")
+            .substring(0, 9)
+        ); // -> 1
         this.GetAPI(
           "Summary",
-          new Date(start).toISOString().substring(0, 10),
+               new Date(start).toISOString().substring(0, 10),
           new Date(end).toISOString().substring(0, 10)
+          // new Date(start)
+          //   .toLocaleString()
+          //   .replace("/", "-")
+          //   .replace("/", "-")
+          //   .substring(0, 9),
+          // new Date(end)
+          //   .toLocaleString()
+          //   .replace("/", "-")
+          //   .replace("/", "-")
+          //   .substring(0, 9)
+          // new Date(start).toISOString().substring(0, 10),
+          // new Date(end).toISOString().substring(0, 10)
         );
       }
       console.log(

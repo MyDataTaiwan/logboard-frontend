@@ -6,7 +6,7 @@
       <img id="SelectBarTitle" alt="bar" src="../assets/icon/Date.svg" width="8%" />
       <!-- <div class="DateSelectItmes">2020/05/09 ~ 2020/05/13</div> -->
       <div class="DateSelectItmes">
-        <el-date-picker
+        <!-- <el-date-picker
           style="height:28px !important;border:none;"
           size="small"
           v-model="dateValue"
@@ -18,6 +18,19 @@
           :default-time="['12:00:00']"
           format="yyyy 年 MM 月 dd 日"
           value-format="timestamp"
+        ></el-date-picker> -->
+           <el-date-picker
+          style="height:28px !important;border:none;"
+          size="small"
+          v-model="dateValue"
+          type="daterange"
+          start-placeholder="開始日期"
+          end-placeholder="結束日期"
+          clearable="true"
+          @change="handleChange"
+          :default-time="['12:00:00']"
+          format="yyyy 年 MM 月 dd 日"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </div>
       <!-- <button class="DateSelectItmes" v-on:click="counter += 1">Add 1</button> -->
@@ -220,12 +233,31 @@ export default {
   methods: {
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
+
       if (mode == "Summary") {
+        console.log("fetchSummaryApi input date", start_date, end_date); // -> 1
+        //FIXME 在1~10號會出現%20
+        // if (start_date.match("%20") != null) {
+        //   console.log("%20 有", start_date); // -> 1
+        //   start_date = start_date.replace("%20", "");
+        //   end_date = end_date.replace("%20", "");
+        //   this.$store.dispatch("fetchSummaryApi", {
+        //     // start_date: "2020-07-15",
+        //     // end_date: "2020-07-24"String()
+        //     // start_date: '2020-8-1',
+        //     // end_date: '2020-8-28',
+        //     start_date: String(start_date),
+        //     end_date: String(end_date),
+        //   });
+        // } else {
+        console.log("%20 無", start_date); // -> 1
         this.$store.dispatch("fetchSummaryApi", {
           // start_date: "2020-07-15",
-          // end_date: "2020-07-24"
-          start_date: start_date,
-          end_date: end_date,
+          // end_date: "2020-07-24"String()
+          // start_date: '2020-8-1',
+          // end_date: '2020-8-28',
+          start_date: String(start_date),
+          end_date: String(end_date),
         });
       } else if (mode == "today") {
         this.$store.dispatch("fetchToDaysApi");
@@ -275,22 +307,79 @@ export default {
       // });
       if (start == end) {
         //FIXME
-
-        if (
-          new Date(start).getMonth() == new Date().getMonth() &&
-          new Date().getDay(start) == new Date().getDay()
-        ) {
-          console.log("$sstart,end tore", start, end); // -> 1
-          //等於當日 FIX ISSUE 50
           this.$store.dispatch("fetchToDaysApi");
-        }
+
+        // if (
+        //   // new Date(start).getUTCMonth() == new Date().getMonth() &&
+        //   // new Date(start).getUTCDate() == new Date().getUTCDate()
+        //   new Date(start).getMonth() == new Date().getMonth() &&
+        //   new Date(start).getDate() == new Date().getDate()
+        // ) {
+        //   console.log("$start == end tore", start, end); // -> 1
+        //   //等於當日 FIX ISSUE 50
+        //   this.$store.dispatch("fetchToDaysApi");
+        // }
         //FIXME
         // 執行TO(被選中的單日)Day
       } else {
+        console.log(
+          "GetAPI start",
+          start,
+          new Date(start)
+            .toLocaleString()
+            .replace("/", "-")
+            .replace("/", "-")
+            .substring(0, 9)
+        ); // -> 1
+        console.log(
+          "GetAPI end",
+          end,
+          new Date(end)
+            .toLocaleString()
+            .replace("/", "-")
+            .replace("/", "-")
+            .substring(0, 9)
+        ); // -> 1
+        let startFromt = new Date(start).toLocaleString().split("/");
+        let endFromt = new Date(end).toLocaleString().split("/");
+        let startSTR =
+          startFromt[0] +
+          "-" +
+          startFromt[1] +
+          "-" +
+          startFromt[2].substring(0, 2);
+        let endSTR =
+          endFromt[0] + "-" + endFromt[1] + "-" + endFromt[2].substring(0, 2);
+        console.log("ss", startSTR, endSTR);
         this.GetAPI(
           "Summary",
-          new Date(start).toISOString().substring(0, 10),
-          new Date(end).toISOString().substring(0, 10)
+          start,
+          end
+          // new Date(start).toISOString().substring(0, 10),
+          // new Date(end).toISOString().substring(0, 10)
+          // new Date(start)
+          //   .toLocaleString()
+          //   .replace("/", "-")
+          //   .replace("/", "-")
+          //   .substring(0, 9),
+          // new Date(end)
+          //   .toLocaleString()
+          //   .replace("/", "-")
+          //   .replace("/", "-")
+          //   .substring(0, 9)
+
+          // new Date(start).toISOString().substring(0, 10),
+          // new Date(end).toISOString().substring(0, 10)
+          // new Date(start).getFullYear()+'-'+new Date(start).getMonth()+'-'+new Date(start).getDate(),
+          // new Date(end).getFullYear()+'-'+new Date(end).getMonth()+'-'+new Date(end).getDate()
+          // startSTR + "",
+          // endSTR + ""
+          // startFromt[0] +
+          //   "-" +
+          //   startFromt[1] +
+          //   "-" +
+          //   startFromt[2].substring(0, 2),
+          // endFromt[0] + "-" + endFromt[1] + "-" + endFromt[2].substring(0, 2)
         );
       }
 
