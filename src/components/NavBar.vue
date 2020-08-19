@@ -26,7 +26,7 @@
         >
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
         </router-link>
-        <router-link
+        <!-- <router-link
           @mouseover="mouseOver"
           @mouseleave="mouseLeave"
           :style="active"
@@ -34,7 +34,7 @@
           class="MiniItems"
         >
           <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
-        </router-link>
+        </router-link> -->
       </div>
     </div>
     <div v-if="!isCollapse" id="NavBarMax">
