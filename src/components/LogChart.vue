@@ -143,11 +143,18 @@ export default {
             {
               stacked: false, //折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
               ticks: {
+                 display: false,
                 beginAtZero: true,
+                // callback: function (value, index, values) {
+                //   return "";
+                // },
               },
               gridLines: {
                 display: true,
                 color: "rgba(255,99,132,0.2)",
+              },
+              angleLines: {
+                display: false,
               },
             },
           ],
