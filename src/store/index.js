@@ -6,7 +6,7 @@ import Vuex from 'vuex'; //引入 vuex
 Vue.use(Vuex);
 
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
-const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1/";
+const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1";
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 
 // const $raw_api = `${$http}/records/`;
@@ -261,7 +261,7 @@ export default new Vuex.Store({
 			console.log("fetch past-days Api_start")///past-days
 			commit('ChangisLoading', true);
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
-			return axios.get(`${$http}records/past-days/?uid=${this.state.uid}&template=${this.state.selectTemplate}&range=${payload.range}`).then(response => {
+			return axios.get(`${$http}/records/past-days/?uid=${this.state.uid}&template=${this.state.selectTemplate}&range=${payload.range}`).then(response => {
 				console.log("fetchDaysApi_get", response)///past-days
 				console.log(response)///past-days
 				console.log(response.data.length)///past-days
@@ -342,7 +342,7 @@ export default new Vuex.Store({
 			console.log("fetchTODaysApi_start")
 			commit('ChangisLoading', true);
 			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
-			return axios.get(`${$http}records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
+			return axios.get(`${$http}/records/today/?uid=${this.state.uid}&template=${this.state.selectTemplate}`).then(response => {
 				console.log("fetchTODaysApi_get", response)
 				console.log(response)
 				console.log(response.data.timestamp)
