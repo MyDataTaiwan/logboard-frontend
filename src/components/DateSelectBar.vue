@@ -18,8 +18,8 @@
           :default-time="['12:00:00']"
           format="yyyy 年 MM 月 dd 日"
           value-format="timestamp"
-        ></el-date-picker> -->
-           <el-date-picker
+        ></el-date-picker>-->
+        <el-date-picker
           style="height:28px !important;border:none;"
           size="small"
           v-model="dateValue"
@@ -305,10 +305,13 @@ export default {
       //   start_date: new Date(start).toISOString().substring(0, 10),
       //   end_date: new Date(end).toISOString().substring(0, 10)
       // });
-      if (start == end) {
+      if (start == end && start == new Date().toISOString().substring(0, 10)) {
         //FIXME
-          this.$store.dispatch("fetchToDaysApi");
-
+        this.$store.dispatch("fetchToDaysApi");
+        console.log(
+          "起始日=截止日=今日",
+          new Date().toISOString().substring(0, 10)
+        );
         // if (
         //   // new Date(start).getUTCMonth() == new Date().getMonth() &&
         //   // new Date(start).getUTCDate() == new Date().getUTCDate()
