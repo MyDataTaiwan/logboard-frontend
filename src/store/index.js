@@ -188,7 +188,7 @@ export default new Vuex.Store({
 			// let start_date = payload.start_date;
 			// let end_date = payload.end_date;
 			// let url = `${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${start_date}`
-			let urlProcessing = `${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`
+			let urlProcessing = `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`
 			// let urlProcessing='https://logboard-dev.numbersprotocol.io/api/v1/records/summary/?uid=4fc9a448-49fe-4031-a9cc-a72ffa99aa37&template=heartFailure&start_date=2020-8-18&end_date=2020-8-20'
 			if (urlProcessing.match("%20") != null) {
 				console.log("%20 有", urlProcessing); // -> 1
