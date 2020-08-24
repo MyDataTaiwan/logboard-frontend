@@ -283,107 +283,52 @@ export default {
         elmnt.clientTop + elmnt.height;
       document.getElementById("Select").style.Left = elmnt.clientLeft;
     },
+    ABtime(YYYYMMDD) {
+      return (
+        new Date(YYYYMMDD).getUTCFullYear() +
+        "-" +
+        new Date(YYYYMMDD).getUTCMonth() +
+        "-" +
+        new Date(YYYYMMDD).getUTCDate()
+      );
+    },
+    ontime() {
+      return (
+        new Date().getUTCFullYear() +
+        "-" +
+        new Date().getUTCMonth() +
+        "-" +
+        new Date().getUTCDate()
+      );
+    },
     handleChange() {
       console.log(this.dateValue); // -> 1
       this.$store.commit("setSelectDate", this.dateValue);
       let start = this.dateValue[0];
-      // new Date(this.dateValue[0]).getFullYear() +
-      // "-" +
-      // new Date(this.dateValue[0]).getMonth() +
-      // "-" +
-      // new Date(this.dateValue[0]).getDate();
       let end = this.dateValue[1];
-      // new Date(this.dateValue[1]).getFullYear() +
-      // "-" +
-      // new Date(this.dateValue[1]).getMonth() +
-      // "-" +
-      // new Date(this.dateValue[1]).getDate();
       this.$store.commit("updateDateformat", [start, end]);
-      // console.log("$store", this.$store.state.selectDate); // -> 1
-      // console.log("$store", this.$store.state.selectDate); // -> 1
-      // this.$store.dispatch("fetchSummaryApi", {
-      //   start_date: new Date(start).toISOString().substring(0, 10),
-      //   end_date: new Date(end).toISOString().substring(0, 10)
-      // });
-      if (start == end && start == new Date().toISOString().substring(0, 10)) {
+      if (
+        this.ABtime(start) == this.ABtime(end) &&
+        this.ABtime(start) == this.ontime
+      ) {
+        console.log(
+          "起始日=截止日=今日",
+          this.ABtime(start),
+          this.ABtime(end),
+          this.ontime
+        );
         //FIXME
-        this.$store.dispatch("fetchToDaysApi");
         console.log(
           "起始日=截止日=今日",
           new Date().toISOString().substring(0, 10)
         );
-        // if (
-        //   // new Date(start).getUTCMonth() == new Date().getMonth() &&
-        //   // new Date(start).getUTCDate() == new Date().getUTCDate()
-        //   new Date(start).getMonth() == new Date().getMonth() &&
-        //   new Date(start).getDate() == new Date().getDate()
-        // ) {
-        //   console.log("$start == end tore", start, end); // -> 1
-        //   //等於當日 FIX ISSUE 50
-        //   this.$store.dispatch("fetchToDaysApi");
-        // }
+        this.$store.dispatch("fetchToDaysApi");
         //FIXME
+        //等於當日 FIX ISSUE 50
         // 執行TO(被選中的單日)Day
       } else {
-        console.log(
-          "GetAPI start",
-          start,
-          new Date(start)
-            .toLocaleString()
-            .replace("/", "-")
-            .replace("/", "-")
-            .substring(0, 9)
-        ); // -> 1
-        console.log(
-          "GetAPI end",
-          end,
-          new Date(end)
-            .toLocaleString()
-            .replace("/", "-")
-            .replace("/", "-")
-            .substring(0, 9)
-        ); // -> 1
-        let startFromt = new Date(start).toLocaleString().split("/");
-        let endFromt = new Date(end).toLocaleString().split("/");
-        let startSTR =
-          startFromt[0] +
-          "-" +
-          startFromt[1] +
-          "-" +
-          startFromt[2].substring(0, 2);
-        let endSTR =
-          endFromt[0] + "-" + endFromt[1] + "-" + endFromt[2].substring(0, 2);
-        console.log("ss", startSTR, endSTR);
-        this.GetAPI(
-          "Summary",
-          start,
-          end
-          // new Date(start).toISOString().substring(0, 10),
-          // new Date(end).toISOString().substring(0, 10)
-          // new Date(start)
-          //   .toLocaleString()
-          //   .replace("/", "-")
-          //   .replace("/", "-")
-          //   .substring(0, 9),
-          // new Date(end)
-          //   .toLocaleString()
-          //   .replace("/", "-")
-          //   .replace("/", "-")
-          //   .substring(0, 9)
-
-          // new Date(start).toISOString().substring(0, 10),
-          // new Date(end).toISOString().substring(0, 10)
-          // new Date(start).getFullYear()+'-'+new Date(start).getMonth()+'-'+new Date(start).getDate(),
-          // new Date(end).getFullYear()+'-'+new Date(end).getMonth()+'-'+new Date(end).getDate()
-          // startSTR + "",
-          // endSTR + ""
-          // startFromt[0] +
-          //   "-" +
-          //   startFromt[1] +
-          //   "-" +
-          //   startFromt[2].substring(0, 2),
-          // endFromt[0] + "-" + endFromt[1] + "-" + endFromt[2].substring(0, 2)
-        );
+        console.log("Summary", start, end);
+        this.GetAPI("Summary", start, end);
       }
 
       console.log(
