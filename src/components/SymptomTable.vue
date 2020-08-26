@@ -33,16 +33,19 @@
     <el-table-column width="10" prop=" " label=" "></el-table-column>
 
     <el-table-column
-      v-for="{ prop, label } in storageTableTitle.slice(0)"
+      v-for="{ prop, label } in storageTableTitle"
       :key="prop"
       :prop="prop"
       :label="label"
-      width="60"
+      width="160"
     >
       <template slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
-        <!-- <h6>{{ scope.column }}</h6>
-        <h6>{{ scope.row }}</h6>-->
+                <!-- <h6>{{ scope.column}}</h6> -->
+
+        <!-- <h6>{{ scope.column.property}}</h6>
+        <h6>{{ scope.row.id }}</h6>
+         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6> -->
         <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
@@ -67,7 +70,7 @@
             <!-- <h3>{{scope.row.Symptoms[scope.column.property] }}</h3>
             <h3>{{scope.column.property }}</h3>-->
 
-            <template v-if="scope.row.symptom[scope.column.property]==true">
+            <template v-if="scope.row.symptom[scope.column.property-1]==true">
               <el-tag color="#5C6F75" effect="dark" size="mini">
                 <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
                 <h3></h3>
@@ -89,20 +92,20 @@
 export default {
   name: "SymptomTable",
   props: {
-    msg: String
+    msg: String,
   },
   watch: {
-    storageTableTitle: function() {
+    storageTableTitle: function () {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
-      console.log("storageTableTitle change");
+      console.log("input  storageTableTitle change", this.storageTableTitle);
     },
-    storageTableData: function() {
-      console.log("storageTableData change");
+    storageTableData: function () {
+      console.log("input storageTableData change", this.storageTableData);
       this.$refs.tableRef.bodyWrapper.scrollTop = 5;
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
@@ -111,7 +114,7 @@ export default {
       });
       this.$refs.multipleTable.$el.style.width = "95%";
     },
-    selectTemplate: function() {
+    selectTemplate: function () {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
@@ -120,39 +123,43 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("selectTemplate change");
     },
-    storageData: function() {
+    storageData: function () {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
-      console.log("storageData change");
+      console.log("input storageData change", this.storageData);
     },
-    storageThumbnailSets: function() {
+    storageThumbnailSets: function () {
       // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
-    }
+    },
   },
   computed: {
     storageThumbnailSets() {
       return this.$store.state.thumbnailList;
     },
     storageTableTitle() {
-      if (this.storageData.symptoms[0] == null) {
-        // return [
-        //   { prop: 0, label: "暫時" },
-        //   { prop: 1, label: "沒有" },
-        //   { prop: 2, label: "資料" }
-        // ];
-        return  [];
-      }
+      // if (this.storageData.symptoms[0] == null) {
+      //   // if (this.storageData.date[0] == null) {
+      //   // return [
+      //   //   { prop: 0, label: "暫時" },
+      //   //   { prop: 1, label: "沒有" },
+      //   //   { prop: 2, label: "資料" }
+      //   // ];
+      //   return [];
+      // }
+      console.log("storeTableTitle", this.$store.state.storeTableTitle);
+
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
-       if (this.storageData.symptoms[0] == null) {
-        return  [];
-      }
+      //  if (this.storageData.date[0] == null) {
+      //   return  [];
+      // }
+      console.log("storeTableData", this.$store.state.storeTableData);
       return this.$store.state.storeTableData;
     },
     storageData() {
@@ -165,7 +172,7 @@ export default {
       //   // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       // });
       return this.$store.state.selectTemplate;
-    }
+    },
   },
   created() {
     // this.$store.dispatch("fetchSummaryApi", {
@@ -180,7 +187,7 @@ export default {
   },
   methods: {
     doResize() {
-      setTimeout(function() {
+      setTimeout(function () {
         //手動觸發窗口resize事件
         if (document.createEvent) {
           var event = document.createEvent("HTMLEvents");
@@ -195,23 +202,23 @@ export default {
       let TableTitle = [];
       console.log("TableTitleA", date);
       if (date != null) {
-        date.map(index => {
+        date.map((index) => {
           // console.log(Object.keys(index));
           TableTitle.push({
             prop: Object.keys(index),
-            label: Object.keys(index)
+            label: Object.keys(index),
           });
         });
       }
       console.log("TableTitle", Object.keys(TableTitle));
       return TableTitle;
-    }
+    },
   },
   data() {
     return {
-      colTitleConfigs: this.TargetDateToTableTitle
+      colTitleConfigs: this.TargetDateToTableTitle,
     };
-  }
+  },
 };
 </script>
 
