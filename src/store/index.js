@@ -4,10 +4,9 @@ import axios from 'axios';
 import Vuex from 'vuex'; //引入 vuex
 
 Vue.use(Vuex);
-
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1";
-// const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
+///// const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 
 // const $raw_api = `${$http}/records/`;
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
@@ -41,6 +40,8 @@ export default new Vuex.Store({
 		storageTargetData: null,
 		storageTargetDate: null,
 		selectTemplateTargetSet: null,
+		SymptomsTemplates: null,
+		storeDFTableData: null,
 		zipSymptoms: null,
 		// TableTitle: [],
 		thumbnailList: [],
@@ -66,6 +67,13 @@ export default new Vuex.Store({
 	mutations: {
 		increment(state) {
 			state.count++
+		},
+
+		saveSymptomsTemplates(state, payload) {
+			console.log("SymptomsTemplates  in  ", payload);
+
+			state.SymptomsTemplates = payload
+			console.log("SymptomsTemplates  載入中 ", state.SymptomsTemplates);
 		},
 		ChangisLoading(state, payload) {
 
@@ -99,7 +107,17 @@ export default new Vuex.Store({
 			state.storeTableTitle = payload;
 			console.log("save TableTitle Store", payload);
 		},
+		saveDFTableData(state, payload) {
+			state.storeDFTableData = payload;
+			console.log("save TableData Store", payload);
+		},
 		saveFormatTableData(state, payload) {
+			// if (payload == []) {
+			// 	state.storeDFTableData = this.state.storeDFTableData
+			// }
+			// else {
+			// 	state.storeTableData = payload;
+			// }
 			state.storeTableData = payload;
 			console.log("save TableData Store", payload);
 		},
@@ -423,6 +441,57 @@ export default new Vuex.Store({
 		// 	})
 		// 	return commit('saveRAW', output);
 		// },
+		fetchTemplates({
+			commit,
+		}) {
+			console.log("fetch Templates");
+			let Templates = ['heartFailure', 'commonCold'];
+			let SymptomsTemplates = [];
+			///records/templates/?template=heartFailure
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
+			return Templates.map(symptom => {
+				axios.get(`${$http}/records/templates/?template=${symptom}`).then(response => {
+					console.log("fetch Templates_get", response)
+					if (response.status === 200) {
+						console.log(response.data);
+						let titile = response.data.templateName;
+						let symptoms = response.data.fields;
+						SymptomsTemplates.push({ titile: titile, symptoms: symptoms })
+						commit('saveSymptomsTemplates', SymptomsTemplates);
+
+					} else {
+						console.log(response)
+						alert("請檢查網路或重新整理頁面");
+					}
+					console.log("fetch Templates_end");
+				})
+			})
+		},
+		// ChangDisplayTemplate({
+		// 	commit,
+		// }, payload) {
+
+		// 	console.log("fetch Templates")
+		// 	console.log(this.state.SymptomsTemplates)
+		// 	if (this.state.SymptomsTemplates[0] != null) {
+		// 		console.log("fetch Templates_200", payload)
+		// 		console.log('SymptomsTemplates0', this.state.SymptomsTemplates[0].titile);
+		// 		console.log('SymptomsTemplates0', this.state.SymptomsTemplates[0].symptoms);
+		// 		console.log('SymptomsTemplates1', this.state.SymptomsTemplates[1].titile);
+		// 		console.log('SymptomsTemplates1', this.state.SymptomsTemplates[1].symptoms);
+		// 		var filterDisplayTemplate = this.state.SymptomsTemplates.filter(function (item) {
+		// 			return item.titile == 'commonCold';       // 取得大於五歲的
+		// 		});
+		// 		console.log("fetch filterDisplayTemplate", filterDisplayTemplate)
+		// 		// 					(4) [{…}, {…}, {…}, {…}, __ob__: Observer]
+		// 		// 0:
+		// 		// name: "coughing"
+		// 		commit('saveDFTableData', filterDisplayTemplate);
+		// 		// commit('saveFormatTableTitle', FormatTableTitle);
+		// 	}
+		// 	console.log("fetch Templates_end")
+
+		// },
 		//新增 api
 		updateApi({
 			commit,
@@ -442,7 +511,6 @@ export default new Vuex.Store({
 		}) {
 			commit('setLoading', false);
 		}
-
 	}
 })
 

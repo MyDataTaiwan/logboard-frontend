@@ -100,7 +100,8 @@ export default {
       }
     },
     options: function () {
-      console.log("options change");
+      console.log("options change",this.options);
+      // this.$store.dispatch("ChangDisplayTemplate",this.options)
     },
     selectDateformatStart: function () {
       console.log(
@@ -132,7 +133,9 @@ export default {
     //     },
   },
   created() {
+  
     this.GetAPI("this-week");
+    
   },
   computed: {
     // selectTemplateList() {
