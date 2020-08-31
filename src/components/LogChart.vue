@@ -593,10 +593,13 @@ const customTooltips = function (tooltip) {
       // Hot Fixme
     });
     //testIDSets[i][0]
-
+    
+let tpimg=testThumbnailSets[titleID];
     // console.log(testIDSets[titleID][0]);
     // console.log("testIDSets", testIDSets[titleID][0], titleID);
     console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
+    console.log("testThumbnailSets", testThumbnailSets[titleID]);
+    console.log("testThumbnailSets END", tpimg[tpimg.length-1]);
 
     if (testThumbnailSets[titleID][0] == null) {
       innerHtml +=
@@ -607,7 +610,8 @@ const customTooltips = function (tooltip) {
       innerHtml +=
         "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
         '<img class="fit-picture" src="' +
-        testThumbnailSets[titleID][0] +
+        // testThumbnailSets[titleID][0] +
+        tpimg[tpimg.length-1]+
         '" alt="Grapefruit slice atop a pile of other slices">' +
         "</tbody>";
     }
