@@ -10,6 +10,7 @@
     size="small"
     style="width:50%"
   >
+    <el-table-column width="10" prop=" " label=" "></el-table-column>
     <el-table-column
       style="{ visibility: show1 ? 'hidden' : 'visible' }"
       fixed="left"
@@ -41,11 +42,11 @@
     >
       <template slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
-                <!-- <h6>{{ scope.column}}</h6> -->
+        <!-- <h6>{{ scope.column}}</h6> -->
 
         <!-- <h6>{{ scope.column.property}}</h6>
         <h6>{{ scope.row.id }}</h6>
-         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6> -->
+        <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
@@ -121,7 +122,7 @@ export default {
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
-      console.log("selectTemplate change");
+      console.log("selectTemplate change", this.selectTemplate);
     },
     storageData: function () {
       this.$nextTick(() => {
@@ -136,10 +137,54 @@ export default {
       // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
+    storageSymptomsTemplates: function () {
+      // this.fillData();
+
+      // if (this.storageTableData == null) {
+      //   // var filterDisplayTemplate = this.storageSymptomsTemplates.filter(
+      //   //   function (item) {
+      //   //     return item.titile == "commonCold";
+      //   //   }
+      //   // );
+      //   // console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
+      //   // return filterDisplayTemplate[0].symptoms;
+      //   this.storageTableData = this.testDB;
+      // }
+
+      console.log(
+        "storageSymptomsTemplates change",
+        this.storageSymptomsTemplates
+      );
+    },
   },
   computed: {
     storageThumbnailSets() {
       return this.$store.state.thumbnailList;
+    },
+    storageSymptomsTemplates() {
+      if (this.$store.state.SymptomsTemplates[0] != null) {
+        let swp=this.$store.state.selectTemplate ;
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function (item) {
+            if (swp== "heartFailure") {
+              return item.titile == "heartFailure";
+              // return this.$store.state.selectTemplate == "commonCold";
+            }
+            return item.titile == "commonCold";
+          }
+        );
+        console.log(
+          "filter  Template",
+          this.$store.state.selectTemplate == "heartFailure"
+        );
+////FIXME storage Symptoms Templates
+        console.log("filter  Template", this.$store.state.selectTemplate);
+        console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
+        return filterDisplayTemplate[0].symptoms.slice(1);
+      } else {
+        return null;
+      }
+      // return this.$store.state.SymptomsTemplates;
     },
     storageTableTitle() {
       // if (this.storageData.symptoms[0] == null) {
@@ -159,8 +204,28 @@ export default {
       //  if (this.storageData.date[0] == null) {
       //   return  [];
       // }
+      // var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+      //   function (item) {
+      //     return item.titile == "commonCold";
+      //   }
+      // );
+      // console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
       console.log("storeTableData", this.$store.state.storeTableData);
-      return this.$store.state.storeTableData;
+      if (this.$store.state.storeTableData == "") {
+        console.log(
+          "this.$store.state.storeTableData == null",
+          this.$store.state.storeTableData
+        );
+        console.log("filterDisplayTemplate", this.storageSymptomsTemplates);
+        return this.storageSymptomsTemplates;
+        // return filterDisplayTemplate[0].symptoms;
+        //   this.storageTableData = this.testDB;
+        // return this.testDB;
+      } else {
+        return this.$store.state.storeTableData;
+      }
+
+      // return this.$store.state.storeTableData;
     },
     storageData() {
       return this.$store.state.storeData;
@@ -186,6 +251,42 @@ export default {
     // });
   },
   methods: {
+    ChangDisplayTemplate(payload) {
+      console.log("fetch Templates");
+      console.log(this.$store.state.SymptomsTemplates);
+      if (this.$store.state.SymptomsTemplates[0] != null) {
+        console.log("fetch Templates_200", payload);
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].titile
+        );
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].symptoms
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].titile
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].symptoms
+        );
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function (item) {
+            return item.titile == "commonCold"; // 取得大於五歲的
+          }
+        );
+        console.log("fetch filterDisplayTemplate", filterDisplayTemplate);
+        // 					(4) [{…}, {…}, {…}, {…}, __ob__: Observer]
+        // 0:
+        // name: "coughing"
+        return filterDisplayTemplate;
+        // commit("saveDFTableData", filterDisplayTemplate);
+        // commit('saveFormatTableTitle', FormatTableTitle);
+      }
+      console.log("fetch Templates_end");
+    },
     doResize() {
       setTimeout(function () {
         //手動觸發窗口resize事件
@@ -217,6 +318,17 @@ export default {
   data() {
     return {
       colTitleConfigs: this.TargetDateToTableTitle,
+      testDB: [
+        {
+          name: "sneezing",
+        },
+        {
+          name: "sneezing1",
+        },
+        {
+          name: "sneezing2",
+        },
+      ],
     };
   },
 };
