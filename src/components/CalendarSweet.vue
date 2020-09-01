@@ -45,6 +45,7 @@ export default {
       return this.$store.state.message;
     },
     events() {
+      console.log("日立在這",this.selectDateformatStart,this.selectDateformatEnd)
       return [
         {
           title: "Event Symptoms",
@@ -52,8 +53,8 @@ export default {
           // end: this.$store.state.selectDateformat[1],
           start: this.selectDateformatStart,
           end: this.selectDateformatEnd,
-          // start: "2020-04-10",
-          // end: "2020-07-11",
+          // start: "2020-09-10",
+          // end: "2020-09-10",
           repeat: "never",
           categoryId: 3
         }

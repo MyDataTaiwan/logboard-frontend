@@ -12,6 +12,7 @@ const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersproto
 // const $raw_api = `${$http}/records/`;
 // 4b539876-d395-4e01-b987-8ae8ea754b0e
 //http://localhost:5566
+
 export default new Vuex.Store({
 	state: {
 		// 初始化狀態
@@ -179,7 +180,65 @@ export default new Vuex.Store({
 
 	},
 	actions: {
+		fetchSummaryToDaysApi({
+			commit,
+		}, payload) {
+			console.log("fetchSummaryApi_start", payload)
+			console.log("fetch Summary Api_start_end", payload.start_date, payload.end_date)
+			let urlProcessing = `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`
+			if (urlProcessing.match("%20") != null) {
+				console.log("%20 有", urlProcessing); // -> 1
+				urlProcessing = urlProcessing.replace("%20", "");
+			} else {
+				console.log("%20 NO", urlProcessing); // -> 1
 
+			}
+			console.log("fetch Summary Api_start_end", urlProcessing)
+			commit('ChangisLoading', true);
+			return axios.get(urlProcessing).then(response => {
+				console.log("fetchSummaryApi_get", response, `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log(response)
+				console.log(response.data.length)
+				if (response.status === 200) {
+					// commit('updateDateformat', []);
+					console.log("fetchTODaysApi_200")
+					console.log("fetchTODaysApi_200")
+					console.log("success ", response.data.id_list)
+					let FormatTableTitle = [];
+					let FormatTableData = null;
+					let FormatChartLabels = null;
+					let FormatChartDatasets = null;
+					let FormatDataIDs = null;
+					let ID_list = [];
+					for (let id = 0; id < response.data.timestamp.length; id++) {
+						let swp = response.data.timestamp[id]
+						let temp = swp.slice(11);
+						console.log("DADADADDA", temp)
+						FormatTableTitle.push({ prop: id + 1, label: temp })
+					}
+					FormatTableData = response.data.symptoms;
+					for (let index = 0; index < response.data.id.length; index++) {
+						let swp = response.data.id[index]
+						ID_list.push(swp)
+					}
+					FormatDataIDs = [ID_list];
+					FormatChartLabels = response.data.timestamp.map(index => { return index.slice(11) });
+					FormatChartDatasets = response.data.vital_signs;
+					console.log("fetch TODaysApi_Labels", FormatChartLabels)
+					commit('saveFormatTableTitle', FormatTableTitle);
+					commit('saveFormatTableData', FormatTableData);
+					commit('saveFormatDataIDs', FormatDataIDs);
+					commit('saveFormatChartLabels', FormatChartLabels);
+					commit('saveFormatChartDatasets', FormatChartDatasets);
+					return commit('saveDB', response.data);
+				}
+				else {
+					commit('ChangisLoading', false);
+					alert("請檢查網路或重新整理頁面")
+				}
+				console.log("fetchSummaryApi_end")
+			})
+		},
 		fetchSummaryApi({
 			commit,
 		}, payload) {
@@ -206,7 +265,7 @@ export default new Vuex.Store({
 			commit('ChangisLoading', true);
 			return axios.get(urlProcessing).then(response => {
 				// return axios.get(`${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${start_date}&end_date=${end_date}`).then(response => {
-				console.log("fetchSummaryApi_get", response, `${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log("fetchSummaryApi_get", response, `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
 				console.log(response)
 				console.log(response.data.length)
 				if (response.status === 200) {

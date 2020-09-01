@@ -100,7 +100,12 @@ export default {
       }
     },
     options: function () {
+<<<<<<< Updated upstream
       console.log("options change");
+=======
+      console.log("options change", this.options);
+      // this.$store.dispatch("ChangDisplayTemplate",this.options)
+>>>>>>> Stashed changes
     },
     selectDateformatStart: function () {
       console.log(
@@ -233,7 +238,6 @@ export default {
   methods: {
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
-
       if (mode == "Summary") {
         console.log("fetchSummaryApi input date", start_date, end_date); // -> 1
         //FIXME 在1~10號會出現%20
@@ -269,6 +273,23 @@ export default {
         });
       }
     },
+    //  GetThedayAPI(mode, start_date, end_date) {
+    //   // eslint-disable-next-line no-constant-condition
+    //   if (mode == "Summary") {
+    //     console.log("fetchSummaryToDaysApi input date", start_date, end_date); // -> 1
+    //     console.log("%20 無", start_date); // -> 1
+    //     this.$store.dispatch("fetchSummaryToDaysApi", {
+    //       start_date: String(start_date),
+    //       end_date: String(end_date),
+    //     });
+    //   } else if (mode == "today") {
+    //     this.$store.dispatch("fetchToDaysApi");
+    //   } else {
+    //     this.$store.dispatch("fetchDaysApi", {
+    //       range: mode,
+    //     });
+    //   }
+    // },
     // updateMessage() {
     //   this.$store.commit("updateMessage", {
     //     message: "99999999"
@@ -308,21 +329,18 @@ export default {
       let end = this.dateValue[1];
       this.$store.commit("updateDateformat", [start, end]);
       if (
-        this.ABtime(start) == this.ABtime(end) &&
-        this.ABtime(start) == this.ontime
+        this.ABtime(start) == this.ABtime(end) 
       ) {
         console.log(
-          "起始日=截止日=今日",
+          "起始日=截止日",
           this.ABtime(start),
-          this.ABtime(end),
-          this.ontime
-        );
+          this.ABtime(end));
         //FIXME
-        console.log(
-          "起始日=截止日=今日",
-          new Date().toISOString().substring(0, 10)
-        );
-        this.$store.dispatch("fetchToDaysApi");
+        // this.$store.dispatch("fetchToDaysApi");
+        this.$store.dispatch("fetchSummaryToDaysApi", {
+          start_date: String(start),
+          end_date: String(end),
+        });
         //FIXME
         //等於當日 FIX ISSUE 50
         // 執行TO(被選中的單日)Day
@@ -330,6 +348,35 @@ export default {
         console.log("Summary", start, end);
         this.GetAPI("Summary", start, end);
       }
+      // if (
+      //   this.ABtime(start) == this.ABtime(end) &&
+      //   this.ABtime(start) == this.ontime
+      // ) {
+      //   console.log(
+      //     "起始日=截止日=今日",
+      //     this.ABtime(start),
+      //     this.ABtime(end),
+      //     this.ontime
+      //   );
+      //   //FIXME
+      //   console.log(
+      //     "起始日=截止日=今日",
+      //     new Date().toISOString().substring(0, 10)
+      //   );
+      //   this.$store.dispatch("fetchToDaysApi");
+      //   // this.$store.dispatch("fetchSummaryToDaysApi", {
+      //   //   start_date: String(start),
+      //   //   end_date: String(end),
+      //   // });
+      //   //FIXME
+      //   //等於當日 FIX ISSUE 50
+      //   // 執行TO(被選中的單日)Day
+      // } else {
+      //   console.log("Summary", start, end);
+      //   this.GetAPI("Summary", start, end);
+      // }
+
+      // this.GetAPI("Summary", start, end);
 
       console.log(
         "dateselectDateformat",
