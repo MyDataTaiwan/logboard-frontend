@@ -100,12 +100,8 @@ export default {
       }
     },
     options: function () {
-<<<<<<< Updated upstream
-      console.log("options change");
-=======
       console.log("options change", this.options);
       // this.$store.dispatch("ChangDisplayTemplate",this.options)
->>>>>>> Stashed changes
     },
     selectDateformatStart: function () {
       console.log(
