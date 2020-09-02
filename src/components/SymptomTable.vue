@@ -41,11 +41,11 @@
     >
       <template slot-scope="scope">
         <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
-                <!-- <h6>{{ scope.column}}</h6> -->
+        <!-- <h6>{{ scope.column}}</h6> -->
 
         <!-- <h6>{{ scope.column.property}}</h6>
         <h6>{{ scope.row.id }}</h6>
-         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6> -->
+        <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6>-->
         <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
@@ -136,10 +136,41 @@ export default {
       // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
+    storageSymptomsTemplates: function () {
+      console.log(
+        "storageSymptomsTemplates change",
+        this.storageSymptomsTemplates
+      );
+    },
   },
   computed: {
     storageThumbnailSets() {
       return this.$store.state.thumbnailList;
+    },
+    storageSymptomsTemplates() {
+      if (this.$store.state.SymptomsTemplates[0] != null) {
+        let swp = this.$store.state.selectTemplate;
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function (item) {
+            if (swp == "heartFailure") {
+              return item.titile == "heartFailure";
+              // return this.$store.state.selectTemplate == "commonCold";
+            }
+            return item.titile == "commonCold";
+          }
+        );
+        console.log(
+          "filter  Template",
+          this.$store.state.selectTemplate == "heartFailure"
+        );
+        ////FIXME storage Symptoms Templates
+        console.log("filter  Template", this.$store.state.selectTemplate);
+        console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
+        return filterDisplayTemplate[0].symptoms.slice(1);
+      } else {
+        return null;
+      }
+      // return this.$store.state.SymptomsTemplates;
     },
     storageTableTitle() {
       // if (this.storageData.symptoms[0] == null) {
@@ -156,11 +187,19 @@ export default {
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
-      //  if (this.storageData.date[0] == null) {
-      //   return  [];
-      // }
       console.log("storeTableData", this.$store.state.storeTableData);
-      return this.$store.state.storeTableData;
+      if (this.$store.state.storeTableData == "") {
+        console.log(
+          "this.$store.state.storeTableData == null",
+          this.$store.state.storeTableData
+        );
+        console.log("filterDisplayTemplate", this.storageSymptomsTemplates);
+        return this.storageSymptomsTemplates;
+        // return this.testDB;
+      } else {
+        return this.$store.state.storeTableData;
+      }
+      // return this.$store.state.storeTableData;
     },
     storageData() {
       return this.$store.state.storeData;
