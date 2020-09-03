@@ -74,14 +74,6 @@ export default {
     msg: String,
   },
   watch: {
-    // selectTemplateList: function() {
-    //   console.log("selectTemplateList change");
-    // },
-    // selectValue: function () {
-    //   this.$store.commit("updateSelectTemplate", this.selectValue);
-    //   this.GetAPI("this-week");
-    //   console.log("selectValue change" + this.selectValue);
-    // },
     selectValue: function () {
       ////確保 症狀包選擇後可以顯示在對應的組件頁面
       this.$store.commit("updateSelectTemplate", this.selectValue);
@@ -92,8 +84,6 @@ export default {
             name: "camps",
           });
         } else {
-          // this.GetAPI("this-week");
-          // this.GetAPI("this-week");
           console.log("no change");
         }
       } else {
@@ -107,7 +97,7 @@ export default {
       }
     },
     options: function () {
-      console.log("options change");
+      console.log("options change", this.options); //ＱＡ重要 relese 可以拔
     },
     selectDateformatStart: function () {
       console.log(
@@ -138,9 +128,6 @@ export default {
     this.GetAPI("this-week");
   },
   computed: {
-    // selectTemplateList() {
-    //   return this.$store.state.templateList;
-    // },
     selectDateformat() {
       return this.$store.state.selectDateformat;
     },
@@ -151,7 +138,6 @@ export default {
       return this.$store.state.selectDateformat[1];
     },
     options() {
-      // let optionsList = [];
       let optionsList = [
         {
           value: "heartFailure",
@@ -161,34 +147,11 @@ export default {
           value: "commonCold",
           label: "普通感冒",
         },
+        {
+          value: "healthDeclaration",
+          label: "健康聲明書",
+        },
       ];
-
-      // this.selectTemplateList.map(index => {
-      //   if (index == "heartFailure") {
-      //       optionsList.push({
-      //       value: "heartFailure",
-      //       label: "心衰竭"
-      //     });
-      //   } else if (index == "commonCold") {
-      //     optionsList.push({
-      //       value: "commonCold",
-      //       label: "COVID-19"
-      //     });
-      //   }
-      //   // else if (index == "烤鴨") {
-      //   //    optionsList.push({
-      //   //     value: "烤鴨",
-      //   //     label: "烤鴨三吃"
-      //   //   });
-      //   // }
-      //   else {
-      //      optionsList.push({
-      //       value: index,
-      //       label: index
-      //     });
-      //   }
-      //   //烤鴨,commonCold,heartFailure
-      // });
       return optionsList;
     },
   },
@@ -197,27 +160,8 @@ export default {
     return {
       isShow: false,
       NavIshow: false,
-      // value1: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
       dateValue: [],
       value2: "",
-      // options: [
-      //   {
-      //     value: "選項1",
-      //     label: "COVID-19"
-      //   },
-      //   {
-      //     value: "選項2",
-      //     label: "心衰竭"
-      //   },
-      //   {
-      //     value: "選項3",
-      //     label: "糖尿病"
-      //   },
-      //   {
-      //     value: "選項4",
-      //     label: "烤鸭"
-      //   }
-      // ],
       selectValue: "",
     };
   },
@@ -235,115 +179,42 @@ export default {
       if (mode == "Summary") {
         console.log("fetchSummaryApi input date", start_date, end_date); // -> 1
         this.$store.dispatch("fetchSummaryApi", {
+          //NOTE
           // start_date: "2020-07-15",
           // end_date: "2020-07-24"
-          start_date: start_date,
-          end_date: end_date,
+          start_date: String(start_date),
+          end_date: String(end_date),
         });
       } else if (mode == "today") {
-        // this.toggle()
-
         this.$store.dispatch("fetchToDaysApi");
         this.$store.dispatch("fetchRawDataApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
+          //NOTE
           // range: "this-week"
           range: mode,
         });
       }
     },
-    // updateMessage() {
-    //   this.$store.commit("updateMessage", {
-    //     message: "99999999"
-    //   });
-    // },
-    // toggle() {
-    //   alert("警告，前有BUG");
-    //   this.$store.commit("increment");
-    //   console.log(this.$store.state.count); // -> 1
-    //   var elmnt = document.getElementById("EndItmes");
-    //   document.getElementById("Select").style.top =
-    //     elmnt.clientTop + elmnt.height;
-    //   document.getElementById("Select").style.Left = elmnt.clientLeft;
-    // },
     handleChange() {
       console.log(this.dateValue); // -> 1
       this.$store.commit("setSelectDate", this.dateValue);
       let start = this.dateValue[0];
-      // new Date(this.dateValue[0]).getFullYear() +
-      // "-" +
-      // new Date(this.dateValue[0]).getMonth() +
-      // "-" +
-      // new Date(this.dateValue[0]).getDate();
       let end = this.dateValue[1];
-      // new Date(this.dateValue[1]).getFullYear() +
-      // "-" +
-      // new Date(this.dateValue[1]).getMonth() +
-      // "-" +
-      // new Date(this.dateValue[1]).getDate();
       this.$store.commit("updateDateformat", [start, end]);
-      // console.log("$store", this.$store.state.selectDate); // -> 1
-      // console.log("$store", this.$store.state.selectDate); // -> 1
-
-      // this.$store.dispatch("fetchSummaryApi", {
-      //   start_date: new Date(start).toISOString().substring(0, 10),
-      //   end_date: new Date(end).toISOString().substring(0, 10)
-      // });
-     if (start == end && start == new Date().toISOString().substring(0, 10)) {
+      if (start == end) {
+        console.log("起始日=截止日", start, end);
         //FIXME
-        this.$store.dispatch("fetchToDaysApi");
-        console.log(
-          "起始日=截止日=今日",
-          new Date().toISOString().substring(0, 10)
-        );
-        // if (
-        //   // new Date(start).getUTCMonth() == new Date().getMonth() &&
-        //   // new Date(start).getUTCDate() == new Date().getUTCDate()
-        //   new Date(start).getMonth() == new Date().getMonth() &&
-        //   new Date(start).getDate() == new Date().getDate()
-        // ) {
-        //   console.log("$start == end tore", start, end); // -> 1
-        //   //等於當日 FIX ISSUE 50
-        //   this.$store.dispatch("fetchToDaysApi");
-        // }
+        this.$store.dispatch("fetchSummaryToDaysApi", {
+          start_date: start,
+          end_date: end,
+        });
         //FIXME
+        //等於當日 FIX ISSUE 50
         // 執行TO(被選中的單日)Day
       } else {
-        console.log(
-          "GetAPI start",
-          start,
-          new Date(start)
-            .toLocaleString()
-            .replace("/", "-")
-            .replace("/", "-")
-            .substring(0, 9)
-        ); // -> 1
-        console.log(
-          "GetAPI end",
-          end,
-          new Date(end)
-            .toLocaleString()
-            .replace("/", "-")
-            .replace("/", "-")
-            .substring(0, 9)
-        ); // -> 1
-        this.GetAPI(
-          "Summary",
-               new Date(start).toISOString().substring(0, 10),
-          new Date(end).toISOString().substring(0, 10)
-          // new Date(start)
-          //   .toLocaleString()
-          //   .replace("/", "-")
-          //   .replace("/", "-")
-          //   .substring(0, 9),
-          // new Date(end)
-          //   .toLocaleString()
-          //   .replace("/", "-")
-          //   .replace("/", "-")
-          //   .substring(0, 9)
-          // new Date(start).toISOString().substring(0, 10),
-          // new Date(end).toISOString().substring(0, 10)
-        );
+        console.log("Summary", start, end);
+        this.GetAPI("Summary", start, end);
       }
       console.log(
         "dateselectDateformat",
@@ -352,8 +223,6 @@ export default {
       );
       console.log("$store", this.$store.state.selectDateformat[0]); // -> 1
       console.log("$store", this.$store.state.selectDateformat[1]); // -> 1
-      // console.log("$start", new Date(this.$store.state.selectDateformat[0])); // -> 1
-      // console.log("$end", new Date(this.$store.state.selectDateformat[1])); // -> 1
     },
   },
 };
@@ -383,7 +252,6 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* width: 10%; */
   color: #fff;
   background: #5c6f75;
   border: 3px solid #fff;
@@ -391,7 +259,6 @@ export default {
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 0px 15px 0px 15px;
-  /*FIXME */
   margin: 10px 5px 16px 5px; /*FIXME */
 }
 .el-icon-arrow-down {
@@ -402,9 +269,6 @@ export default {
 }
 #btnList {
   display: flex;
-  /* align-items: center;
-  justify-content: flex-start; */
-
   flex: 1;
 }
 
@@ -425,7 +289,6 @@ export default {
   overflow: hidden;
   flex-direction: row;
   flex-wrap: wrap;
-  /* background: #fff; */
   display: flex;
   flex: 1;
   align-items: center;
@@ -463,7 +326,6 @@ export default {
 }
 .DateSelectItmesMobileMobile {
   width: 84%;
-  /* background: #fff; */
   border: 3px solid #fff;
   box-sizing: border-box;
   border-radius: 20px;
@@ -477,17 +339,14 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* width: 10%; */
   border: 3px solid #5c6f75;
   box-sizing: border-box;
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 0px 15px 0px 15px;
   /*FIXME */
-  margin: 0px 5px 16px 5px; /*FIXME */
+  margin: 0px 5px 16px 5px;
   /*FIXME */
-
-  /* margin: 0px 5px 0px 5px; */
 }
 #LogoMobile {
   display: flex;
@@ -502,9 +361,6 @@ export default {
   justify-content: center;
   padding: 5px;
   margin-left: 10px;
-}
-h3 {
-  /* margin: 50px 0 0; */
 }
 ul {
   list-style-type: none;
@@ -541,31 +397,20 @@ a {
   height: 8%;
   display: flex;
   width: 100%;
-  /* flex: 1; */
-
-  /* margin: 20px;
-    padding-right: 15px;
-    height: 15%; */
   display: flex;
-  /* flex: 1; */
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
 .SelectBarStar {
-  /* overflow: hidden; */
   flex-direction: row;
-  /* flex-wrap: wrap; */
-  /* background: #fff; */
   display: flex;
-  /* flex: 1; */
   align-items: center;
   justify-content: flex-start;
 }
 #SelectBarTitle {
   display: none;
 }
-
 #EndItmes {
   /* display: none; */
 }
@@ -574,7 +419,6 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* width: 100% !important; */
   border: 3px solid #5c6f75;
   box-sizing: border-box;
   border-radius: 20px;
@@ -588,13 +432,6 @@ a {
 }
 
 #Select {
-  /* position: absolute; */
   position: fixed;
 }
 </style>
-
-
-// 然後取得 event.target
-// 的 clientTop, clientLeft
-// 然後生成一個 div，position fixed，top設為那個 clientTop + clientHeight
-// left 設為 clientLeft

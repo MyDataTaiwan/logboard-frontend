@@ -1,34 +1,14 @@
 <template>
   <div id="ChartView" style="width: 100%;">
-    <!-- <h3>{{ msg }}</h3> -->
-    <!-- <div id="ChartSelectBar" class="SelectBar">
-      <img class="SelectBarTitle" alt="bar" src="../assets/icon/Log.svg" width="5%" />
-      <div class="SelectItmes">口體溫</div>
-    </div>-->
-    <!-- <img alt="LogBoard logo" src="../assets/chart.png" width="100%"     :width="1000"
-    :height="200"style="  padding-right: 10%;" />-->
-    <!-- <div>{{ selectedData }}</div>
-    <div>{{ $store.state.displayPopUp }}</div>-->
-
     <div id="Chart">
-      <!-- <el-button>click 激活</el-button> -->
-
-      <!-- <line-chart
-        :chart-data="datacollection"
-        :options="{responsive: true, maintainAspectRatio: false}"
-      ></line-chart>-->
-      <!-- {{datacollection}} -->
       <line-chart @on-receive="update" :chart-data="datacollection" :options="options"></line-chart>
-
-      <!-- <button @click="fillData()">Randomize</button> -->
+      <!-- <button @click="fillData()">Randomize</button> //暫時停用 -->
     </div>
   </div>
 </template>
 
 <script>
 import LineChart from "./LineChart.js";
-// Hot Fixme
-
 var testRawData = [];
 var testIDSets = [];
 var testtorageLabels = [];
@@ -38,8 +18,6 @@ export default {
   props: {
     msg: String,
   },
-  // props: ['dataCollection'],
-
   components: {
     LineChart,
   },
@@ -53,11 +31,9 @@ export default {
       console.log("storageChartDatasets change", this.storageChartDatasets);
     },
     storageThumbnailSets: function () {
-      // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
     storageIDSets: function () {
-      // this.fillData();
       console.log("storageIDSets change", this.storageIDSets);
     },
     raw_data: function () {
@@ -77,7 +53,7 @@ export default {
     storageIDSets() {
       return this.$store.state.storeDataID;
     },
-    // raw_data() {
+    // raw_data() { //暫時停用
     //   return this.raw_data;
     // }
   },
@@ -112,27 +88,7 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
         onClick: this.onClick, //////影響症狀切換
-
-        // onClick: function(evt, array) {
-        //     if (array.length != 0) {
-        //         var position = array[0]._index;
-        //         var activeElement = this.tooltip._data.datasets[0].data[position]
-        //         console.log(activeElement);
-        //     } else {
-        //         console.log("You selected the background!");
-        //     }
-        // },
-
         responsiveAnimationDuration: 0,
-        // responsive: true,
-        // maintainAspectRatio: false,
-        // tooltips: {
-        //   callbacks: {
-        //     label: function(tooltipItem) {
-        //       return "$" + Number(tooltipItem.yLabel) + " and so worth it !";
-        //     }
-        //   }
-        // },
         point: {
           pointStyle: "cross",
           radius: 15,
@@ -143,11 +99,11 @@ export default {
             {
               stacked: false, //折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
               ticks: {
-                 display: false,
+                display: false,
                 beginAtZero: true,
                 // callback: function (value, index, values) {
                 //   return "";
-                // },
+                // },  //暫時停用
               },
               gridLines: {
                 display: true,
@@ -162,7 +118,7 @@ export default {
             {
               stacked: false, //折線圖可以配置為 疊放 通過更改y軸上的設置來啟用面積圖。 堆疊式 區域圖可用於顯示一個數據趨勢如何由許多較小的部分組成。
               ticks: {
-                // beginAtZero: true,
+                // beginAtZero: true,  //暫時停用
               },
               gridLines: {
                 display: true,
@@ -175,61 +131,16 @@ export default {
         },
         tooltips: {
           enabled: false,
-          // enabled: true,
+          // enabled: true, //暫時停用
           mode: "index",
           position: "nearest",
           custom: customTooltips,
         },
-
-        // tooltips: {
-        //   // enabled: true,
-        //   mode: "index",
-        //   position: "nearest",
-        //   //Set the name of the custom function here
-        //   //custom:
-        //   callbacks: {
-        //     label: (tooltipItems, data) => {
-        //       console.log(this);
-        //       console.log(data);
-
-        //       // return this.getImg()
-
-        //       return tooltipItems.yLabel + "$" + this.message;
-        //     },
-        //     afterLabel: function(tooltipItem, data) {
-        //       var dataset = data["datasets"][0];
-        //       var percent = Math.round(100) + dataset;
-        //       return "(" + percent + "%)";
-        //     }
-        //     // custom:this.getImg()
-        //   },
-        //   // callbacks: {
-        //   //   label: function(tooltipItem, data) {
-        //   //     var value = data.datasets[0].data[tooltipItem.index];
-        //   //     console.log(value);
-        //   //   }
-        //   // },
-        //   backgroundColor: "#FFF",
-        //   titleFontSize: 16,
-        //   titleFontColor: "#0066ff",
-        //   bodyFontColor: "#000",
-        //   bodyFontSize: 14,
-        //   displayColors: false
-        // },
         title: {
           display: true,
           text: "logboard-frontend",
           position: "bottom",
         },
-        // scales: {
-        //   yAxes: [
-        //     {
-        //       ticks: {
-        //         beginAtZero: true
-        //       }
-        //     }
-        //   ]
-        // }
       },
       datacollection: null,
       responsive: true,
@@ -251,12 +162,6 @@ export default {
         },
         symptoms: [],
       },
-
-      // myStyles: {
-      //   height: "300px",
-      //   width: "100%",
-      //   position: "relative"
-      // }
       raw_data: [],
     };
   },
@@ -265,23 +170,8 @@ export default {
   },
   methods: {
     onClick(event, array) {
-      console.log("我被點了 B", event, array);
-
       if (array.length != 0) {
-        // var position = array[0]._index;
-        // var activeElement = this.tooltip._data.datasets[0].data[position];
-        // console.log(activeElement);
-
         const item = array[0];
-        console.log("我被點了 B2", item, event, array);
-
-        // this.$store.commit("ChangDisplayPopUp", {
-        //   display: true,
-        //   index: array[0]._index,
-        //   idList: this.storageIDSets[array[0]._index],
-        // });
-
-        console.log("我被點了", event, array[0]._index);
         this.selectedData = array[0]._index;
         this.$emit("on-receive", {
           index: item._index,
@@ -295,35 +185,12 @@ export default {
 
     handle(point, event) {
       const item = event[0];
-      console.log("我被點了 Ａ", point, event);
-
-      // this.$store.commit("ChangDisplayPopUp", {
-      //   display: true,
-      //   index: event[0]._index,
-      //   idList: this.storageIDSets[event[0]._index],
-      // });
-
-      console.log("我被點了", point, event[0]._index);
-      console.log("我被點了 event[0]._index", event[0]._index);
       this.selectedData = event[0]._index;
-
-      console.log("我被點了 on-_index", item._index);
-      console.log("我被點了 on-backgroundColor", item._view.backgroundColor);
-      console.log("我被點了 on-values_index", this.values[item._index]);
-      console.log("我被點了 on-values", this.values);
-      console.log(
-        "我被點了 on-receive",
-        item._index,
-        item._view.backgroundColor,
-        this.values[item._index],
-        this.values
-      );
       this.$emit("on-receive", {
         index: item._index,
         backgroundColor: item._view.backgroundColor,
         value: this.values[item._index],
       });
-      // this.$store.commit("updateUserId", this.$route.params.id);
     }, ////捕捉點擊
     update(data) {
       this.selectedData = data;
@@ -345,16 +212,11 @@ export default {
       });
       let db = this.normalLines(temp);
       this.raw_data = temp;
-      // testRawData = temp;
       testRawData = this.storageChartDatasets;
       testtorageLabels = this.storageChartLabels;
       testIDSets = this.storageIDSets;
       testThumbnailSets = this.storageThumbnailSets;
-      console.log("setting testtorageLabels", testtorageLabels);
       console.log("setting testIDSets", testIDSets);
-      console.log("setting raw_data", this.raw_data);
-
-      console.log("setting", db);
 
       return {
         label: name,
@@ -363,6 +225,7 @@ export default {
         lineTension: 0,
         spanGaps: true,
         data: db,
+        //Note
         // label: name,
         // // backgroundColor: "#00000000",
         // borderColor: "#AF0F0F",
@@ -376,20 +239,16 @@ export default {
     setMaker() {
       let outputSet = [];
       let list = Object.keys(this.storageChartDatasets);
-      console.log("list", list, list[0]);
       for (let i = 0; i < list.length; i++) {
         outputSet.push(
           this.setting(
             this.colors[i],
             this.storageChartDatasets[list[i]],
-            // this.normalLines(this.storageChartDatasets[list[i]]),
             list[i]
           )
         );
       }
-      console.log("outputSet", outputSet);
-
-      // ////add Photo data list
+      // ////add Photo data list  //暫時停用
       // let PhotoDataList = [];
       // this.storageChartDatasets[list[0]].map(index => {
       //   if (index == null) {
@@ -399,7 +258,6 @@ export default {
       //   }
       // });
       // console.log("add chart PhotoDataList",PhotoDataList);
-
       //    outputSet.push(
       //       {
       //   label: "PhotoDataList",
@@ -414,7 +272,7 @@ export default {
       // console.log("add  chart PhotoDataList end ", outputSet);
 
       return outputSet;
-      // let photoDiary = [];
+      // let photoDiary = [];  //暫時停用
       // for (let i = 0; i < list.length; i++) {
       //   photoDiary.push({
       //     id: i,
@@ -427,23 +285,11 @@ export default {
       // );
     },
     normalLines(data) {
-      console.log("normalLines_input", data);
-
       let MAX = Math.max(...data);
       let MIN = Math.min(...data);
       let output = [];
       let r = MAX - MIN;
-      console.log(
-        "normalLines_cale",
-        r,
-        MAX,
-        MIN,
-        Math.max(...data),
-        Math.min(...data)
-      );
-
       let t = r / 100;
-      console.log("normalLines", r, t, output, data.length);
       data.map((index) => {
         if (index == null) {
           output.push("nan");
@@ -452,16 +298,9 @@ export default {
             output.push(index);
           }
           let temp = index - MIN;
-          console.log("normalLines", index, temp, temp / t);
-          // if (r == 0) {
-          //   output.push(100);
-          // } else {
-          //   output.push(temp / t);
-          // }
           output.push(temp / t);
         }
       });
-      console.log("normalLines_output", output);
       return output;
     },
     fillData() {
@@ -476,16 +315,6 @@ export default {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
   },
-  // computed: {
-  //   // myStyles() {
-  //   //   return {
-  //   //     responsive: true,
-  //   //     // height: `${this.height}px`,
-  //   //     width: `${this.width}px`,
-  //   //     position: "relative"
-  //   //   };
-  //   // }
-  // }
 };
 
 var rawData = function (raw) {
@@ -519,13 +348,9 @@ const customTooltips = function (tooltip) {
   // Set Text
   if (tooltip.body) {
     const titleLines = tooltip.title || [];
-    // const bodyLines = tooltip.body.map(getBody);
     const bodyLines = tooltip.body.map(getBody);
     const bodyLinesTitle = tooltip.title;
-
-    console.log("bodyLines", bodyLines);
     console.log("bodyLinesTitle", bodyLinesTitle);
-
     let innerVUE = `
   <div slot="reference" style="width: 500px;">
     <template>
@@ -543,12 +368,8 @@ const customTooltips = function (tooltip) {
       titleID = testtorageLabels.indexOf(title); ///取得的ID
       innerHtml +=
         "<tr><th style='text-align: left; ' >" +
-        // title +
-        // `   <img class="fit-picture"
-        //         src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
-        //            alt="Grapefruit slice atop a pile of other slices">` +
-        // "</th></tr>";
         title +
+        //暫時停用
         // "| id:" +
         // testIDSets[titleID];
         // `   <img class="fit-picture"
@@ -563,25 +384,17 @@ const customTooltips = function (tooltip) {
     console.log("HTML testRawData", testRawData);
     console.log("HTML testRawData name", testRawData[0]);
     console.log("HTML titleID", [titleID]);
-
     bodyLines.forEach(function (body, i) {
       const colors = tooltip.labelColors[i];
       let style = "background:" + colors.backgroundColor;
       style += "; border-color:" + colors.borderColor;
       style += "; border-width: 2px";
       let swp = body[0];
-      console.log("bodybodybodybody", body);
-
       let temp = swp.split(":");
       let name = temp[0];
-      console.log("HTML testRawData name", testRawData[name]);
-      console.log("HTML testRawData name titleID", testRawData[name][titleID]);
-
-      console.log("HTML temp", name);
-      console.log("DADADADDA", temp);
-
       const span =
         '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+      //暫時停用
       // innerHtml += "<tr><td style='text-align: left;' >" + span + body + "</td></tr>";
       innerHtml +=
         "<tr><td style='text-align: left;' >" +
@@ -590,14 +403,11 @@ const customTooltips = function (tooltip) {
         " : " +
         testRawData[name][titleID] +
         "</td></tr>";
-      // Hot Fixme
     });
+    //暫時停用
     //testIDSets[i][0]
 
-    // console.log(testIDSets[titleID][0]);
-    // console.log("testIDSets", testIDSets[titleID][0], titleID);
-    console.log("testThumbnailSets", testThumbnailSets[titleID][0]);
-
+    let tpimg = testThumbnailSets[titleID];
     if (testThumbnailSets[titleID][0] == null) {
       innerHtml +=
         "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
@@ -607,14 +417,12 @@ const customTooltips = function (tooltip) {
       innerHtml +=
         "<tr><td style='text-align: left; border-top: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF; '>NOTE</td></tr>" +
         '<img class="fit-picture" src="' +
-        testThumbnailSets[titleID][0] +
+        //暫時停用        // testThumbnailSets[titleID][0] +
+        tpimg[tpimg.length - 1] +
         '" alt="Grapefruit slice atop a pile of other slices">' +
         "</tbody>";
     }
-    // innerHtml += "</tbody>";
-
     const tableRoot = tooltipEl.querySelector("table");
-    // tableRoot.innerHTML = innerHtml;
     console.log(innerVUE);
     tableRoot.innerHTML = innerHtml;
   }
@@ -622,7 +430,6 @@ const customTooltips = function (tooltip) {
   const positionX = this._chart.canvas.offsetLeft;
   // Display, position, and set styles for font
   tooltipEl.style.opacity = 1;
-
   tooltipEl.style.left = positionX + tooltip.caretX + "px";
   tooltipEl.style.top = positionY + tooltip.caretY + "px";
   tooltipEl.style.fontFamily = tooltip._bodyFontFamily;
@@ -659,12 +466,7 @@ const customTooltips = function (tooltip) {
   justify-content: flex-start;
 }
 .SelectItmes {
-  /* flex: 1 1 5%; */
-  /* width: 5%; */
   margin: 0px 5px 20px 5px;
-}
-h3 {
-  /* margin: 40px 0 0; */
 }
 ul {
   list-style-type: none;
@@ -679,7 +481,6 @@ a {
 }
 #chartjs-tooltip {
   opacity: 1;
-  /* position: absolute; */
   z-index: 9999;
   position: fixed !important;
   background: rgba(0, 0, 0, 0.7);
@@ -694,7 +495,6 @@ a {
 
 .chartjs-tooltip-key {
   display: inline-block;
-  /* position: absolute; */
   position: fixed !important;
   width: 10px;
   height: 10px;

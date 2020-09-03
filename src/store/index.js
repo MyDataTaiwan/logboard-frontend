@@ -4,23 +4,15 @@ import axios from 'axios';
 import Vuex from 'vuex'; //引入 vuex
 
 Vue.use(Vuex);
-
 // const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 const $http = process.env.VUE_APP_API_HOST || "https://logboard-dev.numbersprotocol.io/api/v1";
-// const $http = "https://logboard-dev.numbersprotocol.io/api/v1/";
 
-// const $raw_api = `${$http}/records/`;
-// 4b539876-d395-4e01-b987-8ae8ea754b0e
-//http://localhost:5566
 export default new Vuex.Store({
 	state: {
 		// 初始化狀態
-		// uid: "4b539876-d395-4e01-b987-8ae8ea754b0e",
-		// uid: "8d83c9c8-72c6-43b7-8476-6b189a4e786f",
 		displayPopUp: false,
 		PopUpindex: null,
 		PopUpidList: [],
-
 		isLoading: false,
 		uid: null,
 		openPopUp: false,
@@ -42,7 +34,6 @@ export default new Vuex.Store({
 		storageTargetDate: null,
 		selectTemplateTargetSet: null,
 		zipSymptoms: null,
-		// TableTitle: [],
 		thumbnailList: [],
 		photoList: [],
 		TableTitle: [
@@ -55,9 +46,6 @@ export default new Vuex.Store({
 		storeTableData: null,
 		storeChartLabels: [],
 		storeChartDatasets: [],
-		// TableTitle: [{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"},{'2020-07-19T08:42:09Z':"NULL"}],
-		// TableTitle: [{label:'2020-07-89T08:42:09Z',prop:"2020-07-89T08:42:09Z"},{label:'2020-07-19T08:42:09Z',prop:"1
-		// templateList: ["烤鴨"],
 		templateList: ["heartFailure"],
 		selectTemplate: 'heartFailure'
 		// selectTemplate: 'commonCold'
@@ -68,10 +56,8 @@ export default new Vuex.Store({
 			state.count++
 		},
 		ChangisLoading(state, payload) {
-
 			state.isLoading = payload
 			console.log("ChangisLoading  載入中 ", state.isLoading);
-
 		},
 		ChangDisplayPopUp(state, payload) {
 			// state.displayPopUp = payload.display;
@@ -142,25 +128,16 @@ export default new Vuex.Store({
 		updateDateformat(state, payload) {
 			state.selectDateformat = payload;
 		},
-
-
 		//loading效果(目前前台效果還沒做)
 		setLoading(state, payload) {
 			Vue.set(state, 'loading', payload)
 		},
+		////暫存MyLog API資料
 		//載入最新消息DB
 		setDB(state, payload) {
 			state.DB = payload;
 		},
-		// //暫存MyLog API資料
-		// saveDB(state, payload) {
-		// 	state.storageData = payload;
-		// 	console.log("開始處理資料saveDB");
-
-		// },
-
-
-		// //建立症狀選單
+		// //自動建立症狀選單 ＷＩＰ
 		// addTemplateList(state, payload) {
 		// 	state.templateList.push(payload)
 		// 	// console.log("originTemplateList"+state.templateList)
@@ -179,7 +156,65 @@ export default new Vuex.Store({
 
 	},
 	actions: {
+		fetchSummaryToDaysApi({
+			commit,
+		}, payload) {
+			console.log("fetchSummaryApi_start", payload)
+			console.log("fetch Summary Api_start_end", payload.start_date, payload.end_date)
+			let urlProcessing = `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`
+			if (urlProcessing.match("%20") != null) {
+				console.log("%20 有", urlProcessing); // -> 1
+				urlProcessing = urlProcessing.replace("%20", "");
+			} else {
+				console.log("%20 NO", urlProcessing); // -> 1
 
+			}
+			console.log("fetch Summary Api_start_end", urlProcessing)
+			commit('ChangisLoading', true);
+			return axios.get(urlProcessing).then(response => {
+				console.log("fetchSummaryApi_get", response, `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log(response)
+				console.log(response.data.length)
+				if (response.status === 200) {
+					// commit('updateDateformat', []);初始化狀態
+					console.log("fetchTODaysApi_200")
+					console.log("fetchTODaysApi_200")
+					console.log("success ", response.data.id_list)
+					let FormatTableTitle = [];
+					let FormatTableData = null;
+					let FormatChartLabels = null;
+					let FormatChartDatasets = null;
+					let FormatDataIDs = null;
+					let ID_list = [];
+					for (let id = 0; id < response.data.timestamp.length; id++) {
+						let swp = response.data.timestamp[id]
+						let temp = swp.slice(11);
+						console.log("DADADADDA", temp)
+						FormatTableTitle.push({ prop: id + 1, label: temp })
+					}
+					FormatTableData = response.data.symptoms;
+					for (let index = 0; index < response.data.id.length; index++) {
+						let swp = response.data.id[index]
+						ID_list.push(swp)
+					}
+					FormatDataIDs = [ID_list];
+					FormatChartLabels = response.data.timestamp.map(index => { return index.slice(11) });
+					FormatChartDatasets = response.data.vital_signs;
+					console.log("fetch TODaysApi_Labels", FormatChartLabels)
+					commit('saveFormatTableTitle', FormatTableTitle);
+					commit('saveFormatTableData', FormatTableData);
+					commit('saveFormatDataIDs', FormatDataIDs);
+					commit('saveFormatChartLabels', FormatChartLabels);
+					commit('saveFormatChartDatasets', FormatChartDatasets);
+					return commit('saveDB', response.data);
+				}
+				else {
+					commit('ChangisLoading', false);
+					alert("請檢查網路或重新整理頁面")
+				}
+				console.log("fetchSummaryApi_end")
+			})
+		},
 		fetchSummaryApi({
 			commit,
 		}, payload) {
@@ -197,6 +232,7 @@ export default new Vuex.Store({
 				console.log("%20 NO", urlProcessing); // -> 1
 
 			}
+			//FIXME 很多雷，地雷區
 			// let urlDtea = `&start_date=${start_date}&end_date=${end_date}`
 			// console.log("fetch Summary Api_start_end",url.replace("%20",`&end_date=${end_date}`) )
 			console.log("fetch Summary Api_start_end", urlProcessing)
@@ -206,12 +242,11 @@ export default new Vuex.Store({
 			commit('ChangisLoading', true);
 			return axios.get(urlProcessing).then(response => {
 				// return axios.get(`${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${start_date}&end_date=${end_date}`).then(response => {
-				console.log("fetchSummaryApi_get", response, `${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
+				console.log("fetchSummaryApi_get", response, `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
 				console.log(response)
 				console.log(response.data.length)
 				if (response.status === 200) {
 					console.log("fetchSummaryApi_200", response.data)
-					// if (response.data.id_list != null) {
 					console.log("success ", response.data.id_list)
 					let FormatTableTitle = [];
 					let FormatTableData = null;
@@ -219,8 +254,6 @@ export default new Vuex.Store({
 					let FormatChartDatasets = null;
 					let FormatDataIDs = null;
 					let FormatPhotoSets = null;
-
-					// let FormatThumbnailsSets = null;
 					for (let id = 0; id < response.data.date.length; id++) {
 						let swp = response.data.date[id]
 						let temp = swp.split("-");
@@ -232,9 +265,6 @@ export default new Vuex.Store({
 					console.log("storage FormatChartLabels change", response.data.date);
 					FormatChartDatasets = response.data.vital_signs;
 					FormatPhotoSets = response.data.photo_list;
-					// selectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformatselectDateformat = response.response.data.thumbnail_list;
-					// console.log("fetch thumbnailList",response.response.data.thumbnail_list)
-					// console.log("fetch thumbnailList",FormatThumbnailsSets)
 					FormatDataIDs = response.data.id_list;
 					commit('saveFormatDataIDs', FormatDataIDs);
 					commit('saveFormatTableTitle', FormatTableTitle);
@@ -242,11 +272,7 @@ export default new Vuex.Store({
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
 					commit('saveFormatPhotoSets', FormatPhotoSets);
-
-
-					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
-					// }
 				}
 				else {
 					commit('ChangisLoading', false);
@@ -269,9 +295,6 @@ export default new Vuex.Store({
 					console.log("fetchSummaryApi_200")
 					if (response.data.date[0] != null) {
 						commit('updateDateformat', [response.data.date[0], response.data.date[response.data.date.length - 1]]);
-						// commit('ChangisLoading', false);
-						// commit('ChangisLoading', true);
-
 					} else {
 						commit('ChangisLoading', false);
 						alert("本資料包無此紀錄，請見諒")
@@ -306,7 +329,6 @@ export default new Vuex.Store({
 						console.log("fetch thumbnailList", FormatThumbnailsSets)
 						FormatDataIDs = response.data.id_list;
 						// alert("做完")
-
 						FormatPhotoSets = response.data.photo_list;
 
 						commit('saveFormatDataIDs', FormatDataIDs);
@@ -321,7 +343,7 @@ export default new Vuex.Store({
 					} else {
 						commit('ChangisLoading', false);
 						alert("本資料包無此紀錄，請見諒")
-
+						//ＴＯＤＯ自動跳頁
 						// if (this.state.selectTemplate != 'heartFailure') {
 						// 	this.$router.push({
 						// 		name: "dashboard",
@@ -356,10 +378,8 @@ export default new Vuex.Store({
 					let FormatTableData = null;
 					let FormatChartLabels = null;
 					let FormatChartDatasets = null;
-					// let FormatThumbnailsSets = null;
 					let FormatDataIDs = null;
 					let ID_list = [];
-					// FormatTableTitle = response.data.timestamp;
 					for (let id = 0; id < response.data.timestamp.length; id++) {
 						let swp = response.data.timestamp[id]
 						let temp = swp.slice(11);
@@ -376,19 +396,14 @@ export default new Vuex.Store({
 						ID_list.push(swp)
 					}
 					FormatDataIDs = [ID_list];
-					// FormatTableData = response.data.symptoms;
 					FormatChartLabels = response.data.timestamp.map(index => { return index.slice(11) });
 					FormatChartDatasets = response.data.vital_signs;
-					// FormatThumbnailsSets = response.response.data.thumbnails;
-					// console.log("fetch thumbnailList",response.response.data.thumbnails)
-					// console.log("fetch thumbnailList",FormatThumbnailsSets)
 					console.log("fetch TODaysApi_Labels", FormatChartLabels)
 					commit('saveFormatTableTitle', FormatTableTitle);
 					commit('saveFormatTableData', FormatTableData);
 					commit('saveFormatDataIDs', FormatDataIDs);
 					commit('saveFormatChartLabels', FormatChartLabels);
 					commit('saveFormatChartDatasets', FormatChartDatasets);
-					// commit('saveFormatThumbnailsSets', FormatThumbnailsSets);
 					return commit('saveDB', response.data);
 
 				} else {
@@ -398,6 +413,7 @@ export default new Vuex.Store({
 				console.log("fetchTODaysApi_end")
 			})
 		},
+		//TBD 暫時停用 
 		// fetchRawDataApi({
 		// 	commit,
 		// }) {
@@ -436,49 +452,11 @@ export default new Vuex.Store({
 				}
 			})
 		},
-		//移除loading效果(目前前台效果還沒做)
+		//移除loading效果(前台效果)
 		removeLoading({
 			commit
 		}) {
 			commit('setLoading', false);
 		}
-
 	}
 })
-
-
-
-// const store = new Vuex.Store({
-// 	state: {
-// 		count: 0
-// 	},
-// 	mutations: {
-// 		increment (state) {
-// 			state.count++
-// 		}
-// 	}
-// })
-
-	// let exp = {
-		// 	"id_list": [
-		// 		[5609,5610,5611,5612,5613]
-		// 	],
-		// 	"date": ["2020-07-15"],
-		// 	"vital_signs": {
-		// 		"SBP": [185.21],
-		// 		"DBP": [93.08],
-		// 		"heartbeat": [293.71],
-		// 		"bloodSugar": [817.32],
-		// 		"weight": [286.56],
-		// 		"urineVolume": [9001.16]
-		// 	},
-		// 	"symptoms": []
-		// }
-		//讀取 api 
-		//summary/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&start_date=2020-07-15&end_date=2020-07-24&template=heartFailure
-		//past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-week
-		//`${payload.mode}/?uid=${this.state.uid}& template=${payload.template}&start_date=${payload.start_date}&end_date=${payload.end_date}`
-		//`${payload.mode}/?uid=${this.state.uid}& template=${payload.template}&range=${payload.range}`
-
-		//https://logboard-dev.numbersprotocol.io/api/v1/records/past-days/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&range=this-month
-		//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
