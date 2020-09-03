@@ -6,16 +6,10 @@
       v-model="events"
       ref="calendar"
     />
-    <!-- {{selectDateformatStart}}
-    {{selectDateformatEnd}}
-    {{$store.state.selectDateformat[0]}}
-    {{$store.state.selectDateformat[1]}}
-    <h2>{{ message }}</h2>-->
   <!-- /////FIXME 暫時移除單之後 QA 可能會抱怨跨月份不會自動跳轉 -->
     <!-- <button @click="goToday" class>Today</button> -->
   </div>
 </template>
-
 <script>
 import { Calendar } from "vue-sweet-calendar";
 import "vue-sweet-calendar/dist/SweetCalendar.css";
@@ -49,12 +43,10 @@ export default {
       return [
         {
           title: "Event Symptoms",
-          // start: this.$store.state.selectDateformat[0],
-          // end: this.$store.state.selectDateformat[1],
           start: this.selectDateformatStart,
           end: this.selectDateformatEnd,
-          // start: "2020-09-10",
-          // end: "2020-09-10",
+          //ＴＯＤＯ 傳入格式參考
+          // start: "2020-09-10", end: "2020-09-10",
           repeat: "never",
           categoryId: 3
         }
@@ -89,7 +81,7 @@ export default {
   methods: {
     goToday() {
       this.$refs.calendar.goToday();
-      ///修改並發布新套件
+      ///自動調轉月份需要修改並發布新套件
       ///加入被選擇的起始日/結束日
       ///https://github.com/maryayi/vue-sweet-calendar/blob/a85ecea736a13ab90edd26512191aa6580d6d6c7/src/components/Calendar.vue#L159
     }
@@ -99,9 +91,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  /* margin: 40px 0 0; */
-}
 ul {
   list-style-type: none;
   padding: 0;
@@ -115,6 +104,5 @@ a {
 }
 #CalendarSweet {
   flex: 1;
-  /* height: 100% !important; */
 }
 </style>
