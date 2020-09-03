@@ -1,5 +1,4 @@
 <template>
-  <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
     class="table-fixed"
     ref="multipleTable"
@@ -18,16 +17,10 @@
       width="130px"
     >
       <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <!-- <p>症狀: {{ scope.row.name }}</p>
-          <p>時間: {{ scope.row.timestamp }}</p>-->
-        </el-popover>
+        <el-popover trigger="hover" placement="top"></el-popover>
         <div slot="reference">
-          <!-- <h6>{{ scope.row }}</h6>
-          <h6>{{ scope.column }}</h6>-->
           <div class="h7">呼吸道症狀</div>
           <h2>{{ scope.row.name }}</h2>
-          <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
       </template>
     </el-table-column>
@@ -41,13 +34,6 @@
       width="160"
     >
       <template slot-scope="scope">
-        <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
-        <!-- <h6>{{ scope.column}}</h6> -->
-
-        <!-- <h6>{{ scope.column.property}}</h6>
-        <h6>{{ scope.row.id }}</h6>
-        <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6>-->
-        <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
@@ -58,19 +44,8 @@
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h3>今天的症狀</h3>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
-
-          <!-- <h3>顯示今天的症狀</h3>
-          <h2>PhotoDiary</h2>
-          <img class="fit-picture"  src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Grapefruit slice atop a pile of other slices">
-          <img class="fit-picture" :src="testThumbnailSets[2][0]" alt="Grapefruit slice atop a pile of other slices">-->
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <div slot="reference" class="name-wrapper">
-            <!-- <el-tag size="mini">{{1}}</el-tag>
-            <el-tag size="mini">{{2}}</el-tag>-->
-            <!-- <h3>{{scope.row.Symptoms }}</h3> -->
-            <!-- <h3>{{scope.row.Symptoms[scope.column.property] }}</h3>
-            <h3>{{scope.column.property }}</h3>-->
-
             <template v-if="scope.row.symptom[scope.column.property-1]==true">
               <el-tag color="#5C6F75" effect="dark" size="mini">
                 <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
@@ -150,21 +125,16 @@ export default {
     },
     storageSymptomsTemplates() {
       if (this.$store.state.SymptomsTemplates[0] != null) {
-        let swp=this.$store.state.selectTemplate ;
-        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
-          function (item) {
-            if (swp== "heartFailure") {
+        let swp = this.$store.state.selectTemplate;
+        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          (item) => {
+            if (swp == "heartFailure") {
               return item.titile == "heartFailure";
-              // return this.$store.state.selectTemplate == "commonCold";
             }
             return item.titile == "commonCold";
           }
         );
-        console.log(
-          "filter  Template",
-          this.$store.state.selectTemplate == "heartFailure"
-        );
-////FIXME storage Symptoms Templates
+        ////FIXME storage Symptoms Templates
         console.log("filter  Template", this.$store.state.selectTemplate);
         console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
         return filterDisplayTemplate[0].symptoms.slice(1);
@@ -174,15 +144,6 @@ export default {
       // return this.$store.state.SymptomsTemplates;
     },
     storageTableTitle() {
-      // if (this.storageData.symptoms[0] == null) {
-      //   // if (this.storageData.date[0] == null) {
-      //   // return [
-      //   //   { prop: 0, label: "暫時" },
-      //   //   { prop: 1, label: "沒有" },
-      //   //   { prop: 2, label: "資料" }
-      //   // ];
-      //   return [];
-      // }
       console.log("storeTableTitle", this.$store.state.storeTableTitle);
 
       return this.$store.state.storeTableTitle;
@@ -256,12 +217,7 @@ export default {
           }
         );
         console.log("fetch filterDisplayTemplate", filterDisplayTemplate);
-        // 					(4) [{…}, {…}, {…}, {…}, __ob__: Observer]
-        // 0:
-        // name: "coughing"
         return filterDisplayTemplate;
-        // commit("saveDFTableData", filterDisplayTemplate);
-        // commit('saveFormatTableTitle', FormatTableTitle);
       }
       console.log("fetch Templates_end");
     },
@@ -373,73 +329,3 @@ body .el-table th.gutter {
 4: {times:[],…}
 5: {times:[],…}
 6: {times:[],…}
-
-
-{
-	id: 0,
-	timestamp: "2020-07-16T19:02:36Z",
-	fields: this.fields,
-	name: "sneezing",
-	value: "true",
-	value0: "true",
-	value1: "true",
-	value2: "true",
-	value3: "true",
-	value4: "true",
-	value5: "true",
-	value6: "true",
-times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-
-},
-
-
-{
-	id: 0,
-	timestamp: "2020-07-16T19:02:36Z",
-	fields: this.fields,
-	name: "sneezing",
-	value: "true",
-	value0: "true",
-	value1: "true",
-	value2: "true",
-	value3: "true",
-	value4: "true",
-	value5: "true",
-	value6: "true"
-},
-  let aa = {
-          icon: "thermometer-outline",
-          name: "bodyTemperature",
-          type: "number",
-          value: 37.5,
-          dataClass: "highest",
-          dataGroup: "vitalSigns",
-          valueUnit: "°C",
-          isKeyField: true,
-          valueRange: {
-            max: 41,
-            min: 34
-          },
-          defaultValue: null,
-          times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-        };
-        let bb = {
-          icon: "medkit-outline",
-          name: "coughing",
-          type: "boolean",
-          value: true,
-          dataClass: "booleanPreview",
-          dataGroup: "symptoms",
-          isKeyField: false,
-          defaultValue: false,
-          times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-        };
