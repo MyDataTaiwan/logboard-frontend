@@ -150,22 +150,9 @@ export default {
     storageSymptomsTemplates() {
       if (this.$store.state.SymptomsTemplates[0] != null) {
         let swp = this.$store.state.selectTemplate;
-        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
-          (item) => {
-            if (swp == "heartFailure") {
-              return item.title == "heartFailure";
-              // return this.$store.state.selectTemplate == "commonCold";
-            }
-            return item.title == "commonCold";
-          }
-        );
-        // let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
-        //   (item) => ({ ...item, title: swp || "commonCold" })
-        // );
-        console.log(
-          "filter  Template",
-          this.$store.state.selectTemplate == "heartFailure"
-        );
+        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter((item) => {
+          return item.title == swp;
+        });
         ////FIXME storage Symptoms Templates
         console.log("filter  Template", this.$store.state.selectTemplate);
         console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
