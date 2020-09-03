@@ -33,6 +33,8 @@ export default new Vuex.Store({
 		storageTargetData: null,
 		storageTargetDate: null,
 		selectTemplateTargetSet: null,
+		SymptomsTemplates: null,
+		storeDFTableData: null,
 		zipSymptoms: null,
 		thumbnailList: [],
 		photoList: [],
@@ -54,6 +56,12 @@ export default new Vuex.Store({
 	mutations: {
 		increment(state) {
 			state.count++
+		},
+		saveSymptomsTemplates(state, payload) {
+			console.log("SymptomsTemplates  in  ", payload);
+
+			state.SymptomsTemplates = payload
+			console.log("SymptomsTemplates  載入中 ", state.SymptomsTemplates);
 		},
 		ChangisLoading(state, payload) {
 			state.isLoading = payload
@@ -85,7 +93,17 @@ export default new Vuex.Store({
 			state.storeTableTitle = payload;
 			console.log("save TableTitle Store", payload);
 		},
+		saveDFTableData(state, payload) {
+			state.storeDFTableData = payload;
+			console.log("save TableData Store", payload);
+		},
 		saveFormatTableData(state, payload) {
+			// if (payload == []) {
+			// 	state.storeDFTableData = this.state.storeDFTableData
+			// }
+			// else {
+			// 	state.storeTableData = payload;
+			// }
 			state.storeTableData = payload;
 			console.log("save TableData Store", payload);
 		},
@@ -439,6 +457,32 @@ export default new Vuex.Store({
 		// 	})
 		// 	return commit('saveRAW', output);
 		// },
+		fetchTemplates({
+			commit,
+		}) {
+			console.log("fetch Templates");
+			let Templates = ['heartFailure', 'commonCold'];
+			let SymptomsTemplates = [];
+			///records/templates/?template=heartFailure
+			//https://logboard-dev.numbersprotocol.io/api/v1/records/today/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure
+			return Templates.map(symptom => {
+				axios.get(`${$http}/records/templates/?template=${symptom}`).then(response => {
+					console.log("fetch Templates_get", response)
+					if (response.status === 200) {
+						console.log(response.data);
+						let titile = response.data.templateName;
+						let symptoms = response.data.fields;
+						SymptomsTemplates.push({ titile: titile, symptoms: symptoms })
+						commit('saveSymptomsTemplates', SymptomsTemplates);
+
+					} else {
+						console.log(response)
+						alert("請檢查網路或重新整理頁面");
+					}
+					console.log("fetch Templates_end");
+				})
+			})
+		},
 		//新增 api
 		updateApi({
 			commit,

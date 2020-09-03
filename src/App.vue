@@ -22,23 +22,21 @@
             <h4>健康聲明表</h4>
           </router-link>
         </div>
-      </div> -->
-      <NavBar id="NavBar"/>
+      </div>-->
+      <NavBar id="NavBar" />
       <div id="Content" style="overflow: hidden;">
         <DateSelectBar id="DateSelectBar" v-if="true" />
-  
+
         <div id="NavBarMobile">
-        <DateSelectBarMobile/>
+          <DateSelectBarMobile />
         </div>
         <router-view></router-view>
       </div>
     </div>
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
-      <template id="version">
-       version v{{version}}
-       </template>
-      © 2020 copyright. all rights reserved 
+      <template id="version">version v{{version}}</template>
+      © 2020 copyright. all rights reserved
       {{storageUserId}}
     </div>
   </div>
@@ -49,24 +47,28 @@ import DateSelectBar from "./components/DateSelectBar.vue";
 import DateSelectBarMobile from "./components/DateSelectBarMobile.vue";
 import NavBar from "./components/NavBar.vue";
 import "reset-css";
-import config from '../package.json' 
+import config from "../package.json";
 export default {
   name: "App",
   components: {
     DateSelectBar,
     DateSelectBarMobile,
-    NavBar
+    NavBar,
   },
   props: {
-    source: String
+    source: String,
   },
   watch: {
-    storageUserId: function() {
+    storageUserId: function () {
       console.log("storageUserId change", this.storageUserId);
     },
-    storageisLoading: function() {
+    storageisLoading: function () {
       console.log("storageisLoading change", this.storageisLoading);
-    }
+    },
+    storageSymptomsTemplates: function () {
+      // this.$store.dispatch("ChangDisplayTemplate", "heartFailure");
+      console.log("ChangDisplayTemplate change", this.storageisLoading);
+    },
   },
   computed: {
     storageUserId() {
@@ -75,33 +77,36 @@ export default {
     },
     storageisLoading() {
       return this.$store.state.isLoading;
-    }
+    },
+    storageSymptomsTemplates() {
+      return this.$store.state.SymptomsTemplates;
+    },
   },
   data() {
     return {
-      version:config.version,
+      version: config.version,
       uid: this.computed,
       isShow: false,
       drawer: true,
       visible: false,
-      DataTable: [{}, {}, {}]
+      DataTable: [{}, {}, {}],
       // isLoading: false
     };
   },
-   created() {
+  created() {
+    this.$store.dispatch("fetchTemplates");
     // this.GetAPI("this-week");
-    console.log("version",config.version)
-
+    console.log("version", config.version);
   },
   methods: {
-    toggle: function() {
+    toggle: function () {
       this.isShow = !this.isShow;
     },
-    
+
     open() {
       console.log("open was clicked, will auto hide");
       let loader = this.$loading.show({
-        loader: "dots"
+        loader: "dots",
       });
       setTimeout(() => loader.hide(), 3 * 1000);
     },
@@ -109,8 +114,8 @@ export default {
       console.log("show was clicked, click to hide");
       // do AJAX here
       this.visible = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -126,20 +131,18 @@ export default {
 }*/
 
 .el-table th.gutter {
-    display: table-cell!important;
+  display: table-cell !important;
 }
 .el-table--border th.gutter:last-of-type {
-    display: block!important;
-    width: 17px!important;
+  display: block !important;
+  width: 17px !important;
 }
 .el-table th {
-	display: table-cell!important; 
+  display: table-cell !important;
 }
 
-
- 
-body .el-table th.gutter{
-    display: table-cell!important;
+body .el-table th.gutter {
+  display: table-cell !important;
 }
 
 #main .el-date-editor--daterange.el-input__inner {
@@ -181,8 +184,7 @@ body .el-table th.gutter{
   height: 97vh;
 }
 
-#DateSelectBarMobile{
-
+#DateSelectBarMobile {
 }
 
 @media screen and (max-width: 800px) {
@@ -216,8 +218,8 @@ body .el-table th.gutter{
   }
 }
 #NavBarMobile {
-   width: 100%;
-  }
+  width: 100%;
+}
 #Footer {
   width: "100%";
   /* height: "20x"; */
