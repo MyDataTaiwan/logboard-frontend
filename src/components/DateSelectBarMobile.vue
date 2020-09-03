@@ -196,36 +196,18 @@ export default {
         });
       }
     },
-    ABtime(YYYYMMDD) {
-      return (
-        new Date(YYYYMMDD).getUTCFullYear() +
-        "-" +
-        new Date(YYYYMMDD).getUTCMonth() +
-        "-" +
-        new Date(YYYYMMDD).getUTCDate()
-      );
-    },
-    ontime() {
-      return (
-        new Date().getUTCFullYear() +
-        "-" +
-        new Date().getUTCMonth() +
-        "-" +
-        new Date().getUTCDate()
-      );
-    },
     handleChange() {
       console.log(this.dateValue); // -> 1
       this.$store.commit("setSelectDate", this.dateValue);
       let start = this.dateValue[0];
       let end = this.dateValue[1];
       this.$store.commit("updateDateformat", [start, end]);
-      if (this.ABtime(start) == this.ABtime(end)) {
-        console.log("起始日=截止日", this.ABtime(start), this.ABtime(end));
+      if (start == end) {
+        console.log("起始日=截止日", start, end);
         //FIXME
         this.$store.dispatch("fetchSummaryToDaysApi", {
-          start_date: String(start),
-          end_date: String(end),
+          start_date: start,
+          end_date: end,
         });
         //FIXME
         //等於當日 FIX ISSUE 50
