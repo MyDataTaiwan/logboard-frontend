@@ -39,7 +39,6 @@ export default {
       return this.$store.state.message;
     },
     events() {
-      console.log("日立在這",this.selectDateformatStart,this.selectDateformatEnd)
       return [
         {
           title: "Event Symptoms",

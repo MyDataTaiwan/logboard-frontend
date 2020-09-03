@@ -10,7 +10,6 @@
           type="daterange"
           start-placeholder="開始日期"
           end-placeholder="結束日期"
-          clearable="true"
           @change="handleChange"
           :default-time="['12:00:00']"
           format="yyyy 年 MM 月 dd 日"
