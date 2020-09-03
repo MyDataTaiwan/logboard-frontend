@@ -150,15 +150,18 @@ export default {
     storageSymptomsTemplates() {
       if (this.$store.state.SymptomsTemplates[0] != null) {
         let swp = this.$store.state.selectTemplate;
-        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
-          function (item) {
+        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          (item) => {
             if (swp == "heartFailure") {
-              return item.titile == "heartFailure";
+              return item.title == "heartFailure";
               // return this.$store.state.selectTemplate == "commonCold";
             }
-            return item.titile == "commonCold";
+            return item.title == "commonCold";
           }
         );
+        // let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+        //   (item) => ({ ...item, title: swp || "commonCold" })
+        // );
         console.log(
           "filter  Template",
           this.$store.state.selectTemplate == "heartFailure"
