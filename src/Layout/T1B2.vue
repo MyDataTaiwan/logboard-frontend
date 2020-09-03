@@ -138,7 +138,8 @@ export default {
     CalendarSweet,
     // ContentLoader,
   },
-  created() {},
+  created() {
+  },
   watch: {
     skeleton: function () {
       console.log("skeleton change", this.skeleton);

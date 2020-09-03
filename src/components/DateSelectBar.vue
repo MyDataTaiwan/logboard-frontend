@@ -95,7 +95,9 @@ export default {
     },
   },
   created() {
+  
     this.GetAPI("this-week");
+    
   },
   computed: {
     selectDateformat() {

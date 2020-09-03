@@ -10,6 +10,7 @@
     size="small"
     style="width:50%"
   >
+    <el-table-column width="10" prop=" " label=" "></el-table-column>
     <el-table-column
       style="{ visibility: show1 ? 'hidden' : 'visible' }"
       fixed="left"
@@ -121,7 +122,7 @@ export default {
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
-      console.log("selectTemplate change");
+      console.log("selectTemplate change", this.selectTemplate);
     },
     storageData: function () {
       this.$nextTick(() => {
@@ -149,11 +150,21 @@ export default {
     },
     storageSymptomsTemplates() {
       if (this.$store.state.SymptomsTemplates[0] != null) {
-        let swp = this.$store.state.selectTemplate;
-        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter((item) => {
-          return item.title == swp;
-        });
-        ////FIXME storage Symptoms Templates
+        let swp=this.$store.state.selectTemplate ;
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function (item) {
+            if (swp== "heartFailure") {
+              return item.titile == "heartFailure";
+              // return this.$store.state.selectTemplate == "commonCold";
+            }
+            return item.titile == "commonCold";
+          }
+        );
+        console.log(
+          "filter  Template",
+          this.$store.state.selectTemplate == "heartFailure"
+        );
+////FIXME storage Symptoms Templates
         console.log("filter  Template", this.$store.state.selectTemplate);
         console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
         return filterDisplayTemplate[0].symptoms.slice(1);
@@ -177,6 +188,9 @@ export default {
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
+      //  if (this.storageData.date[0] == null) {
+      //   return  [];
+      // }
       console.log("storeTableData", this.$store.state.storeTableData);
       if (this.$store.state.storeTableData == "") {
         console.log(
@@ -215,6 +229,42 @@ export default {
     // });
   },
   methods: {
+    ChangDisplayTemplate(payload) {
+      console.log("fetch Templates");
+      console.log(this.$store.state.SymptomsTemplates);
+      if (this.$store.state.SymptomsTemplates[0] != null) {
+        console.log("fetch Templates_200", payload);
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].titile
+        );
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].symptoms
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].titile
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].symptoms
+        );
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function (item) {
+            return item.titile == "commonCold"; // 取得大於五歲的
+          }
+        );
+        console.log("fetch filterDisplayTemplate", filterDisplayTemplate);
+        // 					(4) [{…}, {…}, {…}, {…}, __ob__: Observer]
+        // 0:
+        // name: "coughing"
+        return filterDisplayTemplate;
+        // commit("saveDFTableData", filterDisplayTemplate);
+        // commit('saveFormatTableTitle', FormatTableTitle);
+      }
+      console.log("fetch Templates_end");
+    },
     doResize() {
       setTimeout(function () {
         //手動觸發窗口resize事件
@@ -246,6 +296,17 @@ export default {
   data() {
     return {
       colTitleConfigs: this.TargetDateToTableTitle,
+      testDB: [
+        {
+          name: "sneezing",
+        },
+        {
+          name: "sneezing1",
+        },
+        {
+          name: "sneezing2",
+        },
+      ],
     };
   },
 };
