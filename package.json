@@ -1,6 +1,6 @@
 {
   "name": "logboard-frontend",
-  "version": "0.1.83",
+  "version": "0.1.9",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
