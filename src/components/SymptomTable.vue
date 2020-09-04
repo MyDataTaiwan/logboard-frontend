@@ -3,7 +3,6 @@
     class="table-fixed"
     ref="multipleTable"
     empty-text="資料包中無此區資料"
-    :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
     size="small"
@@ -84,7 +83,6 @@ export default {
     },
     storageTableData: function() {
       console.log("input storageTableData change", this.storageTableData);
-      this.$refs.tableRef.bodyWrapper.scrollTop = 5;
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
         this.$refs.multipleTable.$el.style.width = "95%";
