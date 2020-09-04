@@ -20,6 +20,7 @@
         <el-popover trigger="hover" placement="top"></el-popover>
         <div slot="reference">
           <div class="h7">呼吸道症狀</div>
+          <!-- {{storageTableData}} -->
           <h2>{{ scope.row.name }}</h2>
         </div>
       </template>
@@ -70,6 +71,8 @@ export default {
   props: {
     msg: String,
   },
+  created() {
+  },
   watch: {
     storageTableTitle: function () {
       this.$nextTick(() => {
@@ -85,7 +88,6 @@ export default {
       this.$refs.tableRef.bodyWrapper.scrollTop = 5;
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
-
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
@@ -93,7 +95,6 @@ export default {
     selectTemplate: function () {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
-
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
@@ -124,19 +125,25 @@ export default {
       return this.$store.state.thumbnailList;
     },
     storageSymptomsTemplates() {
-      if (this.$store.state.SymptomsTemplates[0] != null) {
-        let swp = this.$store.state.selectTemplate;
-        let filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+      if (this.$store.state.selectTemplateSet[0] != null) {
+        let swp = this.selectTemplate;
+        let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
           (item) => {
             if (swp == "heartFailure") {
               return item.titile == "heartFailure";
+            } else if (swp == "commonCold") {
+              return item.titile == "commonCold";
             }
-            return item.titile == "commonCold";
+            // return this.storageTableData;
           }
         );
         ////FIXME storage Symptoms Templates
-        console.log("filter  Template", this.$store.state.selectTemplate);
-        console.log("filterDisplayTemplate", filterDisplayTemplate[0].symptoms);
+        console.log("filter  Template", this.selectTemplate);
+        console.log(
+          "filterDisplayTemplate",
+          swp,
+          filterDisplayTemplate[0].symptoms.slice(1)
+        );
         return filterDisplayTemplate[0].symptoms.slice(1);
       } else {
         return null;
@@ -149,21 +156,23 @@ export default {
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
-      //  if (this.storageData.date[0] == null) {
-      //   return  [];
-      // }
-      console.log("storeTableData", this.$store.state.storeTableData);
       if (this.$store.state.storeTableData == "") {
+        console.log("is eork 01 A if");
         console.log(
-          "this.$store.state.storeTableData == null",
+          "this.$store.state.storeTableData == ''",
           this.$store.state.storeTableData
         );
-        console.log("filterDisplayTemplate", this.storageSymptomsTemplates);
         return this.storageSymptomsTemplates;
         // return this.testDB;
       } else {
+        console.log("is eork 01 A else");
+        console.log(
+          "  this.$store.state.storeTableData",
+          this.$store.state.storeTableData
+        );
         return this.$store.state.storeTableData;
       }
+
       // return this.$store.state.storeTableData;
     },
     storageData() {
@@ -177,17 +186,6 @@ export default {
       // });
       return this.$store.state.selectTemplate;
     },
-  },
-  created() {
-    // this.$store.dispatch("fetchSummaryApi", {
-    //   template: "heartFailure",
-    //   start_date: "2020-07-15",
-    //   end_date: "2020-07-24"
-    // });
-    // this.$store.dispatch("fetchDaysApi", {
-    //   template: "heartFailure",
-    //   range: "this-week"
-    // });
   },
   methods: {
     ChangDisplayTemplate(payload) {

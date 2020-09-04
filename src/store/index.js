@@ -49,6 +49,129 @@ export default new Vuex.Store({
 		storeChartLabels: [],
 		storeChartDatasets: [],
 		templateList: ["heartFailure"],
+		selectTemplateSet: [{
+			titile: 'heartFailure', symptoms: [
+				{
+					"name": "SBP",
+					"icon": "pulse-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueUnit": "mmHg"
+				},
+				{
+					"name": "DBP",
+					"icon": "pulse-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueUnit": "mmHg"
+				},
+				{
+					"name": "heartbeat",
+					"icon": "heart-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueUnit": "bpm"
+				},
+				{
+					"name": "bloodSugar",
+					"icon": "medkit-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueUnit": "mg/dL"
+				},
+				{
+					"name": "weight",
+					"icon": "body-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueUnit": "kg"
+				},
+				{
+					"name": "urineVolume",
+					"icon": "water-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "accumulated",
+					"valueUnit": "mL"
+				},
+				{
+					"name": "note",
+					"icon": "pencil-outline",
+					"type": "string",
+					"dataGroup": "additionalInformation",
+					"dataClass": "note"
+				},
+				{
+					"name": "photo",
+					"icon": "camera-outline",
+					"type": "photo",
+					"dataGroup": "additionalInformation",
+					"dataClass": "photo"
+				}
+			]
+		}, {
+			titile: 'commonCold', symptoms: [
+				{
+					"name": "bodyTemperature",
+					"icon": "thermometer-outline",
+					"type": "number",
+					"dataGroup": "vitalSigns",
+					"dataClass": "highest",
+					"valueRange": {
+						"max": 41,
+						"min": 34
+					},
+					"valueUnit": "°C"
+				},
+				{
+					"name": "coughing",
+					"icon": "medkit-outline",
+					"type": "boolean",
+					"dataGroup": "symptoms",
+					"dataClass": "toggle"
+				},
+				{
+					"name": "runnyNose",
+					"icon": "medkit-outline",
+					"type": "boolean",
+					"dataGroup": "symptoms",
+					"dataClass": "toggle"
+				},
+				{
+					"name": "nasalCongestion",
+					"icon": "medkit-outline",
+					"type": "boolean",
+					"dataGroup": "symptoms",
+					"dataClass": "toggle"
+				},
+				{
+					"name": "sneezing",
+					"icon": "medkit-outline",
+					"type": "boolean",
+					"dataGroup": "symptoms",
+					"dataClass": "toggle"
+				},
+				{
+					"name": "note",
+					"icon": "pencil-outline",
+					"type": "string",
+					"dataGroup": "additionalInformation",
+					"dataClass": "note"
+				},
+				{
+					"name": "photo",
+					"icon": "camera-outline",
+					"type": "photo",
+					"dataGroup": "additionalInformation",
+					"dataClass": "photo"
+				}
+			]
+		}],
 		selectTemplate: 'heartFailure'
 		// selectTemplate: 'commonCold'
 
@@ -333,13 +456,21 @@ export default new Vuex.Store({
 						let FormatDataIDs = null;
 						let FormatThumbnailsSets = null;
 						let FormatPhotoSets = null;
-						for (let id = 0; id < response.data.date.length; id++) {
-							let swp = response.data.date[id]
-							let temp = swp.split("-");
-							console.log("DADADADDA", temp)
-							FormatTableTitle.push({ prop: id + 1, label: temp[1] + "-" + temp[2] })
+						if (this.state.selectTemplate == "heartFailure") {
+							FormatTableData = [];
+							FormatTableTitle=[];
+						} else {
+							FormatTableData = response.data.symptoms;
+							for (let id = 0; id < response.data.date.length; id++) {
+								let swp = response.data.date[id]
+								let temp = swp.split("-");
+								console.log("DADADADDA", temp)
+								FormatTableTitle.push({ prop: id + 1, label: temp[1] + "-" + temp[2] })
+							}
+	
 						}
-						FormatTableData = response.data.symptoms;
+						console.log("input FormatTableData change", response.data.symptoms);
+						// FormatTableData = response.data.symptoms;
 						FormatChartLabels = response.data.date;
 						FormatChartDatasets = response.data.vital_signs;
 						console.log("fetch thumbnailList", response.data.thumbnail_list)

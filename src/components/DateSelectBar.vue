@@ -94,7 +94,7 @@ export default {
       );
     },
   },
-  created() {
+  mounted() {
   
     this.GetAPI("this-week");
     
