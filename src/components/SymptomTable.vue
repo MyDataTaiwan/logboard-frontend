@@ -71,8 +71,7 @@ export default {
   props: {
     msg: String,
   },
-  created() {
-  },
+  created() {},
   watch: {
     storageTableTitle: function () {
       this.$nextTick(() => {
@@ -125,26 +124,31 @@ export default {
       return this.$store.state.thumbnailList;
     },
     storageSymptomsTemplates() {
-      if (this.$store.state.selectTemplateSet[0] != null) {
-        let swp = this.selectTemplate;
-        let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
-          (item) => {
-            if (swp == "heartFailure") {
-              return item.titile == "heartFailure";
-            } else if (swp == "commonCold") {
-              return item.titile == "commonCold";
+      let swp = this.selectTemplate;
+
+      if (swp != "heartFailure") {
+        if (this.$store.state.selectTemplateSet[0] != null) {
+          let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
+            (item) => {
+              if (swp == "heartFailure") {
+                return item.titile == "heartFailure";
+              } else if (swp == "commonCold") {
+                return item.titile == "commonCold";
+              }
+              // return this.storageTableData;
             }
-            // return this.storageTableData;
-          }
-        );
-        ////FIXME storage Symptoms Templates
-        console.log("filter  Template", this.selectTemplate);
-        console.log(
-          "filterDisplayTemplate",
-          swp,
-          filterDisplayTemplate[0].symptoms.slice(1)
-        );
-        return filterDisplayTemplate[0].symptoms.slice(1);
+          );
+          ////FIXME storage Symptoms Templates
+          console.log("filter  Template", this.selectTemplate);
+          console.log(
+            "filterDisplayTemplate",
+            swp,
+            filterDisplayTemplate[0].symptoms.slice(1)
+          );
+          return filterDisplayTemplate[0].symptoms.slice(1);
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
@@ -152,7 +156,6 @@ export default {
     },
     storageTableTitle() {
       console.log("storeTableTitle", this.$store.state.storeTableTitle);
-
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
