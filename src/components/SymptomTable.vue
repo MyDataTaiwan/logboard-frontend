@@ -124,6 +124,7 @@ export default {
     storageSymptomsTemplates() {
       let swp = this.selectTemplate;
 
+      // WORKAROUND
       if (swp != "heartFailure") {
         if (this.$store.state.selectTemplateSet[0] != null) {
           let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
