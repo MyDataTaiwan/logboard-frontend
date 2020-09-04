@@ -69,11 +69,11 @@
 export default {
   name: "SymptomTable",
   props: {
-    msg: String,
+    msg: String
   },
   created() {},
   watch: {
-    storageTableTitle: function () {
+    storageTableTitle: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
@@ -82,7 +82,7 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("input  storageTableTitle change", this.storageTableTitle);
     },
-    storageTableData: function () {
+    storageTableData: function() {
       console.log("input storageTableData change", this.storageTableData);
       this.$refs.tableRef.bodyWrapper.scrollTop = 5;
       this.$nextTick(() => {
@@ -91,7 +91,7 @@ export default {
       });
       this.$refs.multipleTable.$el.style.width = "95%";
     },
-    selectTemplate: function () {
+    selectTemplate: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
         this.$refs.multipleTable.$el.style.width = "95%";
@@ -99,7 +99,7 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("selectTemplate change", this.selectTemplate);
     },
-    storageData: function () {
+    storageData: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
@@ -108,16 +108,16 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("input storageData change", this.storageData);
     },
-    storageThumbnailSets: function () {
+    storageThumbnailSets: function() {
       // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
-    storageSymptomsTemplates: function () {
+    storageSymptomsTemplates: function() {
       console.log(
         "storageSymptomsTemplates change",
         this.storageSymptomsTemplates
       );
-    },
+    }
   },
   computed: {
     storageThumbnailSets() {
@@ -129,11 +129,11 @@ export default {
       if (swp != "heartFailure") {
         if (this.$store.state.selectTemplateSet[0] != null) {
           let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
-            (item) => {
+            item => {
               if (swp == "heartFailure") {
-                return item.titile == "heartFailure";
+                return item.title == "heartFailure";
               } else if (swp == "commonCold") {
-                return item.titile == "commonCold";
+                return item.title == "commonCold";
               }
               // return this.storageTableData;
             }
@@ -188,7 +188,7 @@ export default {
       //   // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       // });
       return this.$store.state.selectTemplate;
-    },
+    }
   },
   methods: {
     ChangDisplayTemplate(payload) {
@@ -198,7 +198,7 @@ export default {
         console.log("fetch Templates_200", payload);
         console.log(
           "SymptomsTemplates0",
-          this.$store.state.SymptomsTemplates[0].titile
+          this.$store.state.SymptomsTemplates[0].title
         );
         console.log(
           "SymptomsTemplates0",
@@ -206,15 +206,15 @@ export default {
         );
         console.log(
           "SymptomsTemplates1",
-          this.$store.state.SymptomsTemplates[1].titile
+          this.$store.state.SymptomsTemplates[1].title
         );
         console.log(
           "SymptomsTemplates1",
           this.$store.state.SymptomsTemplates[1].symptoms
         );
         var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
-          function (item) {
-            return item.titile == "commonCold"; // 取得大於五歲的
+          function(item) {
+            return item.title == "commonCold"; // 取得大於五歲的
           }
         );
         console.log("fetch filterDisplayTemplate", filterDisplayTemplate);
@@ -223,7 +223,7 @@ export default {
       console.log("fetch Templates_end");
     },
     doResize() {
-      setTimeout(function () {
+      setTimeout(function() {
         //手動觸發窗口resize事件
         if (document.createEvent) {
           var event = document.createEvent("HTMLEvents");
@@ -238,34 +238,34 @@ export default {
       let TableTitle = [];
       console.log("TableTitleA", date);
       if (date != null) {
-        date.map((index) => {
+        date.map(index => {
           // console.log(Object.keys(index));
           TableTitle.push({
             prop: Object.keys(index),
-            label: Object.keys(index),
+            label: Object.keys(index)
           });
         });
       }
       console.log("TableTitle", Object.keys(TableTitle));
       return TableTitle;
-    },
+    }
   },
   data() {
     return {
       colTitleConfigs: this.TargetDateToTableTitle,
       testDB: [
         {
-          name: "sneezing",
+          name: "sneezing"
         },
         {
-          name: "sneezing1",
+          name: "sneezing1"
         },
         {
-          name: "sneezing2",
-        },
-      ],
+          name: "sneezing2"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 

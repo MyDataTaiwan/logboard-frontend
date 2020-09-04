@@ -50,7 +50,7 @@ export default new Vuex.Store({
 		storeChartDatasets: [],
 		templateList: ["heartFailure"],
 		selectTemplateSet: [{
-			titile: 'heartFailure', symptoms: [
+			title: 'heartFailure', symptoms: [
 				{
 					"name": "SBP",
 					"icon": "pulse-outline",
@@ -115,7 +115,7 @@ export default new Vuex.Store({
 				}
 			]
 		}, {
-			titile: 'commonCold', symptoms: [
+			title: 'commonCold', symptoms: [
 				{
 					"name": "bodyTemperature",
 					"icon": "thermometer-outline",
@@ -458,7 +458,7 @@ export default new Vuex.Store({
 						let FormatPhotoSets = null;
 						if (this.state.selectTemplate == "heartFailure") {
 							FormatTableData = [];
-							FormatTableTitle=[];
+							FormatTableTitle = [];
 						} else {
 							FormatTableData = response.data.symptoms;
 							for (let id = 0; id < response.data.date.length; id++) {
@@ -467,7 +467,7 @@ export default new Vuex.Store({
 								console.log("DADADADDA", temp)
 								FormatTableTitle.push({ prop: id + 1, label: temp[1] + "-" + temp[2] })
 							}
-	
+
 						}
 						console.log("input FormatTableData change", response.data.symptoms);
 						// FormatTableData = response.data.symptoms;
@@ -601,9 +601,9 @@ export default new Vuex.Store({
 					console.log("fetch Templates_get", response)
 					if (response.status === 200) {
 						console.log(response.data);
-						let titile = response.data.templateName;
+						let title = response.data.templateName;
 						let symptoms = response.data.fields;
-						SymptomsTemplates.push({ titile: titile, symptoms: symptoms })
+						SymptomsTemplates.push({ title: title, symptoms: symptoms })
 						commit('saveSymptomsTemplates', SymptomsTemplates);
 
 					} else {
