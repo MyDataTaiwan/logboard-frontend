@@ -380,17 +380,9 @@ export default new Vuex.Store({
 			//let uri="https://logboard-dev.numbersprotocol.io/api/v1/records/summary/?uid=4fc9a448-49fe-4031-a9cc-a72ffa99aa37&template=heartFailure&start_date=2020-08-01&end_date=2020-08-31"
 			// console.log("fetch Summary Api_start_end", `${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${start_date}&end_date=${end_date}`)
 			commit('ChangisLoading', true);
-<<<<<<< HEAD
-			// let test_url= `https://logboard-dev.numbersprotocol.io/api/v1/records/summary/?uid=8d83c9c8-72c6-43b7-8476-6b189a4e786f&template=heartFailure&start_date=2020-07-15&end_date=2020-07-24`;
-			// return axios.get(test_url).then(response => {
-			// if (test_url!=`${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`){
-			return axios.get(`${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`).then(response => {
-				console.log("fetchSummaryApi_get", response, `${$http}summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
-=======
 			return axios.get(urlProcessing).then(response => {
 				// return axios.get(`${$http}records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${start_date}&end_date=${end_date}`).then(response => {
 				console.log("fetchSummaryApi_get", response, `${$http}/records/summary/?uid=${this.state.uid}&template=${this.state.selectTemplate}&start_date=${payload.start_date}&end_date=${payload.end_date}`)
->>>>>>> develop
 				console.log(response)
 				console.log(response.data.length)
 				if (response.status === 200) {
