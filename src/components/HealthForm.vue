@@ -56,7 +56,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 .Title {
   display: flex;
   flex-direction: row;
@@ -89,9 +89,10 @@ export default {
   background: #000000;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  /* flex: 1; */
   margin: 20px;
   padding: 10px;
+  max-width: 314;
   /* height: 50vh; */
   /* border-radius: 5%; */
 }

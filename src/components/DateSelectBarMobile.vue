@@ -1,30 +1,60 @@
 <template>
-  <div id="DateSelectBar">
-    <div class="SelectBarStar">
-      <img id="SelectBarTitle" alt="bar" src="../assets/icon/Date.svg" width="8%" />
-      <div class="DateSelectItmes">
-        <el-date-picker
-          style="height:28px !important;border:none;"
-          size="small"
-          v-model="dateValue"
-          type="daterange"
-          start-placeholder="開始日期"
-          end-placeholder="結束日期"
-          @change="handleChange"
-          :default-time="['12:00:00']"
-          format="yyyy 年 MM 月 dd 日"
-          value-format="yyyy-MM-dd"
-        ></el-date-picker>
+  <div id="DateSelectBarMobile">
+    <div id="LogoMobile">
+      <img alt="LogBoard logo" src="../assets/LogBoardLOGO.svg" height="30" class="LogoMobile" />
+      <span class="el-dropdown-link" @click="NAVtoggle">
+        DASHBOARD
+        <i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <button @click="toggle" class="menu">
+        <img alt="menu logo" src="../assets/icon/menu.svg" height="25" />
+      </button>
+    </div>
+
+    <div class="SelectBarStarMobile">
+      <div id="NavItems" v-if="NavIshow">
+        <router-link :to="{ name: 'dashboard' }" class="Nav">
+          <img id="Icon" alt="LogBoard Icon" src="../assets/icon/DASHBOARD.svg" width="32" />
+          <h4>DASHBOARD</h4>
+        </router-link>
+        <router-link :to="{ name: 'camps' }" class="Nav">
+          <img id="Icon" alt="LogBoard Icon" src="../assets/icon/camps.svg" width="32" />
+          <h4>健康聲明書</h4>
+        </router-link>
+        <router-link :to="{ name: 'photodiary' }" class="Nav">
+          <img id="Icon" alt="LogBoard Icon" src="../assets/icon/PHOTODIARY.svg" width="32" />
+          <h4>PHOTODIARY</h4>
+        </router-link>
       </div>
-      <div id="btnList">
-        <div id="btnSubList">
-          <button @click="GetAPI('this-month')" class="SelectItmes">This Month</button>
-          <button @click="GetAPI('two-weeks')" class="SelectItmes">Two Weeks</button>
-          <button @click="GetAPI('this-week')" class="SelectItmes">This Week</button>
-          <button @click="GetAPI('today')" class="SelectItmes">Today</button>
+      <div id="btnListMobile" v-if="isShow">
+        <div id="btnSubListMobile">
+          <button @click="GetAPI('this-month')" class="SelectItmesMobile">This Month</button>
+          <button @click="GetAPI('two-weeks')" class="SelectItmesMobile">Two Weeks</button>
+          <button @click="GetAPI('this-week')" class="SelectItmesMobile">This Week</button>
+          <button @click="GetAPI('today')" class="SelectItmesMobile">Today</button>
         </div>
-        <div style="flex: 1;" />
-        <el-select id="EndItmes" v-model="selectValue" :placeholder="options[0].label">
+        <div class="DateSelectItmesMobileMobile">
+          <el-date-picker
+            style="height:28px !important;border:none;  
+  background: #5c6f75;"
+            size="small"
+            v-model="dateValue"
+            type="daterange"
+            start-placeholder="開始日期"
+            end-placeholder="結束日期"
+            clearable="true"
+            @change="handleChange"
+            :default-time="['12:00:00']"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="timestamp"
+          ></el-date-picker>
+        </div>
+        <el-select
+          style="width:84%  ; margin: 5px 0px 5px 0px;"
+          id="EndItmesMobile"
+          v-model="selectValue"
+          :placeholder="options[0].label"
+        >
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -39,7 +69,7 @@
 
 <script>
 export default {
-  name: "DateSelectBar",
+  name: "DateSelectBarMobile",
   props: {
     msg: String,
   },
@@ -94,10 +124,8 @@ export default {
       );
     },
   },
-  mounted() {
-  
+  created() {
     this.GetAPI("this-week");
-    
   },
   computed: {
     selectDateformat() {
@@ -130,28 +158,36 @@ export default {
 
   data() {
     return {
+      isShow: false,
+      NavIshow: false,
       dateValue: [],
-
       value2: "",
       selectValue: "",
     };
   },
   methods: {
+    NAVtoggle() {
+      this.NavIshow = !this.NavIshow;
+      this.isShow = false;
+    },
+    toggle() {
+      this.isShow = !this.isShow;
+      this.NavIshow = false;
+    },
     GetAPI(mode, start_date, end_date) {
       // eslint-disable-next-line no-constant-condition
       if (mode == "Summary") {
         console.log("fetchSummaryApi input date", start_date, end_date); // -> 1
-        console.log("%20 無", start_date); // -> 1
         this.$store.dispatch("fetchSummaryApi", {
           //NOTE
           // start_date: "2020-07-15",
-          // end_date: "2020-07-24"String()
+          // end_date: "2020-07-24"
           start_date: String(start_date),
           end_date: String(end_date),
         });
       } else if (mode == "today") {
         this.$store.dispatch("fetchToDaysApi");
-        // this.$store.dispatch("fetchRawDataApi");
+        this.$store.dispatch("fetchRawDataApi");
       } else {
         this.$store.dispatch("fetchDaysApi", {
           //NOTE
@@ -160,16 +196,6 @@ export default {
         });
       }
     },
-    toggle() {
-      alert("警告，前有BUG");
-      this.$store.commit("increment");
-      console.log(this.$store.state.count); // -> 1
-      var elmnt = document.getElementById("EndItmes");
-      document.getElementById("Select").style.top =
-        elmnt.clientTop + elmnt.height;
-      document.getElementById("Select").style.Left = elmnt.clientLeft;
-    },
-
     handleChange() {
       console.log(this.dateValue); // -> 1
       this.$store.commit("setSelectDate", this.dateValue);
@@ -202,16 +228,55 @@ export default {
 };
 </script>
 
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
+.h4 {
+  color: #fff !important ;
+}
+.Nav {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+.el-dropdown-link {
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  background: #5c6f75;
+  border: 3px solid #fff;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font: 1em sans-serif;
+  padding: 0px 15px 0px 15px;
+  margin: 10px 5px 16px 5px; /*FIXME */
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+.el-dropdown-item {
+  background-color: #5c6f75;
+}
 #btnList {
   display: flex;
   flex: 1;
 }
+
 #btnSubList {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   flex: 1;
 }
 .button {
@@ -229,19 +294,46 @@ export default {
   align-items: center;
   justify-content: flex-start;
 }
-.SelectItmes {
+.SelectBarStarMobile {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.SelectItmesMobile {
   white-space: nowrap;
-  background: #fff;
+
   align-items: center;
   justify-content: center;
   text-align: center;
-  border: 3px solid #5c6f75;
+  width: 40%;
+  color: #fff;
+  background: #5c6f75;
+  border: 3px solid #fff;
   box-sizing: border-box;
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 5px 15px 5px 15px;
-  margin: 0px 5px 0px 5px;
+  margin: 5px 5px 5px 5px;
 }
+.btnListMobile {
+  width: 100%;
+  padding: 20%;
+}
+
+.btnSubListMobile {
+  width: 100%;
+}
+.DateSelectItmesMobileMobile {
+  width: 84%;
+  border: 3px solid #fff;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font: 1em sans-serif;
+  padding: 0px 15px 0px 15px;
+  margin: 5px 8% 5px 8%;
+}
+/*  */
 .DateSelectItmes {
   background: #fff;
   align-items: center;
@@ -256,6 +348,20 @@ export default {
   margin: 0px 5px 16px 5px;
   /*FIXME */
 }
+#LogoMobile {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 5px 0px 5px 0px;
+  background: #697b80;
+}
+.LogoMobile {
+  justify-content: center;
+  padding: 5px;
+  margin-left: 10px;
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -267,83 +373,62 @@ li {
 a {
   color: #42b983;
 }
-#EndItmes {
-  background: #fff;
+#EndItmesMobile {
+  background: #5c6f75;
   align-items: center;
   justify-content: center;
   text-align: center;
   height: 32px;
-  border: 3px solid #5c6f75;
+  width: 100%;
+  /* width: 10vw !important; */
+  /* width: 10%; */
+  color: #ffffff;
+  border: 3px solid #fff;
   box-sizing: border-box;
   border-radius: 20px;
   font: 1em sans-serif;
   padding: 0px 0px 0px 0px;
   margin: 0px 0px 0px 0px;
 }
-#DateSelectBar {
-  background: #fff;
-  margin: 20px;
-  padding: 0 15px;
+#DateSelectBarMobile {
+  /* background: #fff; */
+  /* margin: 20px; */
+  /* padding: 0 15px; */
   height: 8%;
   display: flex;
-  flex-direction: row;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
+.SelectBarStar {
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+#SelectBarTitle {
+  display: none;
+}
+#EndItmes {
+  /* display: none; */
+}
+.DateSelectItmes {
+  background: #fff;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: 3px solid #5c6f75;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font: 1em sans-serif;
+  padding: 0px 15px 0px 15px;
+}
 
-/* @media screen and (max-width: 567px) { */
-@media screen and (max-width: 707px) {
-  #DateSelectBar {
-    /* display: none; */
-    background: #fff;
-    margin: 20px;
-    padding-right: 15px;
-    height: 15%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .SelectBarStar {
-    flex-direction: row;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  #SelectBarTitle {
-    display: none;
-  }
-  .SelectItmes {
-    background: #fff;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 3px solid #5c6f75;
-    box-sizing: border-box;
-    border-radius: 20px;
-    font: 1em sans-serif;
-    padding: 5px 5px 5px 5px;
-    margin: 0px 2px 0px 2px;
-  }
-  #EndItmes {
-    /* display: none; */
-  }
-  .DateSelectItmes {
-    background: #fff;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border: 3px solid #5c6f75;
-    box-sizing: border-box;
-    border-radius: 20px;
-    font: 1em sans-serif;
-    padding: 0px 15px 0px 15px;
-  }
-
-  #btnList {
-    flex-direction: row;
-    flex: 1;
-  }
+#btnList {
+  flex-direction: row;
+  flex: 1;
 }
 
 #Select {

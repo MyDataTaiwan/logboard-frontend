@@ -1,15 +1,14 @@
 <template>
-  <!-- <el-table  :data="testSymptoms" height="100%" style="width:50vw"> -->
   <el-table
     class="table-fixed"
     ref="multipleTable"
     empty-text="資料包中無此區資料"
-    :span-method="arraySpanMethod"
     :data="storageTableData"
     height="100%"
     size="small"
     style="width:50%"
   >
+    <el-table-column width="10" prop=" " label=" "></el-table-column>
     <el-table-column
       style="{ visibility: show1 ? 'hidden' : 'visible' }"
       fixed="left"
@@ -17,16 +16,11 @@
       width="130px"
     >
       <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <!-- <p>症狀: {{ scope.row.name }}</p>
-          <p>時間: {{ scope.row.timestamp }}</p>-->
-        </el-popover>
+        <el-popover trigger="hover" placement="top"></el-popover>
         <div slot="reference">
-          <!-- <h6>{{ scope.row }}</h6>
-          <h6>{{ scope.column }}</h6>-->
           <div class="h7">呼吸道症狀</div>
+          <!-- {{storageTableData}} -->
           <h2>{{ scope.row.name }}</h2>
-          <!-- {{$store.state.storageData[0].content_parsed}} -->
         </div>
       </template>
     </el-table-column>
@@ -40,13 +34,6 @@
       width="160"
     >
       <template slot-scope="scope">
-        <!-- <h3>{{ scope.row[scope.column.property] }}</h3> -->
-                <!-- <h6>{{ scope.column}}</h6> -->
-
-        <!-- <h6>{{ scope.column.property}}</h6>
-        <h6>{{ scope.row.id }}</h6>
-         <h6>{{ scope.row.symptom[scope.column.property-1] }}</h6> -->
-        <!-- <h6>{{ scope.row }}</h6> -->
         <el-popover trigger="hover" placement="top">
           <p>{{ scope.column.label }}</p>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
@@ -57,19 +44,8 @@
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <h3>今天的症狀</h3>
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
-
-          <!-- <h3>顯示今天的症狀</h3>
-          <h2>PhotoDiary</h2>
-          <img class="fit-picture"  src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Grapefruit slice atop a pile of other slices">
-          <img class="fit-picture" :src="testThumbnailSets[2][0]" alt="Grapefruit slice atop a pile of other slices">-->
           <div style=" bordiver-top: 2px solid #000; border-bottom: 2px solid #000; "></div>
           <div slot="reference" class="name-wrapper">
-            <!-- <el-tag size="mini">{{1}}</el-tag>
-            <el-tag size="mini">{{2}}</el-tag>-->
-            <!-- <h3>{{scope.row.Symptoms }}</h3> -->
-            <!-- <h3>{{scope.row.Symptoms[scope.column.property] }}</h3>
-            <h3>{{scope.column.property }}</h3>-->
-
             <template v-if="scope.row.symptom[scope.column.property-1]==true">
               <el-tag color="#5C6F75" effect="dark" size="mini">
                 <!-- <h3>{{scope.row.symptom[scope.column.property] }}</h3> -->
@@ -92,10 +68,11 @@
 export default {
   name: "SymptomTable",
   props: {
-    msg: String,
+    msg: String
   },
+  created() {},
   watch: {
-    storageTableTitle: function () {
+    storageTableTitle: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
@@ -104,26 +81,23 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("input  storageTableTitle change", this.storageTableTitle);
     },
-    storageTableData: function () {
+    storageTableData: function() {
       console.log("input storageTableData change", this.storageTableData);
-      this.$refs.tableRef.bodyWrapper.scrollTop = 5;
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
-
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
     },
-    selectTemplate: function () {
+    selectTemplate: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
-
         this.$refs.multipleTable.$el.style.width = "95%";
       });
       this.$refs.multipleTable.$el.style.width = "95%";
-      console.log("selectTemplate change");
+      console.log("selectTemplate change", this.selectTemplate);
     },
-    storageData: function () {
+    storageData: function() {
       this.$nextTick(() => {
         this.$refs.multipleTable.doLayout();
 
@@ -132,35 +106,76 @@ export default {
       this.$refs.multipleTable.$el.style.width = "95%";
       console.log("input storageData change", this.storageData);
     },
-    storageThumbnailSets: function () {
+    storageThumbnailSets: function() {
       // this.fillData();
       console.log("storageThumbnailSets change", this.storageThumbnailSets);
     },
+    storageSymptomsTemplates: function() {
+      console.log(
+        "storageSymptomsTemplates change",
+        this.storageSymptomsTemplates
+      );
+    }
   },
   computed: {
     storageThumbnailSets() {
       return this.$store.state.thumbnailList;
     },
-    storageTableTitle() {
-      // if (this.storageData.symptoms[0] == null) {
-      //   // if (this.storageData.date[0] == null) {
-      //   // return [
-      //   //   { prop: 0, label: "暫時" },
-      //   //   { prop: 1, label: "沒有" },
-      //   //   { prop: 2, label: "資料" }
-      //   // ];
-      //   return [];
-      // }
-      console.log("storeTableTitle", this.$store.state.storeTableTitle);
+    storageSymptomsTemplates() {
+      let swp = this.selectTemplate;
 
+      // WORKAROUND
+      if (swp != "heartFailure") {
+        if (this.$store.state.selectTemplateSet[0] != null) {
+          let filterDisplayTemplate = this.$store.state.selectTemplateSet.filter(
+            item => {
+              if (swp == "heartFailure") {
+                return item.title == "heartFailure";
+              } else if (swp == "commonCold") {
+                return item.title == "commonCold";
+              }
+              // return this.storageTableData;
+            }
+          );
+          ////FIXME storage Symptoms Templates
+          console.log("filter  Template", this.selectTemplate);
+          console.log(
+            "filterDisplayTemplate",
+            swp,
+            filterDisplayTemplate[0].symptoms.slice(1)
+          );
+          return filterDisplayTemplate[0].symptoms.slice(1);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+      // return this.$store.state.SymptomsTemplates;
+    },
+    storageTableTitle() {
+      console.log("storeTableTitle", this.$store.state.storeTableTitle);
       return this.$store.state.storeTableTitle;
     },
     storageTableData() {
-      //  if (this.storageData.date[0] == null) {
-      //   return  [];
-      // }
-      console.log("storeTableData", this.$store.state.storeTableData);
-      return this.$store.state.storeTableData;
+      if (this.$store.state.storeTableData == "") {
+        console.log("is eork 01 A if");
+        console.log(
+          "this.$store.state.storeTableData == ''",
+          this.$store.state.storeTableData
+        );
+        return this.storageSymptomsTemplates;
+        // return this.testDB;
+      } else {
+        console.log("is eork 01 A else");
+        console.log(
+          "  this.$store.state.storeTableData",
+          this.$store.state.storeTableData
+        );
+        return this.$store.state.storeTableData;
+      }
+
+      // return this.$store.state.storeTableData;
     },
     storageData() {
       return this.$store.state.storeData;
@@ -172,22 +187,42 @@ export default {
       //   // uid: "4b539876-d395-4e01-b987-8ae8ea754b0e"
       // });
       return this.$store.state.selectTemplate;
-    },
-  },
-  created() {
-    // this.$store.dispatch("fetchSummaryApi", {
-    //   template: "heartFailure",
-    //   start_date: "2020-07-15",
-    //   end_date: "2020-07-24"
-    // });
-    // this.$store.dispatch("fetchDaysApi", {
-    //   template: "heartFailure",
-    //   range: "this-week"
-    // });
+    }
   },
   methods: {
+    ChangDisplayTemplate(payload) {
+      console.log("fetch Templates");
+      console.log(this.$store.state.SymptomsTemplates);
+      if (this.$store.state.SymptomsTemplates[0] != null) {
+        console.log("fetch Templates_200", payload);
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].title
+        );
+        console.log(
+          "SymptomsTemplates0",
+          this.$store.state.SymptomsTemplates[0].symptoms
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].title
+        );
+        console.log(
+          "SymptomsTemplates1",
+          this.$store.state.SymptomsTemplates[1].symptoms
+        );
+        var filterDisplayTemplate = this.$store.state.SymptomsTemplates.filter(
+          function(item) {
+            return item.title == "commonCold"; // 取得大於五歲的
+          }
+        );
+        console.log("fetch filterDisplayTemplate", filterDisplayTemplate);
+        return filterDisplayTemplate;
+      }
+      console.log("fetch Templates_end");
+    },
     doResize() {
-      setTimeout(function () {
+      setTimeout(function() {
         //手動觸發窗口resize事件
         if (document.createEvent) {
           var event = document.createEvent("HTMLEvents");
@@ -202,23 +237,34 @@ export default {
       let TableTitle = [];
       console.log("TableTitleA", date);
       if (date != null) {
-        date.map((index) => {
+        date.map(index => {
           // console.log(Object.keys(index));
           TableTitle.push({
             prop: Object.keys(index),
-            label: Object.keys(index),
+            label: Object.keys(index)
           });
         });
       }
       console.log("TableTitle", Object.keys(TableTitle));
       return TableTitle;
-    },
+    }
   },
   data() {
     return {
       colTitleConfigs: this.TargetDateToTableTitle,
+      testDB: [
+        {
+          name: "sneezing"
+        },
+        {
+          name: "sneezing1"
+        },
+        {
+          name: "sneezing2"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
@@ -283,73 +329,3 @@ body .el-table th.gutter {
 4: {times:[],…}
 5: {times:[],…}
 6: {times:[],…}
-
-
-{
-	id: 0,
-	timestamp: "2020-07-16T19:02:36Z",
-	fields: this.fields,
-	name: "sneezing",
-	value: "true",
-	value0: "true",
-	value1: "true",
-	value2: "true",
-	value3: "true",
-	value4: "true",
-	value5: "true",
-	value6: "true",
-times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-
-},
-
-
-{
-	id: 0,
-	timestamp: "2020-07-16T19:02:36Z",
-	fields: this.fields,
-	name: "sneezing",
-	value: "true",
-	value0: "true",
-	value1: "true",
-	value2: "true",
-	value3: "true",
-	value4: "true",
-	value5: "true",
-	value6: "true"
-},
-  let aa = {
-          icon: "thermometer-outline",
-          name: "bodyTemperature",
-          type: "number",
-          value: 37.5,
-          dataClass: "highest",
-          dataGroup: "vitalSigns",
-          valueUnit: "°C",
-          isKeyField: true,
-          valueRange: {
-            max: 41,
-            min: 34
-          },
-          defaultValue: null,
-          times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-        };
-        let bb = {
-          icon: "medkit-outline",
-          name: "coughing",
-          type: "boolean",
-          value: true,
-          dataClass: "booleanPreview",
-          dataGroup: "symptoms",
-          isKeyField: false,
-          defaultValue: false,
-          times: [
-            { "2020-07-16T19:02:36Z": "truetrue" },
-            { "2020-07-19T19:02:36Z": "truetrue" }
-          ]
-        };

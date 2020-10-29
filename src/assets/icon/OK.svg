@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="542" height="566" viewBox="0 0 542 566">
+  <defs>
+    <clipPath id="clip-OK">
+      <rect width="542" height="566"/>
+    </clipPath>
+  </defs>
+  <g id="OK" clip-path="url(#clip-OK)">
+    <path id="Union_1" data-name="Union 1" d="M201,515V314H0V201H201V0H314V201H515V314H314V515Z" transform="translate(271.5 -80.66) rotate(45)" fill="#8bd65c"/>
+  </g>
+</svg>

@@ -4,9 +4,9 @@
     <loading :active.sync="storageisLoading"></loading>
 
     <div id="App">
-      <div v-if="true" id="NavBar">
+      <!-- <div v-if="true" id="NavBar">
         <div id="Logo">
-          <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" width="130" />
+          <img alt="LogBoard logo" src="./assets/logologboard.svg" width="130" />
         </div>
         <div slot="reference" id="NavItems">
           <router-link :to="{ name: 'dashboard' }" class="Nav">
@@ -17,43 +17,26 @@
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
             <h4>PHOTODIARY</h4>
           </router-link>
-          <!-- <router-link :to="{ name: 'camps' }" class="Nav">
+          <router-link :to="{ name: 'camps' }" class="Nav">
             <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-            <h4>實習營健康表</h4>
-          </router-link>-->
+            <h4>健康聲明表</h4>
+          </router-link>
         </div>
-      </div>
+      </div>-->
+      <NavBar id="NavBar" />
       <div id="Content" style="overflow: hidden;">
         <DateSelectBar id="DateSelectBar" v-if="true" />
+
         <div id="NavBarMobile">
-          <div id="LogoMobile">
-            <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="30" class="LogoMobile" />
-            <button @click="toggle" class="menu">
-              <img alt="menu logo" src="./assets/icon/menu.svg" height="25" />
-            </button>
-          </div>
-          <div id="NavItems" v-if="isShow">
-            <router-link :to="{ name: 'camps' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/camps.svg" width="32" />
-              <h4>實習營健康表</h4>
-            </router-link>
-            <router-link :to="{ name: 'dashboard' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/DASHBOARD.svg" width="32" />
-              <h4>DASHBOARD</h4>
-            </router-link>
-            <router-link :to="{ name: 'photodiary' }" class="Nav">
-              <img id="Icon" alt="LogBoard Icon" src="./assets/icon/PHOTODIARY.svg" width="32" />
-              <h4>PHOTODIARY</h4>
-            </router-link>
-            <DateSelectBar id="DateSelectBarMobile" v-if="true" />
-          </div>
+          <DateSelectBarMobile />
         </div>
         <router-view></router-view>
       </div>
     </div>
     <div id="Footer">
       <img alt="LogBoard logo" src="./assets/LogBoardLOGO.svg" height="60%" />
-      © 2020 copyright. all rights reserved  v0.1.5
+      <template id="version">version v{{version}}</template>
+      © 2020 copyright. all rights reserved
       {{storageUserId}}
     </div>
   </div>
@@ -61,23 +44,31 @@
 
 <script>
 import DateSelectBar from "./components/DateSelectBar.vue";
+import DateSelectBarMobile from "./components/DateSelectBarMobile.vue";
+import NavBar from "./components/NavBar.vue";
 import "reset-css";
-
+import config from "../package.json";
 export default {
   name: "App",
   components: {
-    DateSelectBar
+    DateSelectBar,
+    DateSelectBarMobile,
+    NavBar,
   },
   props: {
-    source: String
+    source: String,
   },
   watch: {
-    storageUserId: function() {
+    storageUserId: function () {
       console.log("storageUserId change", this.storageUserId);
     },
-    storageisLoading: function() {
+    storageisLoading: function () {
       console.log("storageisLoading change", this.storageisLoading);
-    }
+    },
+    storageSymptomsTemplates: function () {
+      // this.$store.dispatch("ChangDisplayTemplate", "heartFailure");
+      console.log("ChangDisplayTemplate change", this.storageisLoading);
+    },
   },
   computed: {
     storageUserId() {
@@ -86,27 +77,36 @@ export default {
     },
     storageisLoading() {
       return this.$store.state.isLoading;
-    }
+    },
+    storageSymptomsTemplates() {
+      return this.$store.state.SymptomsTemplates;
+    },
   },
   data() {
     return {
+      version: config.version,
       uid: this.computed,
       isShow: false,
       drawer: true,
       visible: false,
-      DataTable: [{}, {}, {}]
+      DataTable: [{}, {}, {}],
       // isLoading: false
     };
   },
-
+  created() {
+    this.$store.dispatch("fetchTemplates");
+    // this.GetAPI("this-week");
+    console.log("version", config.version);
+  },
   methods: {
-    toggle: function() {
+    toggle: function () {
       this.isShow = !this.isShow;
     },
+
     open() {
       console.log("open was clicked, will auto hide");
       let loader = this.$loading.show({
-        loader: "dots"
+        loader: "dots",
       });
       setTimeout(() => loader.hide(), 3 * 1000);
     },
@@ -114,8 +114,8 @@ export default {
       console.log("show was clicked, click to hide");
       // do AJAX here
       this.visible = true;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -131,20 +131,18 @@ export default {
 }*/
 
 .el-table th.gutter {
-    display: table-cell!important;
+  display: table-cell !important;
 }
 .el-table--border th.gutter:last-of-type {
-    display: block!important;
-    width: 17px!important;
+  display: block !important;
+  width: 17px !important;
 }
 .el-table th {
-	display: table-cell!important; 
+  display: table-cell !important;
 }
 
-
- 
-body .el-table th.gutter{
-    display: table-cell!important;
+body .el-table th.gutter {
+  display: table-cell !important;
 }
 
 #main .el-date-editor--daterange.el-input__inner {
@@ -186,6 +184,9 @@ body .el-table th.gutter{
   height: 97vh;
 }
 
+#DateSelectBarMobile {
+}
+
 @media screen and (max-width: 800px) {
   #DateSelectBar {
     display: none;
@@ -204,17 +205,20 @@ body .el-table th.gutter{
 @media screen and (min-width: 567px) {
   #NavBar {
     /* background: #f0afff; */
-    display: flex;
+    /* display: flex;
     flex: 1;
     width: 15%;
     flex-direction: column;
     -webkit-justify-content: center;
-    justify-content: center;
+    justify-content: center; */
     /* height: 100vh; */
   }
   #NavBarMobile {
     display: none;
   }
+}
+#NavBarMobile {
+  width: 100%;
 }
 #Footer {
   width: "100%";
